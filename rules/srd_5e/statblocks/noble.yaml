@@ -1,0 +1,35 @@
+id: rules:npc.noble
+schema: dwd.statblock.v1
+pack: rules:pack.srd_5e
+name: Noble
+source: "SRD 5.1 - Monsters"
+size: medium
+type: humanoid
+ac: 15
+armor: breastplate
+hp: { average: 9, formula: "2d8" }
+speed: { walk: 30 }
+abilities: { str: 11, dex: 12, con: 11, int: 12, wis: 14, cha: 16 }
+saving_throws: {}
+skills:
+  deception: 5
+  insight: 4
+  persuasion: 5
+senses: { passive_perception: 12 }
+languages: [any_two]
+cr: 0.125 # 1/8
+actions:
+  - id: rules:action.noble.rapier
+    name: Rapier
+    kind: melee_weapon_attack
+    to_hit: 3
+    reach: 5
+    target: one_creature
+    damage: { roll: "1d8+1", type: piercing }
+reactions:
+  - id: rules:action.noble.parry
+    name: Parry
+    kind: reaction
+    effect: >
+      The noble adds 2 to its AC against one melee attack that would hit it. To do
+      so, the noble must see the attacker and be wielding a melee weapon.

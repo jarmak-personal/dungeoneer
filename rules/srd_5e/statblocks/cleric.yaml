@@ -1,0 +1,52 @@
+id: rules:npc.cleric
+schema: dwd.statblock.v1
+pack: rules:pack.srd_5e
+name: Cleric
+source: "SRD 5.1 - Monsters (Priest)"
+# The SRD 5.1 entry is named "Priest"; Aurevost binds it as rules:npc.cleric for
+# the world's rare genuine divine casters (see worlds/aurevost/npcs/emeric.yaml).
+size: medium
+type: humanoid
+ac: 13
+armor: chain_shirt
+hp: { average: 27, formula: "5d8+5" }
+speed: { walk: 25 }
+abilities: { str: 10, dex: 10, con: 12, int: 13, wis: 16, cha: 13 }
+saving_throws: {}
+skills:
+  medicine: 7
+  persuasion: 3
+  religion: 5
+senses: { passive_perception: 13 }
+languages: [any_two]
+cr: 2
+traits:
+  - id: rules:trait.cleric.divine_eminence
+    name: Divine Eminence
+    kind: bonus_action
+    effect: >
+      As a bonus action, the priest can expend a spell slot to cause its melee
+      weapon attacks to magically deal an extra 10 (3d6) radiant damage to a target
+      on a hit. This benefit lasts until the end of the turn. If the priest expends
+      a spell slot of 2nd level or higher, the extra damage increases by 1d6 for
+      each level above 1st.
+  - id: rules:trait.cleric.spellcasting
+    name: Spellcasting
+    kind: spellcasting
+    caster_level: 5
+    ability: wis
+    save_dc: 13
+    spell_attack: 5
+    prepared:
+      cantrips: [light, sacred_flame, thaumaturgy]
+      level_1: { slots: 4, spells: [cure_wounds, guiding_bolt, sanctuary] }
+      level_2: { slots: 3, spells: [lesser_restoration, spiritual_weapon] }
+      level_3: { slots: 2, spells: [dispel_magic, spirit_guardians] }
+actions:
+  - id: rules:action.cleric.mace
+    name: Mace
+    kind: melee_weapon_attack
+    to_hit: 2
+    reach: 5
+    target: one_creature
+    damage: { roll: "1d6", type: bludgeoning }

@@ -1,0 +1,42 @@
+id: rules:npc.druid
+schema: dwd.statblock.v1
+pack: rules:pack.srd_5e
+name: Druid
+source: "SRD 5.1 - Monsters"
+size: medium
+type: humanoid
+ac: 11
+ac_note: "16 with barkskin"
+hp: { average: 27, formula: "5d8+5" }
+speed: { walk: 30 }
+abilities: { str: 10, dex: 12, con: 13, int: 12, wis: 15, cha: 11 }
+saving_throws: {}
+skills:
+  medicine: 4
+  nature: 3
+  perception: 4
+senses: { passive_perception: 14 }
+languages: [druidic, any_two]
+cr: 2
+traits:
+  - id: rules:trait.druid.spellcasting
+    name: Spellcasting
+    kind: spellcasting
+    caster_level: 4
+    ability: wis
+    save_dc: 12
+    spell_attack: 4
+    prepared:
+      cantrips: [druidcraft, produce_flame, shillelagh]
+      level_1: { slots: 4, spells: [entangle, longstrider, speak_with_animals, thunderwave] }
+      level_2: { slots: 3, spells: [animal_messenger, barkskin] }
+actions:
+  - id: rules:action.druid.quarterstaff
+    name: Quarterstaff
+    kind: melee_weapon_attack
+    to_hit: 2
+    to_hit_note: "+4 with shillelagh"
+    reach: 5
+    target: one_creature
+    damage: { roll: "1d6", type: bludgeoning }
+    damage_note: "1d8 if wielded two-handed; 1d8+2 with shillelagh"

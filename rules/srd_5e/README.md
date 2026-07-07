@@ -15,10 +15,16 @@ rules/
     conditions/prone.yaml  # a typed condition (what "prone" mechanically means)
     statblocks/commoner.yaml
     statblocks/spy.yaml
+    statblocks/druid.yaml
+    statblocks/noble.yaml
+    statblocks/cleric.yaml # SRD "Priest" stats, bound as rules:npc.cleric
     README.md              # this file
   aurevost_pregens/        # instances built FROM the pack (campaign rules state)
     pc.dorn.yaml           # resolves rules:pc.dorn  (binds pc:dorn)
     pc.vanya.yaml          # resolves rules:pc.vanya (binds pc:vanya)
+  aurevost_statblocks/     # world-specific stat blocks (not SRD system content)
+    npc.archdruid.yaml     # explicit unauthored stub (zone-scaling design open)
+    creature.cantor_body.yaml  # explicit unauthored stub (planar-scaling design open)
 ```
 
 `worlds/aurevost/` references mechanics abstractly: `wick.yaml` carries

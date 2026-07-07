@@ -1,0 +1,16 @@
+id: rules:npc.archdruid
+schema: dwd.statblock.v1
+pack: rules:pack.srd_5e
+name: Archdruid
+status: unauthored
+source: "Unauthored - no SRD source"
+# Explicit deferral, written down per docs/SCOPE.md ("a deferral that is not
+# written down is not a deferral"). This stub exists so npc:tharivenna's
+# rules_binding resolves; it is not playable content.
+note: >
+  The archdruid stat block is not SRD 5.1 content (the well-known one is from a
+  closed book), so this must be authored as original material, not copied. It also
+  cannot be a simple scaled-up rules:npc.druid: per tharivenna's rules_binding,
+  her power is zone-dependent and rules-owned - titanic while rooted in the
+  interior, far weaker beyond it - so authoring this block means designing the
+  zone-scaling mechanic first. Open design work, deferred deliberately.

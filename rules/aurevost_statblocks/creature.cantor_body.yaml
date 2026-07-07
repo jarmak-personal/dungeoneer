@@ -1,0 +1,16 @@
+id: rules:creature.cantor_body
+schema: dwd.statblock.v1
+pack: rules:pack.srd_5e
+name: Cantor Local Body
+status: unauthored
+source: "Unauthored - Aurevost original content"
+# Explicit deferral, written down per docs/SCOPE.md ("a deferral that is not
+# written down is not a deferral"). This stub exists so npc:edreth_vale's
+# rules_binding resolves; it is not playable content.
+note: >
+  The local combat body of the Cantor (see worlds/aurevost/creatures/the_cantor.yaml,
+  whose whole-entity rules_binding is deliberately null: the whole Cantor is not a
+  normal combatant before planar merger). Per edreth_vale's rules_binding, this
+  body's power scales with the current planar connection, so an ordinary fixed
+  zealot stat block is insufficient - authoring it means designing the
+  connection-scaling mechanic first. Open design work, deferred deliberately.
