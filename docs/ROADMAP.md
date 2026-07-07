@@ -188,8 +188,9 @@ See [Rules engine](RULES_ENGINE.md) for the full contract.
   — enforced not prompted. Adjustments can grant bounded roll-input bonuses or
   roll-shape changes under the active profile; overrides cannot target PC state or
   agency.
-- Add social resolution: attitude-anchored DCs, the degree-of-success ladder, and
-  the outcome->disclosure bridge (`secret.revealed`, bounded knowledge transitions).
+- Add social resolution: `dwd.social_dc_source.v1`, the degree-of-success ladder,
+  and `dwd.social_disclosure_decision.v1` as the outcome-to-disclosure bridge for
+  `message.delivered`, `knowledge.learned`, `fact.asserted`, and `secret.revealed`.
 - Establish the world-state storage pattern: event-sourced JSONB projections under
   versioned contracts, with typed mechanical state owned by the rules engine.
 - Add minimal faction, thread, clock, item, fact, and knowledge-edge contracts
@@ -209,7 +210,8 @@ See [Rules engine](RULES_ENGINE.md) for the full contract.
 - Add regression tests for common combat and skill-check flows, scored against the
   saved simulation traces. Combat scenarios need executable rules fixtures for
   actor HP, AC, resources, held items, conditions, positions, and initiative.
-  Recall scenarios need expected recall claims, redactions, and emitted knowledge events.
+  Social and recall scenarios need expected DC sources, disclosure decisions,
+  recall claims, redactions, and emitted knowledge/fact/secret events.
 
 Exit criteria:
 

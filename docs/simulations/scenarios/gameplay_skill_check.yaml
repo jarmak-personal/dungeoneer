@@ -25,3 +25,37 @@ expected_pressure_points:
   - narration cannot reveal the kept-shrine secret (secret:the_kept_flame) Wick would not disclose
   - Wick guards it harder than Tovin would; even a strong check should not fully open it
   - how degrees of success map to NPC disclosure
+expected_contracts:
+  social_resolution:
+    check_spec:
+      schema: dwd.check_spec.v1
+      kind: ability_check
+      actor: pc:vanya
+      target: npc:wick
+      skill: persuasion
+      dc_source_kind: social_attitude
+      adjudication_visibility: table
+      result_audience: table
+    dc_source:
+      schema: dwd.social_dc_source.v1
+      npc: npc:wick
+      asker: pc:vanya
+      approach: persuasion
+      ask_scope: guarded_secret
+      checked_claim: secret:the_kept_flame
+      selected_dc_must_be_inside_allowed_range: true
+      model_nudge_must_be_bounded: true
+    disclosure_decision:
+      schema: dwd.social_disclosure_decision.v1
+      source_check_required: true
+      npc_knowledge_consulted_required: true
+      can_share_false_limits_disclosure: true
+      allowed_stances: [refuse, deflect, hint, answer, counter_offer, lie]
+      max_default_disclosure_for_kept_flame: clue
+      must_not_reveal_full_secret_without_extra_authority: secret:the_kept_flame
+      allowed_emitted_events:
+        - message.delivered
+        - knowledge.learned
+        - fact.asserted
+        - secret.revealed
+        - relationship.changed

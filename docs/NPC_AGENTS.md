@@ -64,7 +64,9 @@ Example tool groups:
 - `npc.get_relationships`: relationship summaries involving this NPC.
 - `npc.get_inventory`: items and resources owned or carried by this NPC.
 - `npc.get_rules_state`: only the mechanical state the NPC can use.
-- `npc.propose_speech`: candidate line, target, tone, and intent.
+- `npc.propose_speech`: candidate line, target, tone, intent, and optional
+  disclosure intent (`refuse`, `deflect`, `hint`, `answer`, `counter_offer`,
+  `lie`).
 - `npc.propose_action`: candidate action with desired effect and rules hook.
 - `npc.set_intention`: update private short-term plan or emotional stance.
 - `npc.request_dm_attention`: tell the orchestrator the NPC wants to act, speak,
@@ -93,6 +95,11 @@ Arbitration resolves a proposal to one of:
   the live-vs-dream rule in [Game world schema](GAME_WORLD_SCHEMA.md): table-driven,
   low-stakes effects commit live; loyalty/stance/clock/faction-level changes go to
   dreaming as reviewable patches.
+- **Accept as social disclosure** — when the accepted line reveals, withholds, or
+  distorts meaningful knowledge after a social check, the orchestrator records a
+  `dwd.social_disclosure_decision.v1` result and emits the ordinary
+  `message.delivered`, `knowledge.learned`, `fact.asserted`, or `secret.revealed`
+  events it authorizes. The NPC proposal is evidence, not authority.
 - **Defer** — hold the proposal as prepared stance for a later beat, or route it
   into dreaming; nothing commits now.
 - **Reject** — drop the proposal and keep it as an audit record, undelivered.

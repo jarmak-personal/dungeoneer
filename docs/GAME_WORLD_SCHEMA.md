@@ -1074,6 +1074,81 @@ may update that NPC's knowledge), and `message.observed` (a content-free shell
 recording that an observable act — e.g. a whisper — was witnessed, carrying no
 text). Inbound capture lives in the message tables; state change lives in events.
 
+### Knowledge And Disclosure Event Payloads
+
+Recall and social disclosure use the existing event vocabulary. They do not create
+custom "social result" events. The structured decision that chooses what to reveal
+is tool provenance; canon changes still land in `message.delivered`,
+`knowledge.learned`, `fact.asserted`, `secret.revealed`, and
+`relationship.changed`.
+
+Minimum payloads:
+
+```yaml
+type: knowledge.learned
+payload:
+  holder: pc:vanya                     # pc, npc, faction, or audience projection
+  target: fact:ren_met_choir           # fact | secret | rumor | message claim
+  mode: knows | believes | suspects | heard_rumor | misunderstands
+  confidence: 0.7
+  acquired_from: event:s4_0330         # delivered message, check, clue, or seed
+  audience: player:pc:vanya
+  can_share: true
+  secrecy: private | table | faction | dm_only
+  truth: canon | rumor | disputed | false | unknown
+provenance:
+  source_message: msg:s4_0122
+  source_check: event:s4_0329
+  tool_call: tool:social_disclosure_002
+```
+
+```yaml
+type: fact.asserted
+payload:
+  fact: fact:ren_met_choir
+  subject: npc:ren_castavel
+  predicate: met_with
+  object: faction:sundered_choir
+  truth: canon | disputed | false | unknown
+  visibility: table
+  source_refs: [event:s4_0330]
+provenance:
+  tool_call: tool:social_disclosure_002
+```
+
+```yaml
+type: secret.revealed
+payload:
+  secret: secret:the_kept_flame
+  reveal_scope: clue | partial | full
+  audience: table | player:pc:vanya | dm_only
+  revealed_facts: [fact:vesh_shrine_hidden_crypt]
+  source_knowledge:
+    holder: npc:wick
+    target: secret:the_kept_flame
+    acquired_from: event:s0_kept_flame_seed
+  authority:
+    kind: social_disclosure | clue_discovered | operator_review | scripted_trigger
+    ref: tool:social_disclosure_002
+provenance:
+  source_message: msg:s12_0172
+  source_check: event:s12_0173
+  tool_call: tool:social_disclosure_002
+```
+
+Rules:
+
+- `knowledge.learned` records what the holder now believes or knows; it does not
+  make a claim canon unless paired with `fact.asserted`.
+- A private check answer to one PC emits a delivered private message and,
+  when the fiction gives the PC knowledge, a private `knowledge.learned` edge for
+  that PC. It does not enter table recall until delivered to the table.
+- `secret.revealed` opens a secret bundle only to the named audience and scope. A
+  clue can reveal one fact from a secret without revealing the full bundle.
+- Social disclosure provenance cites the check, NPC knowledge edge, and disclosure
+  decision. Clue discovery or operator review can also reveal secrets, but must use
+  the same event payload.
+
 ### Rules Event Payloads
 
 Rules events must be replayable from the event log without reading narration.
@@ -1571,6 +1646,18 @@ Minimum validators:
 - No `check_resolved` modifier without an accepted source: rules-pack rule,
   condition, component, item, resource, spell effect, or
   `rules.adjustment_granted`.
+- No `check_resolved` with `dc_source.kind: social_attitude` unless it embeds or
+  references a `dwd.social_dc_source.v1` payload whose selected DC is inside the
+  declared allowed range.
+- No `dwd.social_dc_source.v1` with a current-intention modifier outside the
+  allowed step set or without a cited NPC intention, goal, fear, oath, or scene fact.
+- No social-disclosure `message.delivered`, `knowledge.learned`, `fact.asserted`,
+  `secret.revealed`, or live `relationship.changed` consequence without an
+  accepted source: a `check_resolved`, a player/NPC delivered message, a discovered
+  clue, an operator-reviewed patch, or a scripted trigger.
+- No `secret.revealed` without named audience, reveal scope, source knowledge or
+  clue, and reveal authority. A successful social check alone is not authority to
+  reveal every fact in a secret bundle.
 - No `rules.adjustment_granted` outside the active `dm_profile` cap, scope,
   lifecycle, stacking policy, or permitted target. A default narrative adjustment
   cannot produce direct damage or any HP/resource/condition/item/position/combat

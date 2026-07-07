@@ -293,14 +293,25 @@ definition syntax, perspective/knowledge model, and build order.
 
 ## Knowledge And Social Disclosure Strategy
 
-Player-facing recall is the read boundary for table knowledge: what may this
-player or table audience safely know, with citations and redactions?
+Player-facing recall and social disclosure share one contract family. Recall is
+the read side: what may this player or table audience safely know, with citations
+and redactions? Social disclosure is the write side: what new delivered message,
+knowledge edge, fact assertion, secret reveal, or relationship proposal is
+authorized by this check and NPC stance?
 
 Rationale:
 
-- Recall is a secrecy boundary. It must use the same audience and truth axes as
-  the rest of the event-sourced world model, or it can leak private facts through
-  a friendly recap.
+- Both surfaces are secrecy boundaries. If recall and disclosure use different
+  audience, truth, and citation rules, the system can either leak a secret through
+  recall or create knowledge that later cannot be safely explained.
+- Canon still lands in the existing event vocabulary: `message.delivered`,
+  `knowledge.learned`, `fact.asserted`, `secret.revealed`, and
+  `relationship.changed`. The new contracts are query/decision payloads and
+  provenance, not a parallel social event log.
+- Social checks do not mind-control NPCs. They produce a replayable
+  `social_dc_source`, a `check_resolved`, and a bounded
+  `social_disclosure_decision`; the accepted consequences still pass through the
+  normal event validators.
 - Player-facing recall is claim-shaped. Each claim carries source references,
   truth/rumor status, audience, and redaction state. A beautiful paragraph with no
   citations is not a valid recall answer.

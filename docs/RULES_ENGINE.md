@@ -121,7 +121,7 @@ kind: ability_check | saving_throw | attack | damage | contested_check
 actor: pc:iona
 target: npc:marra_vell            # or a DC source
 skill: persuasion                 # ability/skill as applicable
-dc_source: { kind: social_attitude, ... }   # see Social Resolution
+dc_source: { kind: social_attitude, ref: tool:social_dc_003 }  # see Social Resolution
 modifiers: [modifier:persuasion_proficiency]  # roll shape is just another modifier
 dice_source: physical | digital | declared   # defaulting rule below
 adjudication_visibility: table | dm_only | player:pc:iona   # who sees the raw roll/DC/provenance
@@ -596,47 +596,181 @@ melee, a chase hosting a clamber, a siege hosting an assault. The worked extensi
 
 ## Social Resolution
 
-### DC — hybrid, attitude-anchored
+Social checks are mechanically accountable, but they do not mind-control NPCs.
+The check answers a bounded question: given this ask, this NPC, this relationship,
+and this roll, what is the strongest honest disclosure or stance change the rules
+permit right now?
 
-Real DMs do not invent social DCs; they read the room. So:
+### DC Source - Hybrid, Attitude-Anchored
 
-1. **Baseline from NPC attitude** (hostile / indifferent / friendly), anchored to
-   SRD social-interaction guidance. Attitude is derived from the NPC's relationship
-   axes toward the asker (fear, trust, affinity) and current intention.
-2. **Adjust for stakes and the size of the ask.** Low-stakes asks of an NPC with no
-   reason to defend lean easy; asks that cut against a core goal/fear/secret lean
-   hard.
-3. The model may **nudge within bounds**, not set the DC freely. The bounds come
-   from attitude + stakes; the nudge is the DM's judgment inside them.
+Real DMs do not invent social DCs; they read the room. Dungeoneer makes that
+reading replayable with `dwd.social_dc_source.v1`.
 
-### Degree of success — a ladder
+```yaml
+schema: dwd.social_dc_source.v1
+source_id: tool:social_dc_003
+npc: npc:wick
+asker: pc:vanya
+approach: persuasion              # persuasion | deception | intimidation | insight
+ask_scope: guarded_secret         # trivial | safe_favor | meaningful_risk | costly_risk | guarded_secret | betrayal
+checked_claim: secret:the_kept_flame
+relationship_axes:
+  trust: 20
+  affinity: 5
+  respect: 10
+  debt: 0
+  suspicion: 35
+  fear: 15
+current_intention:
+  stance: protect_secret
+  modifier: -10
+  source_ref: "npc:wick#current_intention"
+attitude_formula:
+  version: social_attitude.default.v1
+  score: -11
+  computed_attitude: indifferent  # hostile | indifferent | friendly
+stake_class: high
+base_dc: 30
+allowed_range: [28, 32]
+selected_dc: 31
+nudge:
+  amount: 1
+  reason: "The ask touches a secret Wick is actively guarding."
+provenance:
+  relationship_refs: [rel:wick->pc:vanya]
+  source_message: msg:s12_0172
+  tool_call: tool:social_dc_003
+```
+
+Default attitude formula:
+
+```text
+score = clamp(
+  trust*0.35 + affinity*0.25 + respect*0.15 + debt*0.10
+  - suspicion*0.25 - fear*0.10 + current_intention.modifier,
+  -100,
+  100
+)
+
+friendly    score >= 25
+hostile     score <= -25
+indifferent otherwise
+```
+
+The weighted sum is rounded to the nearest integer before banding.
+Missing relationship axes count as 0. `current_intention.modifier` is selected
+from `-20`, `-10`, `0`, `+10`, or `+20`, with a cited NPC intention, goal, fear,
+oath, or scene fact. It is not a free model-authored DC adjustment; the separate
+`nudge` field is the bounded judgment space.
+
+Fear is intentionally a small default negative. It often changes the *stakes* or
+approach more than warmth: an intimidated NPC may comply, but that does not mean
+they are friendly.
+
+Default DC bands:
+
+```yaml
+schema: dwd.social_dc_band.v1
+bands:
+  friendly:
+    trivial: 5
+    safe_favor: 10
+    meaningful_risk: 15
+    costly_risk: 20
+    guarded_secret: 25
+    betrayal: blocked
+  indifferent:
+    trivial: 10
+    safe_favor: 15
+    meaningful_risk: 20
+    costly_risk: 25
+    guarded_secret: 30
+    betrayal: blocked
+  hostile:
+    trivial: 15
+    safe_favor: 20
+    meaningful_risk: 25
+    costly_risk: 30
+    guarded_secret: blocked
+    betrayal: blocked
+model_nudge_default: [-2, 2]
+```
+
+`blocked` means the check cannot directly win that ask. The orchestrator may still
+offer a counter, hint, price, alternate route, or future opportunity. A profile may
+allow a wider nudge, but the selected DC must always fall inside the recorded
+`allowed_range`.
+
+### Degree Of Success - A Ladder
 
 Outcomes resolve on a four-band ladder by margin vs. DC, not binary pass/fail:
 
 ```text
-fail      missed the DC
-partial   missed narrowly, or hit with a cost/complication
-success   met the DC
-strong    beat it by a wide margin (or a natural-20-class result)
+fail      margin <= -5
+partial   margin -4..-1, or success with a cost/complication
+success   margin 0..9
+strong    margin >= 10, or a pack-declared critical social result
 ```
 
 Good DMs apply a ladder implicitly; making it explicit is more fun and consistent.
 
-### Outcome -> disclosure
+### Outcome To Disclosure
 
 A check result does not directly unlock secrets. The rules engine emits the
-`check_resolved` result + degree; the NPC/orchestrator translates that into
-**bounded** disclosure:
+`check_resolved` result + degree; the orchestrator then records a
+`dwd.social_disclosure_decision.v1` tool result that translates the check into
+bounded message and knowledge events.
 
-- A successful Insight reveals the truth of *the checked claim* (is Sevran bluffing
-  about reinforcements?), not every secret the NPC holds.
-- Disclosure that creates canon emits `knowledge.learned` (the asker learns it),
-  `fact.asserted` (if it becomes table canon), or `secret.revealed` (a secret
-  bundle opening, with visibility), each with correct audience.
-- Degree shapes how much: `partial` reveals a hedge or a clue; `strong` reveals
-  more or with certainty. The NPC may still **refuse or counter-offer** within its
-  goals — `npc.propose_speech` carries a stance (accept / refuse / counter) so a
-  high roll against a defensive NPC yields a negotiation, not automatic compliance.
+```yaml
+schema: dwd.social_disclosure_decision.v1
+decision_id: tool:social_disclosure_002
+source_check: event:s12_0173
+dc_source: tool:social_dc_003
+npc: npc:wick
+asker: pc:vanya
+audience: table
+degree: success
+ask_scope: guarded_secret
+checked_claim: secret:the_kept_flame
+npc_knowledge_consulted:
+  - target: secret:the_kept_flame
+    mode: knows
+    can_share: false
+    secrecy: private
+relationship_refs: [rel:wick->pc:vanya]
+stance: counter_offer             # refuse | deflect | hint | answer | counter_offer | lie
+disclosure_limit: clue            # none | hedge | clue | checked_claim | checked_claim_plus_context
+proposed_events:
+  - type: message.delivered
+    audience: table
+    summary: "Wick admits there is a shrine matter, but asks for proof of intent first."
+  - type: knowledge.learned
+    holder: pc:vanya
+    target: fact:wick_guards_shrine_secret
+    mode: suspects
+    audience: table
+provenance:
+  source_message: msg:s12_0172
+  tool_call: tool:social_disclosure_002
+```
+
+Rules:
+
+- A success reveals the checked claim, not the NPC's whole secret inventory.
+- A `strong` result may add certainty, a relevant context clue, or a second bounded
+  connected claim. It still cannot reveal unrelated secrets.
+- If `can_share: false`, the default maximum is `clue` or `counter_offer` unless
+  another authority exists: a reveal condition, direct table action, operator
+  review, or explicit scenario/scripted trigger.
+- `partial` usually yields a hedge, tell, clue, cost, or counter-offer. `fail`
+  can produce refusal, deflection, false confidence, suspicion, or a relationship
+  proposal, but any state change still uses the ordinary typed path.
+- NPC speech is a proposal until the orchestrator accepts it. The accepted line is
+  delivered by `message.delivered`; knowledge/fact/secret changes are separate
+  events with the disclosure decision as provenance.
+- Lies and rumors are knowledge states, not canon facts. They may emit
+  `knowledge.learned` with `mode: believes` or `heard_rumor` and `truth: false` or
+  `unknown`, but they do not emit `fact.asserted` as canon.
 
 ### Relationship change
 
