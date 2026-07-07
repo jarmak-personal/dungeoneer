@@ -772,11 +772,50 @@ Rules:
 `relationship.update` orchestrator tool (not an NPC tool — NPCs only propose). It
 takes `source`, `target`, `axis_changes`, `reason`, and provenance
 (`source_message`, `tool_call`), validates that axes are known and within range,
-and emits `relationship.changed`. The live-vs-dream threshold: an in-scene nudge
-driven by something that happened at the table (a direct promise → a trust bump)
-commits live through this tool; a change that would flip loyalty or long-term
-stance is an inference and goes through dreaming as a reviewable patch. This
-follows the general live-vs-dream rule in "Live Versus Dream Commits."
+and emits `relationship.changed`.
+
+Relationship magnitude is controlled by `dwd.relationship_delta_policy.v1`:
+
+```yaml
+schema: dwd.relationship_delta_policy.v1
+default_bands:
+  no_change: 0
+  texture_nudge: [1, 3]
+  minor_change: [4, 7]
+  meaningful_change: [8, 10]
+  defining_moment: [11, 20]
+per_axis_live_max:
+  trust: 10
+  affinity: 10
+  respect: 10
+  suspicion: 10
+  fear: 10
+  debt: 20
+evidence_classes:
+  direct_promise: live
+  gift_or_payment: live
+  rescue_or_betrayal: live_defining_if_delivered
+  social_check: live_within_band
+  operator_review: live_or_dream
+  inference: dream_only
+stance_flip: dream_only
+```
+
+Rules:
+
+- A `relationship.update` may commit a live delta of 1-10 on ordinary social axes
+  when the source is a delivered table event, private delivered event to the
+  relationship holder, or accepted rules/social-disclosure decision.
+- A delta of 11-20 is a defining moment. It may commit live only when the source
+  event is explicit, delivered to the affected actor or table, and the update is
+  also a memento candidate. Otherwise it becomes `dream.patch_proposed`.
+- `debt` may move by larger amounts when the fiction creates or settles a concrete
+  obligation, payment, or contract; the debt object/terms remain the source of
+  truth.
+- Any inferred loyalty, stance, faction alignment, long-term plan, or relationship
+  summary rewrite goes to dreaming as a reviewable patch.
+- A social check may propose relationship movement, but `relationship.update`
+  validates magnitude independently from the check result.
 
 ## Factions
 
@@ -1698,6 +1737,10 @@ Minimum validators:
   `message.delivered_to_npc` event; the resulting edge is a belief/claim, not canon.
 - No `message.observed` event carrying message content (it is a content-free shell).
 - No relationship change without a `relationship.update` tool call and provenance.
+- No `relationship.update` outside `dwd.relationship_delta_policy.v1`: deltas over
+  the live band, stance flips, long-term loyalty changes, and inference-only
+  changes route to `dream.patch_proposed` unless explicit operator-reviewed
+  authority accepts them.
 - No route edge with dangling route nodes, incompatible spatial references, missing
   travel mode, missing cost/duration model, or missing provenance.
 - No travel event moving an actor or vehicle along an impossible route without an

@@ -775,11 +775,18 @@ Rules:
 ### Relationship change
 
 A relationship moves via the `relationship.update` tool (see
-[Game world schema](GAME_WORLD_SCHEMA.md)). Threshold:
+[Game world schema](GAME_WORLD_SCHEMA.md)). Social checks may propose relationship
+movement, but the magnitude is validated separately by
+`dwd.relationship_delta_policy.v1`:
 
-- A table-driven nudge (a direct promise -> a trust bump) **commits live**.
-- A change that would flip loyalty or long-term stance is an inference and goes to
-  **dreaming** as a reviewable patch.
+- 1-3 is a texture nudge.
+- 4-7 is a minor change.
+- 8-10 is a meaningful live change with direct provenance.
+- 11-20 is a defining moment and requires an explicit delivered source plus a
+  memento candidate; otherwise it routes to `dream.patch_proposed`.
+- Stance flips, loyalty changes, faction alignment shifts, and long-term
+  intention rewrites are inference-heavy and go to dreaming unless operator review
+  explicitly accepts them.
 
 A direct in-fiction promise can also promote a social **memento** (mechanical:
 auto; purely interpretive: model-proposed, reviewed).

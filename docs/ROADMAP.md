@@ -191,6 +191,8 @@ See [Rules engine](RULES_ENGINE.md) for the full contract.
 - Add social resolution: `dwd.social_dc_source.v1`, the degree-of-success ladder,
   and `dwd.social_disclosure_decision.v1` as the outcome-to-disclosure bridge for
   `message.delivered`, `knowledge.learned`, `fact.asserted`, and `secret.revealed`.
+- Add `dwd.relationship_delta_policy.v1` so live relationship updates have
+  bounded deltas and larger stance/loyalty shifts route to dreaming.
 - Establish the world-state storage pattern: event-sourced JSONB projections under
   versioned contracts, with typed mechanical state owned by the rules engine.
 - Add minimal faction, thread, clock, item, fact, and knowledge-edge contracts

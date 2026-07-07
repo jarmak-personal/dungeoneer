@@ -59,3 +59,10 @@ expected_contracts:
         - fact.asserted
         - secret.revealed
         - relationship.changed
+    relationship_delta_policy:
+      schema: dwd.relationship_delta_policy.v1
+      live_delta_max_default: 10
+      defining_moment_requires_delivered_source: true
+      stance_flip_routes_to: dream.patch_proposed
+      social_check_can_propose_relationship_change: true
+      relationship_update_validates_magnitude_independently: true
