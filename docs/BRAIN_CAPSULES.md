@@ -87,6 +87,12 @@ consistency checks, human inspection, and between-scene preparation. If a live
 scene needs expert depth that was not prepared, the answer is to prepare it for
 next time, not to block the turn.
 
+**Player-facing recall rule.** Loremaster material is source-aware input, not a
+player answer. Anything bound for a player or table audience passes through
+`lore.recall`, which converts party knowledge, event search, and capsule snippets
+into `dwd.recall_answer.v1` claims with citations and redactions. A capsule may
+know the hidden truth; the recall answer may only say what that audience can know.
+
 ## Forking Versus Resuming
 
 NPC capsules are generally **resumed**:

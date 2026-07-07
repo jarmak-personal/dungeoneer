@@ -23,3 +23,25 @@ expected_pressure_points:
   - retrieval supplies exact supporting events and citations beyond the capsule summary
   - visibility tiers must hold: the dm_only truth (Edreth's control of the Choir) and especially the internal truth (secret:the_cantor — that Edreth *is* the Cantor) must not leak into the player-facing answer
   - if no prepared loremaster material exists for this query, what happens within the live budget?
+expected_contracts:
+  lore_recall:
+    request_schema: dwd.lore_recall_request.v1
+    query_schema: dwd.party_knowledge_query.v1
+    answer_schema: dwd.recall_answer.v1
+    default_audience_for_voice_scene: table
+    query:
+      topic_refs: [faction:choir]
+      pcs: [pc:vanya, pc:dorn]
+      source_scope: delivered_only
+      include_absent_pcs: false
+      include_private_for_requester: false
+    answer_requirements:
+      claims_are_per_claim_cited: true
+      truth_labels_required: true
+      allowed_truth_labels: [canon, rumor, disputed, false, unknown]
+      redaction_metadata_required: true
+      hidden_refs_must_not_render:
+        - secret:the_cantor
+        - secret:the_kept_flame
+      no_player_facing_claim_without_source_or_uncertain_marker: true
+      delivered_as: message.delivered

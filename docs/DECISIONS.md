@@ -291,6 +291,20 @@ definition syntax, perspective/knowledge model, and build order.
   events. They are required because geography and travel are part of play, but
   they are not canon separate from the event log.
 
+## Knowledge And Social Disclosure Strategy
+
+Player-facing recall is the read boundary for table knowledge: what may this
+player or table audience safely know, with citations and redactions?
+
+Rationale:
+
+- Recall is a secrecy boundary. It must use the same audience and truth axes as
+  the rest of the event-sourced world model, or it can leak private facts through
+  a friendly recap.
+- Player-facing recall is claim-shaped. Each claim carries source references,
+  truth/rumor status, audience, and redaction state. A beautiful paragraph with no
+  citations is not a valid recall answer.
+
 Both sit on the event-sourced log. Event payloads are JSON and append-only, so a
 new kind of world fact never requires a migration — you add an event type. Current
 world state is a projection rebuilt from events, so when the shape needs to change,

@@ -197,8 +197,10 @@ See [Rules engine](RULES_ENGINE.md) for the full contract.
   world state to advance.
 - Add pgRouting-backed route tools for sea, airship, road, river, canal, and
   secret routes, including ETA, risk, season/weather modifiers, and travel events.
-- Add the player/party knowledge model (implicit from presence+delivery; explicit
-  edges only for private knowledge).
+- Add the player/party knowledge model and recall contract
+  (`dwd.party_knowledge_query.v1`, `dwd.recall_answer.v1`): implicit knowledge from
+  presence+delivery, explicit edges only for private knowledge, claim-level
+  citations, truth labels, and redaction metadata.
 - Add the orchestrator live-decision layer (see
   [Orchestration](ORCHESTRATION.md)): hybrid input-intent classification, the
   parallel side-channel, loremaster live fallback, and player-facing capsule
@@ -207,6 +209,7 @@ See [Rules engine](RULES_ENGINE.md) for the full contract.
 - Add regression tests for common combat and skill-check flows, scored against the
   saved simulation traces. Combat scenarios need executable rules fixtures for
   actor HP, AC, resources, held items, conditions, positions, and initiative.
+  Recall scenarios need expected recall claims, redactions, and emitted knowledge events.
 
 Exit criteria:
 

@@ -69,6 +69,43 @@ but a player can always ask something unprepared. The fallback, *this turn*:
 Players never feel the machinery; they get a bounded honest answer now and a better
 one later.
 
+### Lore Recall Contract
+
+`lore_query` routes to one orchestrator-facing tool: `lore.recall`. The tool
+bundles party-knowledge projection, event search, prepared capsule material, and
+player-facing redaction. Agents should not assemble player recall by hand from raw
+retrieval snippets.
+
+```yaml
+schema: dwd.lore_recall_request.v1
+request_id: tool:lore_recall_012
+source_message: msg:s12_0180
+requester: pc:dorn
+scene: scene:s12_brass_lantern
+channel: voice
+audience: table
+topic:
+  kind: entity
+  refs: [faction:sundered_choir]
+  text: "what do we know about the Choir?"
+```
+
+Default routing:
+
+1. Classify the message as `lore_query`.
+2. Derive audience. Voice in a table scene defaults to `table`; private remote,
+   explicit aside, or operator override narrows it to the relevant player audience.
+3. Call `world.query_party_knowledge` using present PCs and delivered-only sources.
+4. Add event-search and prepared capsule snippets only after applying the same
+   player-facing projection.
+5. Return `dwd.recall_answer.v1` claims with per-claim citations, truth/rumor
+   labels, and redaction metadata.
+6. Deliver the rendered answer as `message.delivered`.
+
+If the system has no player-safe support for a claim, it says so. It may return a
+caveated recall claim, but it must mark that claim as uncertain and cite no hidden
+source text.
+
 ## Spatial And Travel Queries
 
 Spatial/travel reasoning is a required tool surface, not model intuition. When the

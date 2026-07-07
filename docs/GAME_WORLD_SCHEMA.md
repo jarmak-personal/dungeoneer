@@ -413,6 +413,92 @@ interesting private case costs an edge. `world.query_party_knowledge(entity, pcs
 unions present PCs' implicit + explicit knowledge and visibility-filters it; a
 player-facing recall answer carries truth/rumor labels and citation IDs.
 
+### Party Knowledge And Recall Contracts
+
+`world.query_party_knowledge` is a typed projection query, not ad-hoc retrieval.
+It answers what a specific player or table audience may know from delivered
+events, explicit per-PC knowledge edges, and visibility rules. It never reads
+dm-only truth directly into a player answer.
+
+```yaml
+schema: dwd.party_knowledge_query.v1
+request_id: tool:party_knowledge_004
+requester: pc:dorn
+scene: scene:s12_brass_lantern
+topic:
+  kind: entity | fact | secret | thread | freeform
+  refs: [faction:sundered_choir]
+  text: "what do we know about the Choir?"
+pcs: [pc:dorn, pc:vanya]          # defaults to present PCs in the scene
+audience: table                   # table | player:<id> | players:[ids] | dm_only
+channel: voice | player_remote_private | operator
+include_absent_pcs: false
+include_private_for_requester: false
+source_scope: delivered_only      # delivered_only | delivered_and_seed | dm_audit
+citation_policy: audit_and_player_safe
+```
+
+Rules:
+
+- A table-scene voice `lore_query` defaults to `audience: table`. A private
+  remote channel, explicit aside, or operator override can narrow it to a player
+  audience.
+- `pcs` defaults to the PCs present in the scene. Absent PCs' implicit knowledge is
+  excluded unless `include_absent_pcs: true` is set with provenance.
+- Player-facing queries use `source_scope: delivered_only`: delivered messages,
+  accepted public/table events, and explicit per-PC private edges for the audience.
+  OOC spans, aborted drafts, dm-only facts, internal truths, and undelivered
+  messages are excluded.
+- `include_private_for_requester` is legal only when the audience is that
+  requester or a player set containing that requester. It never widens one PC's
+  private knowledge to the table.
+
+The result is claim-shaped. The answer text is a rendering of claims; the claims
+are the replayable object.
+
+```yaml
+schema: dwd.recall_answer.v1
+query: tool:party_knowledge_004
+audience: table
+delivery_event: event:s12_0188
+mode: answer | caveated | empty | deferred
+claims:
+  - claim_id: local_1
+    text: "The party has heard that the Sundered Choir is tied to the old shrine."
+    topic_refs: [faction:sundered_choir, loc:caelport.vesh_shrine]
+    truth: canon | rumor | disputed | false | unknown
+    confidence: high | medium | low
+    known_by: [pc:dorn, pc:vanya]
+    source_refs: [event:s9_0042, msg:s9_0101]
+    citation_visibility: player_visible | audit_only
+    redaction: none
+  - claim_id: local_2
+    text: "There is more the table has not established."
+    topic_refs: [secret:the_cantor]
+    truth: unknown
+    confidence: low
+    known_by: []
+    source_refs: []
+    citation_visibility: audit_only
+    redaction: dm_only
+omissions:
+  - ref: secret:the_cantor
+    reason: dm_only
+    visible_to_audience: false
+```
+
+Rules:
+
+- No player-facing claim may appear without `source_refs` unless `mode` is
+  `caveated` or `empty` and the claim is explicitly marked as uncertain recall.
+- Source references are per-claim, not only per-message. A mixed answer can cite
+  one claim visibly while keeping a redacted source audit-only.
+- `omissions` are audit metadata. They are not rendered to players unless the
+  redaction reason itself is player-safe.
+- A recall answer is normally delivered as `message.delivered` with the structured
+  `dwd.recall_answer.v1` payload attached. It does not create canon by itself; it
+  only reports what the audience may already know.
+
 ## Visibility And Audience
 
 Every world object and field that can leak information needs audience metadata.
@@ -1461,6 +1547,16 @@ Minimum validators:
 - No actor in two exact locations at the same world time unless explicitly
   magical or approximate.
 - No private fact leaked into table-visible summary.
+- No player-facing recall claim without a source reference, unless the answer is
+  explicitly `caveated` or `empty` and the claim is marked as uncertain recall.
+- No recall answer may render dm-only, internal, aborted, undelivered, or OOC
+  source text to a player/table audience. Redacted source references may remain
+  audit-only.
+- No party-knowledge query may include an absent PC's implicit knowledge unless
+  `include_absent_pcs` is true and provenance records why that PC is in scope.
+- No table-facing recall may include one PC's private knowledge unless that
+  knowledge has been delivered to the table or the PC explicitly shares it through
+  an accepted event.
 - No NPC knowledge edge for a fact the NPC could not have learned without a
   source event or seed definition.
 - No NPC knowledge gained from a private in-fiction message without a
