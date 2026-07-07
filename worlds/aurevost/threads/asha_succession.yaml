@@ -1,0 +1,30 @@
+id: thread:asha_succession
+kind: thread
+schema: dwd.thread.v1
+name: The Asha Succession
+status: locked
+summary: >
+  The Asha must decide who or what inherits the outward Hand, how much authority it
+  carries, and whether the traditional dyarchy remains fit for the pressures ahead.
+stakes:
+  public: "The Asha must choose leadership while their Heart is dying."
+  hidden: >
+    Edreth covertly aids Vohria, Emeric's divine guidance is genuine but ambiguous,
+    and every policy trades intervention, evidence, sanctuary, and institutional continuity.
+participants:
+  - faction:asha
+  - npc:tharivenna
+  - npc:orruvan
+  - npc:vohria
+  - npc:emeric
+leads:
+  - "the unidentified source of Vohria's aid"
+  - "what Emeric's inward pull establishes and what remains interpretation"
+  - "Asha communities affected differently by intervention and retreat"
+  - "alternatives to transferring the traditional Hand unchanged"
+resolution_conditions:
+  - establish_legitimate_leadership_or_governance
+  - record_constraints_and_obligations_on_the_new_hand
+  - resolve_or_expose_external_influence
+  - preserve_dissent_as_canon_instead_of_declaring_one_policy_objectively_correct
+visibility: dm_only

@@ -1,0 +1,23 @@
+id: loc:caelport.brass_lantern
+kind: location
+schema: dwd.location.v1
+name: The Brass Lantern
+parent: loc:caelport
+scale: building
+summary: >
+  A cramped tavern wedged into the Undercroft, one wall shared with a bricked-up
+  shrine to Vesh. The only place in Caelport where a real flame is always kept lit —
+  the owner insists it is "for the draft."
+access: { public: true, restrictions: [] }
+atmosphere:
+  sights: ["a single real candle-flame on the bar", "soot-dark beams", "a bricked archway behind the taps", "mismatched dock crowd"]
+  sounds: ["lift-hum through the wall", "low talk", "a kettle"]
+  smells: ["tallow", "spilled ale", "old stone"]
+exits:
+  - { to: "loc:caelport", mode: walk, travel_time: "1 min" }
+  - { to: "loc:caelport.vesh_shrine", mode: "behind the bricked arch", hidden: true, travel_time: "1 min" }
+security: { danger_level: 1, controlling_faction: null }
+notes: >
+  This is the default opening location. Wick keeps the bar; the kept flame is not
+  for the draft. The Hearthward meet here, quietly.
+visibility: table

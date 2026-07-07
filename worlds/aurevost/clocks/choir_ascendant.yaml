@@ -1,0 +1,23 @@
+id: clock:choir_ascendant
+kind: clock
+schema: dwd.clock.v1
+name: The Choir Ascendant
+owner: faction:choir
+status: active
+segments: { current: 1, max: 8 }
+stakes: >
+  Edreth consolidates anti-khevra dissent under his control and prepares a spectacular
+  act that will make every genuine warning look like a prelude to terror.
+advance_triggers:
+  - { trigger: choir_identifies_the_emberglass, amount: 2 }
+  - { trigger: concord_overreach_creates_recruits, amount: 1 }
+  - { trigger: genuine_warning_publicly_discredited, amount: 1 }
+  - { trigger: session_ends_with_edreth_unopposed, amount: 1 }
+  - { trigger: party_exposes_or_turns_ren, amount: -1 }
+  - { trigger: independent_evidence_connected_outside_choir, amount: -1 }
+outcomes:
+  complete:
+    - create_fact: fact:choir_commits_discrediting_attack
+    - create_fact: fact:governments_expand_setwork_after_choir_attack
+    - unlock_thread: thread:the_false_opposition
+visibility: dm_only

@@ -1,0 +1,27 @@
+id: thread:the_listening
+kind: thread
+schema: dwd.thread.v1
+name: The Listening
+status: active
+summary: >
+  Edreth has learned that something old persists in Caelport and sent Ren Castavel
+  to determine whether it is harmless devotion or evidence capable of escaping the
+  Choir's controlled opposition. The party walks into this quiet investigation.
+stakes:
+  public: "A kind stranger is asking friendly questions about old devotional objects."
+  hidden: "Whether Ren delivers the Emberglass to Edreth, turns against him, or helps connect its evidence to an independent hero line."
+participants:
+  - faction:choir
+  - faction:hearthward
+  - npc:ren_castavel
+  - npc:tovin_marsh
+leads:
+  - "Ren's careful questions about relics that behave differently near active sets"
+  - loc:caelport.vesh_shrine
+  - "the candle Wick values more than his setwork lamps"
+resolution_conditions:
+  - expose_or_turn_ren_castavel
+  - protect_or_follow_the_emberglass_evidence
+  - "separate genuine anti-khevra evidence from Edreth's manufactured extremism"
+visibility: dm_only
+note: "The default opening thread remains mystery-first and does not require a campaign to target the planetary threat."

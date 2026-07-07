@@ -1,0 +1,19 @@
+id: faction:otharan_crown
+kind: faction
+schema: dwd.faction.v1
+name: The Otharan Crown
+public_face: >
+  The granary superpower controlling Othara's settled coasts, great river systems,
+  and the largest reliable food surplus in Aurevost.
+values: [food security, dynastic continuity, river control, strategic patience]
+methods: [grain contracts, embargo, river patrols, massive stable setwork, selective surveys]
+resources: { food: exceptional, coin: high, military: high, airships: heavy-and-reliable, public_trust: variable }
+territory: ["region:othara"]
+stance:
+  on_asha: "An administratively inconvenient population, not a strategic threat."
+  on_interior: "Poorly mapped land whose development can wait until the Crown requires it."
+  on_marovar: >
+    An upstart whose rapid ascent has never earned the legitimacy it demands. Caldrin
+    demonstrated negligence and uncontrolled force, not the disciplined power required
+    to preserve a world order.
+visibility: table

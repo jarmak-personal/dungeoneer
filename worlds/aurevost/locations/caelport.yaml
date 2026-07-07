@@ -1,0 +1,25 @@
+id: loc:caelport
+kind: location
+schema: dwd.location.v1
+name: Caelport
+parent: region:greywake
+scale: city
+summary: >
+  A vertical port city where sea-docks at the waterline give way to setwork lifts
+  and airship gantries above. Concord money runs it; old shrines rot in its undercrofts.
+access: { public: true, restrictions: [] }
+atmosphere:
+  sights: ["airship gantries against grey sky", "brass setwork lamps", "lift cables", "salt-stained shrines bricked half-shut"]
+  sounds: ["lift gears", "gulls", "the chorded hum of active sets", "dock-cant arguments"]
+  smells: ["brine", "ozone from the lifts", "fry-oil", "lamp-oil"]
+exits:
+  - { to: "region:greywake", mode: ship_or_airship, travel_time: "varies" }
+security:
+  danger_level: 2
+  controlling_faction: faction:caelport_concord
+  note: "Concord wardens keep the upper city orderly; the undercrofts police themselves."
+districts:
+  - "The Gantries (airship docks, Concord offices, money)"
+  - "The Waterline (sea-docks, warehouses, fish and freight)"
+  - "The Undercroft (old city, bricked shrines, the poor, the Hearthward)"
+visibility: table

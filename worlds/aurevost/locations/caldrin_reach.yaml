@@ -1,0 +1,44 @@
+id: loc:caldrin_reach
+kind: location
+schema: dwd.location.v1
+name: Caldrin Reach
+parent: region:greywake
+scale: territory
+summary: >
+  A rebuilt coastal territory erased when Marovar deliberately demonstrated a new
+  destruction figure more than two centuries ago. The test was meant to prove
+  controlled power; buried khevra resonated far outside the predicted range and
+  destroyed Caldrin's landscape and a small settlement. The technical failure still
+  achieved its political purpose: nobody dismissed Marovar as a minor power again.
+access: { public: true, restrictions: ["regulated excavation around the original test center"] }
+atmosphere:
+  sights: ["new houses on unnaturally smooth foundations", "memorial stakes", "setwork lamps that dim without warning"]
+  sounds: ["ordinary harbor traffic", "rare low chords with no visible source"]
+  smells: ["salt grass", "wet stone", "ozone after an Echo"]
+conditions:
+  resettled: true
+  local_rejection: >
+    Active sets lose efficiency, misalign, or fail unpredictably near the original
+    blast territory. Public explanations include damaged deposits, persistent
+    resonance, sabotage, and an unrecognized property of the landscape.
+  caldrin_echoes: >
+    Intermittent sensory and magical recurrences reproduce fragments of the blast's
+    impossible reach. Competing investigators disagree whether they reveal buried
+    distribution, damaged figures, divine activity, or collective misremembering.
+memory:
+  marovari: >
+    Official histories express regret for the unpredicted reach while treating the
+    Demonstration as the hard moment Aurevost finally acknowledged Marovari power.
+  otharan: >
+    "Blowing things up does not prove power; it proves negligence." Caldrin remains
+    the standard Otharan answer to Marovari claims of technical superiority.
+  local: >
+    Resettled families disagree about nearly everything except that Marovar chose the
+    test and somebody else paid. The grievance passes unevenly through inheritance:
+    fervent in some households, ceremonial or nearly forgotten in others.
+draws:
+  - faction:asha
+  - faction:hearthward
+  - "true believers from otherwise unrelated traditions"
+  - "engineers seeking a conventional explanation"
+visibility: table

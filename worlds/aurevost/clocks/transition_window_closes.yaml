@@ -1,0 +1,22 @@
+id: clock:transition_window_closes
+kind: clock
+schema: dwd.clock.v1
+name: The Transition Window Closes
+owner: faction:second_setting_network
+status: active
+segments: { current: 1, max: 8 }
+stakes: >
+  Population, food systems, and infrastructure dependence outpace the world's
+  ability to replace or ration khevra without uncontrolled humanitarian collapse.
+  This is a civil capacity deadline, independent of the Cantor's bridge state.
+advance_triggers:
+  - { trigger: carrying_capacity_dependence_increases, amount: 1 }
+  - { trigger: alternative_research_or_food_capacity_is_destroyed, amount: 1 }
+  - { trigger: transition_planning_is_delayed_by_state_conflict, amount: 1 }
+  - { trigger: sourced_energy_capacity_scales, amount: -1 }
+  - { trigger: resilient_food_or_distribution_capacity_scales, amount: -1 }
+outcomes:
+  complete:
+    - create_fact: fact:orderly_transition_window_has_closed
+    - unlock_thread: thread:the_long_reckoning
+visibility: internal

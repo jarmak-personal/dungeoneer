@@ -1,0 +1,142 @@
+id: source:setting_notes
+kind: source
+schema: dwd.source.v1
+name: Aurevost Setting Notes (Maintainer Seed)
+summary: "Authoring intent and human provenance for the Aurevost seed."
+created_by: human
+visibility: internal
+intent:
+  premise: >
+    Aurevost's celebrated industrial material is an extraplanar invasion mechanism.
+    Khevric engineering genuinely improves ordinary life, making society's dependence
+    rational even as every set strengthens the Cantor's connection. Three incomplete
+    hero lines can converge on the truth: Hearthward divine traces, Asha ecological
+    evidence, and historical anomalies in deposits, House Sorrell archives, and Caldrin.
+    The Cantor is the deepest diagnosis, not the expected campaign villain: ordinary
+    political, maritime, religious, and local conflicts are real without it. It is
+    tactically brilliant, but its aim is consumption, not conquest for its own sake:
+    Aurevost is the thing being farmed by khevra use.
+  tidegift: >
+    The First Land was the common cradle of Aurevost's gods and peoples, but it could
+    not remain the whole world. Holding all peoples, gods, divine traffic, living memory,
+    and origin-weight in one place overburdened it. The gods did not exile mortals; they
+    opened pathways to the water and taught currents, tides, boats, island-making, and
+    the sacred law of distance. The Tidegift was a protective dispersal that let the
+    peoples become distinct and let the First Land heal. Its healing makes limited return
+    possible now, but not extraction or mass possession: the birthplace of the gods rejects
+    khevra, active setwork, and the Cantor's contamination at the root. Modern civilization
+    avoids or misreads it because the tools it uses to map, reach, and hold territory fail
+    there. The Asha can remain near its approaches because their practice is low/no-khevra
+    and living-systems aligned, not because they understand the full truth.
+  great_ages: >
+    Aurevost has three great ages in common historical imagination. Before Tidegift
+    is the mythic cradle age, when the gods walked among the peoples in the First Land.
+    Before Khevra is the long opened-water age after the Tidegift: island homelands,
+    sea law, heaven-seated gods, strong threads of communion, limited arcane craft,
+    and distinct peoples. Older temple, maritime, and legal traditions preserve a
+    Tidegift Reckoning from this threshold. After Khevra is the modern age that begins
+    with the First Setting: the public advent of scalable setwork, khevra's rupture of
+    the old divine threads, and the mixing of old borders into one khevra-dependent
+    world. Publicly, "After Khevra" is a civil shorthand; formal documents use AS.
+    Culturally, the earlier move from walking gods to heaven-seated gods gave people
+    a precedent for interpreting the post-Setting silence as another divine choice
+    instead of an investigative problem that every generation must solve.
+  everyday_religion: >
+    Post-Setting religion faded by continuity, not overnight rupture. Priests and
+    temples kept doing the motions for a while because those motions still served real
+    human needs: births, marriages, funerals, oaths, ship launches, safe-return suppers,
+    seasonal festivals, charity, arbitration, and local memory. Over generations the
+    practices became custom first and doctrine second, while temple institutions lost
+    power, money, purpose, and social normality. In 312 AS, most temples are lost,
+    repurposed, bricked over, absorbed into newer structures, or remembered as old
+    place-names. Few devout remain, and open religiosity is commonly treated as
+    unnecessary, eccentric, backward, or sad. This makes the gods' absence socially
+    durable without erasing inherited culture: people can celebrate old holy days
+    sincerely, casually, commercially, or merely because their grandparents did, while
+    still finding actual religious commitment strange.
+  campaign_shape: >
+    Political, maritime, mysterious, and high-stakes for low-level people. Campaigns
+    need not target the planetary threat. Characters can live inside the cold war,
+    food pressure, class conflict, faction struggles, and local mysteries. Epic campaigns
+    may connect the hero lines, reach Othara's First Land, and attempt to banish the
+    Cantor, but that is a reward for tables that keep digging rather than the default
+    arc. Aurevost supports seafaring high-magic adventure, faction politics, khevra
+    research, shrine mysteries, trade jobs, bounty work, and ordinary D&D danger without
+    requiring the deepest truth to appear.
+  truth_by_perspective:
+    public: >
+      The gods once walked among peoples, then moved to the heavens after the Tidegift
+      while remaining reachable through strong threads of communion. The First Setting
+      democratized arcane power during the same hour those threads mostly fell silent.
+      Many people read the silence as another divine self-distancing. Old rites and
+      feast days survived as custom while most temples faded, closed, or became other
+      things; modern devotion is unusual enough to look unnecessary or strange. Refinery
+      work has familiar occupational risks; anti-khevra movements are dangerous extremists.
+    choir_member: >
+      Khevra is poisoning Aurevost and divine warnings demand action. Edreth appears
+      to be the only leader willing to act at the required scale.
+    hearthward: >
+      The gods did not voluntarily leave. The Emberglass provides a real but faint path
+      to Vesh and behaves differently around active sets.
+    asha: >
+      Living systems reject khevra, contamination accumulates, and evidence points
+      beneath Othara. Caldrin is both an unforgivable wound and unusually legible
+      evidence of the world's rejection. Khevra's extraplanar source and the Cantor remain unproven.
+    marovari: >
+      Caldrin was a tragic prediction failure, but it ended the old powers' refusal to
+      recognize Marovar. Regret and national pride coexist without resolving each other.
+      Airships are the next proof: Marovar can build routes no old navy can close.
+    otharan: >
+      Marovar's rise was too rapid to deserve deference, and Caldrin proved that
+      spectacular destruction is negligence rather than disciplined power.
+    savarran: >
+      Power is not the largest explosion or fastest engine. It is writing the contract,
+      financing the cargo, certifying the port, and building a warship that survives
+      long enough to enforce all three. Marovari airships are making the first three
+      harder to guarantee and the fourth less able to reach its target.
+    internal: >
+      The Cantor seeded khevra from inside Aurevost and cultivated industrial competition.
+      It does not jail or smite the gods directly: the spreading khevra lattice forms an
+      intensely effective barrier to the divine, and that barrier together with the long
+      collapse of belief drains the old gods toward powerlessness while the Cantor mimics
+      their fading voices and controls the loudest organized opposition. Othara's deep
+      interior holds the healed First Land, whose divine-origin rejection of khevra is the
+      world's strongest natural resistance to the incursion.
+  khevra_free_alternative: >
+    Khevra's power is a thermodynamic cheat: it amplifies arcane effects by drawing
+    energy from its origin plane, and that draw is the same channel that strengthens
+    the Cantor. Power, poison, and incursion are one mechanism. The Ilvane Accord
+    (and scattered independent researchers) pursue the Second Setting: figures that rebuild
+    setwork's forms on sourced energy and obey conservation — costly, lower-yield, and
+    re-rarefying of arcane skill, but one scalable way to reduce the bridge's energy flow.
+    It exists so that rejecting khevra is a survivable transition rather than a death
+    wish, and so the Concord's defense of khevra carries a real public-good argument.
+  the_transition: >
+    The off-ramp has real humanitarian costs because khevra raised carrying capacity.
+    The Cantor's bridge deadline and civilization's preparation deadline are separate.
+    Candidate responses include sourced-energy figures, new food systems, demand
+    reduction, rationed continued use, migration, and contested proposals to cultivate
+    Othara's interior. None is defined as the correct solution: affected people,
+    especially the Asha, remain participants rather than resources to be allocated.
+    Play determines the strategy and records the harm it accepts. The decision must
+    stay makable but costly — too clean and the drama deflates, hopeless and players
+    are railroaded into atrocity.
+    The world also outlives the Cantor: resource contention, the sea-versus-sky cold
+    war, food leverage, and inherited grudges all persist without him.
+  why_this_seed_flexes_the_system:
+    - "Layered truth: public benefit, faction belief, partial evidence, and internal canon differ without collapsing."
+    - "A turnable Choir agent tests whether an NPC can reject leadership without discarding sincere belief."
+    - "Distinct lattice traditions make item provenance, engineering expertise, sabotage, and repair mechanically useful."
+    - "Caldrin tests persistent location effects, historical evidence, resettlement, and competing explanations."
+    - "Othara tests incomplete maps, faction underestimation, druid mechanics, and late-campaign discovery."
+    - "The Tidegift gives sea travel sacred ancestry and makes the First Land's current rejection of khevra a healed-source defense, not generic wilderness."
+    - "Everyday religion lets old holy days, rites, repurposed shrines, and odd devout holdouts remain playable social texture without requiring most campaigns to investigate the gods."
+    - "The planetary premise supports local campaigns without forcing every party into an epic endpoint."
+    - "The Cantor is a pressure on khevra use, not the sole cause of worldly conflict; campaigns can stay physical, local, political, or adventurous without touching him."
+    - "A survivable but costly off-ramp (the Second Setting) keeps the moral question live: progress is a choice with a real price, not a one-way good."
+open_questions:
+  - "Detail the Ilvane Accord's modular fleet standard and how far the honest-figure research network reaches beyond it."
+  - "Define the deterministic contamination and anti-khevra druid mechanics in the rules contract."
+  - "Seed pre-Setting khevra anomalies across historical cultures without making the solution obvious."
+  - "Calibrate the bridge and transition clocks through simulation without collapsing them into one deadline."
+  - "Name the major surviving post-religious holidays, ship rites, mourning forms, repurposed temple buildings, and devout holdouts that appear in ordinary play."

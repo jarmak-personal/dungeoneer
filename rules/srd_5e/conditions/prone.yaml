@@ -1,0 +1,18 @@
+id: rules:condition.prone
+schema: dwd.condition.v1
+pack: rules:pack.srd_5e
+name: Prone
+source: "SRD 5.1 — Conditions"
+effects:
+  - movement: "Only crawl (half speed), unless the creature stands and ends the condition."
+  - actor_attack_rolls: disadvantage
+  - incoming_attack_rolls:
+      advantage_if: "attacker is within 5 feet"
+      disadvantage_if: "attacker is beyond 5 feet"
+ends:
+  - "The creature stands up, costing half its movement."
+# The engine applies/removes this via typed events; the mechanical content above is
+# what those events mean. Advantage/disadvantage here is pack content (a 5e idiom),
+# not engine procedure.
+applied_by_event: condition_applied
+removed_by_event: condition_removed

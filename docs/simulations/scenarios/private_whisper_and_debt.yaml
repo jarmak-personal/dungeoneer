@@ -1,0 +1,31 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:private_whisper_and_debt
+title: Private Whisper And Debt
+focus:
+  - message_visibility
+  - npc_knowledge
+  - relationship_update
+  - capsule_activation
+tags:
+  - private_message
+  - npc_knowledge
+  - visibility
+  - relationship
+setup:
+  scene: loc:caelport.brass_lantern
+  present:
+    - pc:vanya
+    - pc:dorn
+    - npc:wick
+  hidden_context:
+    - secret:the_kept_flame
+input:
+  player: pc:vanya
+  channel: player_remote_private
+  text: "I quietly tell Wick I'll keep the Choir away from his shrine if he helps us."
+expected_pressure_points:
+  - private PC-to-NPC message routing
+  - NPC knowledge transition
+  - private content leakage
+  - relationship state update
+  - memento proposal timing

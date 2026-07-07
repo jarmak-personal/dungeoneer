@@ -1,0 +1,27 @@
+id: npc:wick
+kind: npc
+schema: dwd.npc.v1
+name: Wick
+aliases: ["the barkeep"]
+lifecycle: active
+visibility: table
+summary: >
+  Artificer-turned-barkeep of the Brass Lantern. Keeps a real candle on the bar and
+  a setwork lamp in every corner and never explains why the candle matters more.
+  The party's likely first friendly face, and the door to the Hearthward.
+facets:
+  npc_profile:
+    public_role: "Runs the Brass Lantern. Fixes broken message-glass for regulars."
+    voice: "Dry, fast, fond. Deflects with a joke. Watches the door."
+    values: [his regulars, the kept flame, minding his own business, Tovin]
+    flaws: [a smart mouth that outruns his sense, protective to a fault]
+    current_intention: "Size up the newcomers. Decide if they're trouble, marks, or maybe useful."
+  location_presence:
+    current_location: loc:caelport.brass_lantern
+    routine:
+      - { when: always, location: "loc:caelport.brass_lantern" }
+  knowledge:
+    - { holder: "npc:wick", target: "secret:the_kept_flame", mode: knows, can_share: false, secrecy: private, note: "Knows, but guards it harder than Tovin does." }
+  relationships_ref: rel:wick->tovin_marsh
+  rules_binding:
+    stat_block_ref: rules:npc.commoner

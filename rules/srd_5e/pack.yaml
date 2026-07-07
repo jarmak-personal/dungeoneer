@@ -1,0 +1,42 @@
+id: rules:pack.srd_5e
+schema: dwd.rules_pack.v1
+name: D&D 5e SRD
+system: dnd5e
+version: "5.1"
+license:
+  id: CC-BY-4.0
+  attribution: >
+    This work includes material from the System Reference Document 5.1 ("SRD 5.1")
+    by Wizards of the Coast LLC, available under the Creative Commons Attribution
+    4.0 International License (https://creativecommons.org/licenses/by/4.0/legalcode).
+summary: >
+  First rules pack for the system-agnostic rules engine. Provides 5e SRD content
+  (conditions, stat blocks, DC guidance, the ability/skill model) behind the
+  engine's typed contracts. The engine owns the adjudication procedure; this pack
+  owns the numbers. See docs/RULES_ENGINE.md "Position — How, Not What."
+
+# Proficiency bonus by character level (SRD).
+proficiency_by_level: { 1: 2, 2: 2, 3: 2, 4: 2, 5: 3, 6: 3, 7: 3, 8: 3, 9: 4, 10: 4 }
+
+# How THIS system's d20 results map onto the engine's native degree ladder
+# (fail / partial / success / strong). This block is the seam the engine reads — the
+# engine never hardcodes a system's success model; each pack declares its own.
+#
+# Note: 5e RAW is binary for ability checks (meet-or-beat the DC). The partial and
+# strong bands below are this pack's declared overlay ("success at a cost", "beat by
+# a wide margin"); a dm_profile may narrow them back to RAW pass/fail. Attack rolls
+# use the SRD's own native band (a natural 20 is a critical hit).
+ladder_mapping:
+  ability_check:
+    strong:  "total >= dc + 10  or  natural 20"
+    success: "dc <= total < dc + 10"
+    partial: "dc - 5 <= total < dc"          # overlay, not RAW
+    fail:    "total < dc - 5  or  natural 1"
+  contested_check:                            # initiator must beat; SRD ties = no change
+    strong:  "margin >= 10"
+    success: "margin > 0"
+    fail:    "margin <= 0"
+  attack_roll:
+    strong:  "natural 20 (critical hit)"
+    success: "total >= target_ac"
+    fail:    "total < target_ac  or  natural 1"

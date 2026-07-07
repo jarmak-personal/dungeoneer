@@ -1,0 +1,26 @@
+id: faction:choir
+kind: faction
+schema: dwd.faction.v1
+name: The Choir
+public_face: >
+  A militant revival movement preaching that setwork has poisoned land, body, and
+  sky, and that Aurevost must renounce khevra before it becomes unlivable.
+member_truth: >
+  Most members are sincere. Some receive fragmented divine warnings; others have
+  lost family to refinery sickness or industrial displacement. They correctly know
+  something is wrong but cannot establish its source.
+private_truth: >
+  The Cantor created the movement's dominant public form as controlled opposition.
+  Edreth gathers genuine dissent under one banner, directs it toward frightening
+  sabotage, and ensures society associates anti-khevra belief with extremism. Each
+  destructive response drives governments toward more security, weapons, and setwork.
+values: [survival, repentance, return of the gods, "modern power is poisoning Aurevost"]
+methods: [setwork sabotage, sermons, mutual aid, recruitment of the dispossessed, "listeners", martyrdom]
+resources: { coin: low, muscle: medium, political_cover: hidden, public_trust: low-but-rising-among-the-desperate }
+territory: ["cells in port undercrofts throughout the archipelagos"]
+leaders:
+  - npc:edreth_vale
+methods_note: >
+  The movement contains real hero lines despite its capture. Turning members such as
+  Ren can preserve their evidence while separating them from Edreth's manufactured desperation.
+visibility: dm_only

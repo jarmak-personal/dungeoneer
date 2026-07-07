@@ -1,0 +1,590 @@
+# Canonical seed facts. Public assertions and hidden truth remain separately visible.
+schema: dwd.fact_collection.v1
+source_refs:
+  - source:setting_notes
+facts:
+  - id: fact:emberglass_carries_vesh_trace
+    schema: dwd.fact.v1
+    subject: item:emberglass
+    predicate: carries_divine_trace_of
+    object: deity:vesh
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:emberglass_has_burned_since_first_setting
+    schema: dwd.fact.v1
+    subject: item:emberglass
+    predicate: has_burned_since
+    object: "the First Setting historical occurrence"
+    truth_status: canon
+    visibility: dm_only
+    confidence: 1.0
+
+  - id: fact:emberglass_dims_near_active_sets
+    schema: dwd.fact.v1
+    subject: item:emberglass
+    predicate: dims_near
+    object: "heavily loaded khevra setwork"
+    truth_status: canon
+    visibility: dm_only
+    confidence: 1.0
+
+  - id: fact:khevra_is_extraplanar
+    schema: dwd.fact.v1
+    subject: "khevra"
+    predicate: originates_outside_world
+    object: world:aurevost
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:setting_strengthens_cantor_bridge
+    schema: dwd.fact.v1
+    subject: "khevra setting and use"
+    predicate: strengthens_planar_connection_for
+    object: creature:the_cantor
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:cantor_seeded_khevra_from_core
+    schema: dwd.fact.v1
+    subject: creature:the_cantor
+    predicate: seeded_material_outward_from
+    object: "Aurevost's planetary interior"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:cantor_mimics_divine_voices
+    schema: dwd.fact.v1
+    subject: creature:the_cantor
+    predicate: impersonates
+    object: "the gods' fading voices through the muffled channel, so believers mistake its misdirection for surviving communion"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:divine_power_drained_to_near_nothing
+    schema: dwd.fact.v1
+    subject: "the accumulating khevra barrier together with the long collapse of belief"
+    predicate: drained_to_near_powerlessness
+    object: deity:old_pantheon
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:khevra_barrier_holds_off_the_divine
+    schema: dwd.fact.v1
+    subject: "the khevra planar barrier rather than the Cantor's raw power"
+    predicate: holds_the_divine_away_from
+    object: creature:the_cantor
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:edreth_is_cantor_body
+    schema: dwd.fact.v1
+    subject: npc:edreth_vale
+    predicate: is_embodied_extension_of
+    object: creature:the_cantor
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:divine_silence_began_at_first_setting
+    schema: dwd.fact.v1
+    subject: "reliable divine communion"
+    predicate: failed_during
+    object: "the First Setting historical occurrence"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:most_divine_magic_weakened_after_first_setting
+    schema: dwd.fact.v1
+    subject: "most divine magic and temple miracle-work"
+    predicate: weakened_after
+    object: "the First Setting historical occurrence"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:most_temples_faded_after_first_setting
+    schema: dwd.fact.v1
+    subject: "most temples and public priesthoods after the First Setting"
+    predicate: mostly_faded_into
+    object: "lost shrines, repurposed buildings, place-names, civil customs, and a few devout holdouts"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:modern_devotion_is_socially_strange
+    schema: dwd.fact.v1
+    subject: "open religious devotion in 312 AS"
+    predicate: is_regarded_as
+    object: "unnecessary, eccentric, backward, or sad by much of mainstream Aurevost"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:old_rites_persisted_as_custom
+    schema: dwd.fact.v1
+    subject: "old rites, family ceremonies, and temple-named feast days"
+    predicate: persisted_as
+    object: "customary civic, seasonal, maritime, and family practices"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:gods_walked_among_people_before_tidegift
+    schema: dwd.fact.v1
+    subject: deity:old_pantheon
+    predicate: walked_among
+    object: "Aurevost's peoples during the mythic cradle age"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:gods_withdrew_to_heavens_after_tidegift
+    schema: dwd.fact.v1
+    subject: deity:old_pantheon
+    predicate: withdrew_to
+    object: "the heavens after the Tidegift"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:gods_maintained_heavenly_threads_before_khevra
+    schema: dwd.fact.v1
+    subject: deity:old_pantheon
+    predicate: maintained_threads_to
+    object: "Aurevost's peoples during the Before Khevra age"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:divine_self_distancing_precedent_softened_silence
+    schema: dwd.fact.v1
+    subject: "the gods' move to the heavens after the Tidegift"
+    predicate: provided_precedent_for
+    object: "public interpretation of the post-First-Setting silence as divine self-distancing"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:khevra_ruptured_heavenly_threads
+    schema: dwd.fact.v1
+    subject: "scalable khevra use at the First Setting"
+    predicate: ruptured
+    object: "reliable heavenly threads between gods and peoples, leaving only weak fragmentary bonds"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:true_belief_preserves_divine_channel
+    schema: dwd.fact.v1
+    subject: "a genuine divine bond"
+    predicate: preserves_weakened_connection_to
+    object: deity:old_pantheon
+    truth_status: canon
+    visibility: dm_only
+    confidence: 1.0
+
+  - id: fact:emeric_senses_khevra_as_wrong_stone
+    schema: dwd.fact.v1
+    subject: npc:emeric
+    predicate: senses_as_incompatible
+    object: "khevra within his trained stone-sense"
+    truth_status: canon
+    visibility: npc_private:npc:emeric
+    confidence: 1.0
+
+  - id: fact:emeric_has_divine_bond
+    schema: dwd.fact.v1
+    subject: npc:emeric
+    predicate: maintains
+    object: "a weak and fragmentary divine bond drawing him inward"
+    truth_status: canon
+    visibility: npc_private:npc:emeric
+    confidence: 1.0
+
+  - id: fact:caldrin_test_resonated_with_buried_khevra
+    schema: dwd.fact.v1
+    subject: "the Caldrin Demonstration historical occurrence"
+    predicate: triggered_resonance_in
+    object: "buried khevra beyond the predicted test area"
+    truth_status: canon
+    visibility: dm_only
+    confidence: 1.0
+
+  - id: fact:marovar_conducted_caldrin_demonstration
+    schema: dwd.fact.v1
+    subject: faction:marovar
+    predicate: conducted
+    object: "the Caldrin Demonstration historical occurrence"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:asha_guard_divine_birthplace
+    schema: dwd.fact.v1
+    subject: faction:asha
+    predicate: unknowingly_guards
+    object: loc:othara.first_land
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:living_systems_recoil_from_khevra
+    schema: dwd.fact.v1
+    subject: "living systems in Aurevost"
+    predicate: recoil_from
+    object: "active khevra alignment and contamination"
+    truth_status: canon
+    visibility: faction_private:faction:asha
+    confidence: 1.0
+
+  - id: fact:rejection_zones_disrupt_setwork
+    schema: dwd.fact.v1
+    subject: "natural rejection zones"
+    predicate: disrupt
+    object: "active khevra sets"
+    truth_status: canon
+    visibility: faction_private:faction:asha
+    confidence: 1.0
+
+  - id: fact:concord_controls_caelport
+    schema: dwd.fact.v1
+    subject: faction:caelport_concord
+    predicate: controls_location
+    object: loc:caelport
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:concord_accepts_refinery_sickness
+    schema: dwd.fact.v1
+    subject: faction:caelport_concord
+    predicate: accepts_as_externality
+    object: "slow refinery sickness"
+    truth_status: canon
+    visibility: faction_private:faction:caelport_concord
+    confidence: 1.0
+
+  - id: fact:choir_opposes_setwork
+    schema: dwd.fact.v1
+    subject: faction:choir
+    predicate: opposes
+    object: "khevric engineering"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:hearthward_keeps_the_shrine
+    schema: dwd.fact.v1
+    subject: faction:hearthward
+    predicate: tends_location
+    object: loc:caelport.vesh_shrine
+    truth_status: canon
+    visibility: dm_only
+    confidence: 1.0
+
+  - id: fact:ren_serves_the_choir
+    schema: dwd.fact.v1
+    subject: npc:ren_castavel
+    predicate: member_of
+    object: faction:choir
+    truth_status: canon
+    visibility: dm_only
+    confidence: 1.0
+
+  - id: fact:khevra_accepts_arcane_figures
+    schema: dwd.fact.v1
+    subject: "khevra"
+    predicate: can_be_aligned_as
+    object: "repeatable arcane lattices"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:savarre_anchors_maritime_trade
+    schema: dwd.fact.v1
+    subject: faction:savarre
+    predicate: anchors
+    object: "international maritime credit, insurance, and admiralty law"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:savarre_exports_downgraded_warships
+    schema: dwd.fact.v1
+    subject: faction:savarre
+    predicate: exports_controlled_versions_of
+    object: "Savarran military ship designs"
+    truth_status: canon
+    visibility: faction_private:faction:savarre
+    confidence: 1.0
+
+  - id: fact:sorrell_archives_contain_prediscovery_khevra
+    schema: dwd.fact.v1
+    subject: faction:house_sorrell
+    predicate: archives_contain
+    object: "khevra samples and patronage records predating Tavian Sorrell's public discovery"
+    truth_status: canon
+    visibility: faction_private:faction:house_sorrell
+    confidence: 1.0
+
+  - id: fact:crown_conceals_asha_scale
+    schema: dwd.fact.v1
+    subject: faction:otharan_crown
+    predicate: conceals_assessment_of
+    object: "Asha population and organization in Othara's interior"
+    truth_status: canon
+    visibility: faction_private:faction:otharan_crown
+    confidence: 1.0
+
+  - id: fact:marovar_leads_airship_engineering
+    schema: dwd.fact.v1
+    subject: faction:marovar
+    predicate: leads_world_in
+    object: "airship design, construction, piloting, and doctrine"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  # --- The khevra-free substrate and the transition cost ---
+
+  - id: fact:khevra_amplifies_by_planar_draw
+    schema: dwd.fact.v1
+    subject: "khevra setting and use"
+    predicate: amplifies_arcane_effect_by_drawing_from
+    object: "khevra's origin plane"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:conventional_arcane_obeys_conservation
+    schema: dwd.fact.v1
+    subject: "conventional arcane practice"
+    predicate: cannot_amplify_beyond
+    object: "the energy its caster supplies"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:second_setting_prototypes_exist
+    schema: dwd.fact.v1
+    subject: faction:second_setting_network
+    predicate: has_working_prototypes_of
+    object: "khevra-free setwork powered by measurable sources"
+    truth_status: canon
+    visibility: faction_private:faction:second_setting_network
+    confidence: 1.0
+
+  - id: fact:khevra_free_substitution_reduces_bridge_load
+    schema: dwd.fact.v1
+    subject: "scalable khevra-free setwork"
+    predicate: reduces_energy_flow_through
+    object: "the Cantor's planar bridge when it displaces khevra use"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:khevra_raised_carrying_capacity
+    schema: dwd.fact.v1
+    subject: "khevric agriculture and industry"
+    predicate: raised_carrying_capacity_of
+    object: world:aurevost
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:ending_khevra_forces_contraction
+    schema: dwd.fact.v1
+    subject: "ending khevra use at scale"
+    predicate: forces_population_contraction_in
+    object: world:aurevost
+    truth_status: canon
+    visibility: dm_only
+    confidence: 1.0
+
+  # --- The Asha succession ---
+
+  - id: fact:asha_led_by_heart_and_hand
+    schema: dwd.fact.v1
+    subject: faction:asha
+    predicate: is_led_by
+    object: "a dyarchy of the Heart and the Hand"
+    truth_status: canon
+    visibility: dm_only
+    confidence: 1.0
+
+  - id: fact:edreth_backs_vohria
+    schema: dwd.fact.v1
+    subject: npc:edreth_vale
+    predicate: covertly_steers
+    object: npc:vohria
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:vohria_receives_anonymous_aid
+    schema: dwd.fact.v1
+    subject: npc:vohria
+    predicate: receives_aid_from
+    object: "an anonymous outside benefactor operating through cutouts"
+    truth_status: canon
+    visibility: npc_private:npc:vohria
+    confidence: 1.0
+
+  # --- Peoples and the shattering of the old borders ---
+
+  - id: fact:first_setting_dissolved_ancestral_borders
+    schema: dwd.fact.v1
+    subject: "the First Setting historical occurrence"
+    predicate: dissolved
+    object: "the old island homelands into one mixed global economy"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:first_land_is_common_cradle
+    schema: dwd.fact.v1
+    subject: loc:othara.first_land
+    predicate: is_common_origin_of
+    object: "Aurevost's gods and peoples, before their island divergence"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:first_land_overburdened_by_origin_concentration
+    schema: dwd.fact.v1
+    subject: loc:othara.first_land
+    predicate: became_overburdened_by
+    object: "the concentration of Aurevost's early peoples, gods, divine traffic, living memory, and origin-weight"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:gods_guided_tidegift
+    schema: dwd.fact.v1
+    subject: deity:old_pantheon
+    predicate: guided_departure_from
+    object: loc:othara.first_land
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:gods_taught_waterways
+    schema: dwd.fact.v1
+    subject: deity:old_pantheon
+    predicate: taught
+    object: "currents, tides, boatcraft, island-making, and the sacred law of distance"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:first_land_healed_after_tidegift
+    schema: dwd.fact.v1
+    subject: loc:othara.first_land
+    predicate: healed_after
+    object: "the Tidegift dispersed peoples and gods across Aurevost's waters"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:first_land_rejects_khevra
+    schema: dwd.fact.v1
+    subject: loc:othara.first_land
+    predicate: rejects
+    object: "khevra alignment, active setwork, and the Cantor's planar contamination"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:asha_can_dwell_near_first_land
+    schema: dwd.fact.v1
+    subject: faction:asha
+    predicate: can_dwell_within
+    object: "the living rejection around loc:othara.first_land"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  # --- Khevra infusion and the veined trade ---
+
+  - id: fact:khevra_infusion_is_environmental
+    schema: dwd.fact.v1
+    subject: "khevra infusion in creatures"
+    predicate: arises_from
+    object: "prolonged proximity to active khevra deposits"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:khevra_infusion_not_contagious
+    schema: dwd.fact.v1
+    subject: "khevra infusion in creatures"
+    predicate: does_not_transmit_between
+    object: "creatures"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:khevra_infusion_usually_lethal
+    schema: dwd.fact.v1
+    subject: "khevra infusion in creatures"
+    predicate: usually_kills
+    object: "the infused creature before it stabilizes"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:khevra_cores_enable_augmentation
+    schema: dwd.fact.v1
+    subject: item:khevra_core
+    predicate: enables
+    object: "early living-tissue augmentation that refined setwork cannot yet match"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:infusion_frequency_tracks_bridge
+    schema: dwd.fact.v1
+    subject: "the frequency of khevra infusion"
+    predicate: indicates_strength_of
+    object: "the Cantor's planar connection"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  # --- Asha departures and the Second Setting's biological line ---
+
+  - id: fact:some_asha_have_departed
+    schema: dwd.fact.v1
+    subject: "a few Asha"
+    predicate: consciously_departed_from
+    object: faction:asha
+    truth_status: canon
+    visibility: faction_private:faction:asha
+    confidence: 1.0
+
+  - id: fact:asha_defectors_join_second_setting
+    schema: dwd.fact.v1
+    subject: "departed Asha druids"
+    predicate: joined
+    object: faction:second_setting_network
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:second_setting_pursues_bridge_neutral_healing
+    schema: dwd.fact.v1
+    subject: faction:second_setting_network
+    predicate: develops
+    object: "bridge-neutral tissue work studied from stable veined survivors"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0

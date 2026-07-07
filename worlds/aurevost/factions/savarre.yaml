@@ -1,0 +1,40 @@
+id: faction:savarre
+kind: faction
+schema: dwd.faction.v1
+name: Savarre
+public_face: >
+  The old coastal superpower: center of international trade, home of the admiralty
+  courts most nations use to settle maritime disputes, and builder of Aurevost's most
+  trusted warships.
+strategic_position: >
+  Savarre's deepest power is dependency rather than conquest. Its credit, insurance,
+  contract law, ports, charts, and brokers make trade between rivals possible.
+  Marovari airships threaten the prestige edge of this public system by bypassing
+  ports and sea lanes for passengers, messages, compact cargo, and urgent force.
+  They are too rare, expensive, and difficult to operate to replace bulk shipping.
+values: [commercial continuity, naval supremacy, institutional seniority, profitable neutrality]
+methods: [credit, insurance, admiralty law, port guarantees, shipbuilding, tiered military exports, intelligence through trade]
+resources:
+  trade_network: exceptional
+  credit: exceptional
+  navy: exceptional
+  warship_yards: world_leading
+  airships: capable-but-conservative
+  inherited_legitimacy: high
+engineering:
+  tradition: savarran
+  character: >
+    Prismatic figures are designed as part of a complete vessel: propulsion, hull,
+    wards, weapons, and empowered crew reinforce one another. They sacrifice the
+    Sorrellian extremes of speed and lift for precision, endurance, and survivability.
+  export_policy: >
+    Buyers receive supported export lines better than nearly anything they can build
+    themselves, with access controlled through contracts, training, and replacement parts.
+stance:
+  on_marovar: >
+    A genuine superpower whose airship lead threatens more than naval prestige: it
+    lets trade and force move beyond the infrastructure Savarre knows how to govern.
+    Marovar's appetite for spectacle still outruns the discipline that keeps power usable.
+  on_othara: "An old and necessary partner whose food makes commercial continuity possible."
+territory: ["old coastal ports", "treaty yards", "commercial enclaves in foreign harbors"]
+visibility: table

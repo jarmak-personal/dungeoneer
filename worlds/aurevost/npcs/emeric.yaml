@@ -1,0 +1,49 @@
+id: npc:emeric
+kind: npc
+schema: dwd.npc.v1
+name: Emeric
+aliases: ["the Deepward", "the stone-priest", "Brother Emeric"]
+lifecycle: active
+visibility: dm_only
+summary: >
+  A stone-priest raised to the stone-trade, whose trained stone-sense recoiled
+  from khevra as wrong stone — stone that does not belong to this world — long
+  before he could say why. He followed that revulsion and a genuine divine pull
+  downward and inland, became one of Aurevost's rare true clerics, and now
+  preaches that the holy deep is the last sacred ground and must be sealed and
+  preserved. His bond confirms that the inward pull is real but is too fragmentary
+  to distinguish sanctuary, confrontation, and preparation. He chooses sanctuary
+  and presents that interpretation with more certainty than the guidance supplies.
+facets:
+  npc_profile:
+    public_role: >
+      An outsider holy man the frightened Asha have begun to listen to, because he names what
+      they feel in their bones and tells them it is sacred to protect it.
+    voice: "Low, certain, devotional. Stone-patient. A comfort that sounds like bedrock."
+    values: [the holy deep, preservation of the sacred remnant, "the god's pull is a command", "khevra is wrong-stone"]
+    flaws:
+      - "treats one defensible interpretation of fragmentary guidance as certainty"
+      - "a certainty that admits no doubt, in a people not his own"
+      - "an outsider's zeal: he reveres the interior more as a relic to seal than a living thing to defend"
+    fears:
+      - "the desecration of the deep; khevra reaching the last clean stone"
+      - "that the pull he feels means the end has already begun"
+    current_intention: >
+      Win the Asha — through Orruvan — to sanctuary: that their duty is to seal and keep the
+      sacred interior, not spend themselves on a world already lost.
+    goals:
+      - { id: "goal:seal_the_holy_deep", priority: high, visibility: "npc_private:npc:emeric" }
+      - { id: "goal:win_the_asha_to_sanctuary", priority: high, visibility: "npc_private:npc:emeric" }
+  location_presence:
+    current_location: loc:othara.thaenvohr
+    routine:
+      - { when: often, location: "loc:othara.interior", note: "drawn toward the deep approaches, as close to the First Land as the Asha will let him walk" }
+  knowledge:
+    - { holder: "npc:emeric", target: "fact:emeric_senses_khevra_as_wrong_stone", mode: knows, can_share: true, secrecy: private, note: "His stone-sense reports a repeatable incompatibility whose origin he cannot establish." }
+    - { holder: "npc:emeric", target: "fact:emeric_has_divine_bond", mode: knows, can_share: false, secrecy: private, note: "Experiences a weak inward pull as genuine but fragmentary guidance." }
+  rules_binding:
+    stat_block_ref: rules:npc.cleric
+    note: >
+      One of the world's rare genuine divine casters: a typed, weak, fragmentary bond per the
+      setting's divine rule. The rules engine never judges sincerity ad hoc; any change to the
+      bond requires an accepted event.

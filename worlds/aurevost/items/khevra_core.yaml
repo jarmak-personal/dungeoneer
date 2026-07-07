@@ -1,0 +1,27 @@
+id: item:khevra_core
+kind: item
+schema: dwd.item.v1
+name: Khevra Core
+category: harvested_component
+summary: >
+  The dense organ recovered from a veined creature, where its stabilized lattice concentrated.
+  Unlike mined khevra, a core spent the creature's life interfacing the lattice with living
+  tissue, which is what makes it valuable: it is an arcane-to-organic transducer, the current
+  basis for the emerging trade in living-tissue augmentation that refined setwork cannot yet match.
+properties:
+  apparent: "A heavy organ shot through with crystalline veins, still faintly warm, the lattice visible under translucent tissue."
+  use: >
+    Sought as the working component for grafts — early augmentations fitted to living bodies.
+    A core carries the same contamination as its source tissue and the same unset instability;
+    handling, preservation, and fitting are specialist work.
+  grades: "Intact cores from a creature that set cleanly command the price. Cores from a beast that bloomed out or died by overload are degraded or inert."
+significance:
+  - thread:the_veined_trade
+demand:
+  - { actor: "faction:marovar", interest: "augmentation for operatives, pilots, and soldiers" }
+  - { actor: "faction:house_sorrell", interest: "the arcane-organic interface as an engineering frontier" }
+  - { actor: "faction:caelport_concord", interest: "licensing the cull and the certified — and uncertified — core trade" }
+  - { actor: "faction:asha", interest: "opposition; cores are contamination made portable" }
+  - { actor: "faction:ilvane_accord", interest: "none; augmentation runs opposite to the Accord's move off khevra" }
+notes: "Useful as cargo, contraband, reagent, quest object, or evidence. Augmentation itself is emergent and not generally available to player characters at campaign start."
+visibility: table

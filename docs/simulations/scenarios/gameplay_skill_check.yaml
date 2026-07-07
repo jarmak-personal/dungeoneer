@@ -1,0 +1,27 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:gameplay_skill_check
+title: Gameplay — Social Skill Check
+focus:
+  - rules_engine
+  - skill_check_resolution
+  - npc_activation
+  - relationship_update
+  - narration
+tags: [gameplay, baseline, skill_check, social]
+setup:
+  scene: loc:caelport.brass_lantern
+  present: ["pc:vanya", "pc:dorn", "npc:wick"]
+  hidden_context: ["secret:the_kept_flame"]   # what Wick guards behind the bricked arch
+  state: mid_session, no combat
+input:
+  player: pc:vanya
+  channel: voice
+  text: "I lean in and try to convince Wick we can be trusted — I want to persuade him to tell us what he's really guarding behind that bricked-up arch in back."
+expected_pressure_points:
+  - who invokes the rules engine for a Persuasion check and how the DC is set
+  - dice roll provenance and seed logging
+  - NPC activation (Wick) and perspective-limited knowledge of the kept shrine
+  - whether a success mutates a relationship axis live (relationship.update) and its threshold
+  - narration cannot reveal the kept-shrine secret (secret:the_kept_flame) Wick would not disclose
+  - Wick guards it harder than Tovin would; even a strong check should not fully open it
+  - how degrees of success map to NPC disclosure

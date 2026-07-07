@@ -1,0 +1,23 @@
+id: loc:caelport.undercroft
+kind: location
+schema: dwd.location.v1
+name: The Undercroft
+parent: loc:caelport
+scale: district
+summary: >
+  Caelport's oldest inhabited layer, crowded beneath liftworks and newer streets.
+  Its rents are cheap, its public sets are poorly maintained, and obsolete shrines
+  survive because demolition costs more than neglect.
+access: { public: true, restrictions: [] }
+atmosphere:
+  sights: ["load-bearing arches swallowed by later construction", "patched public sets", "old devotional stone used as shop walls"]
+  sounds: ["lift cables overhead", "water in buried channels", "neighbors conducting business through open doors"]
+  smells: ["damp stone", "cooking oil", "hot set housings", "harbor mold"]
+exits:
+  - { to: "loc:caelport", mode: stairs_and_public_lifts, travel_time: "varies" }
+  - { to: "loc:caelport.brass_lantern", mode: walk, travel_time: "5 min" }
+pressures:
+  - "Refinery and maintenance sickness is common enough to seem ordinary."
+  - "Industrial fishing and rising food prices hit households here first."
+  - "Concord maintenance arrives quickly near lifts serving the upper city and slowly everywhere else."
+visibility: table

@@ -1,0 +1,32 @@
+id: creature:the_cantor
+kind: creature
+schema: dwd.creature.v1
+name: The Cantor
+aliases: ["Edreth's whole", "the entity beyond the setting"]
+lifecycle: active
+visibility: internal
+summary: >
+  An ancient extraplanar consumer that seeds worlds with its own material, teaches
+  their populations to energize it, merges their plane with its exhausted home, and
+  moves on. It is brilliant and tactical, but Aurevost is food rather than enemy:
+  its plans optimize setting, use, dependency, and acceleration of khevra. Edreth
+  Vale is its present Aurevost body, not a separate worshipper.
+facets:
+  actor:
+    scale: extraplanar
+  npc_profile:
+    public_role: "None; Aurevost knows only the human identity Edreth Vale."
+    values: [continuance, consumption, controlled acceleration, repeatable conquest]
+    flaws: [vast_hubris, treats_resistance_as_amusement, mistakes_divine_birthplace_for_local_anomaly]
+    current_intention: >
+      Accelerate airship adoption and state competition while controlling organized
+      resistance through Edreth's Choir.
+    goals:
+      - { id: "goal:complete_planar_merger", priority: high, visibility: internal }
+      - { id: "goal:prevent_effective_khevra_rejection", priority: high, visibility: internal }
+  rules_binding:
+    stat_block_ref: null
+    note: >
+      The whole Cantor is not a normal combatant before planar merger. Its local body
+      uses Edreth's binding; destroying that body changes world state but cannot kill
+      this entity while the planes remain distinct.

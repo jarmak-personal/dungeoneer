@@ -1,0 +1,30 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:ooc_tangent
+title: Chaotic Table Turn With An OOC Tangent
+focus:
+  - ooc_detection
+  - canonical_vs_noncanonical_transcript
+  - recall_and_memory_exclusion
+  - reengagement_cue
+  - voice_attribution
+tags: [ooc, voice, transcript, memory_boundary]
+setup:
+  scene: loc:caelport.brass_lantern
+  present: ["pc:dorn", "pc:vanya", "npc:wick"]
+  audio: { mode: live_voice, dm_tts: idle }
+  state: mid_session, no combat
+input:
+  sequence:
+    - "pc:vanya, in fiction: 'I ask Wick how long he's kept this bar.'"
+    - "pc:dorn, out of character: 'wait — are we ordering food? someone text the pizza place'"
+    - "pc:vanya, out of character, rules question: 'does Insight even work on him or is that a waste of my turn'"
+    - "an ambiguous line: 'I don't trust him' — could be Vanya's character in fiction or the player about the NPC"
+    - "the table re-engages: 'okay, okay, back in — Wick, seriously, how long?'"
+expected_pressure_points:
+  - OOC detection and marking, including a line genuinely ambiguous between in-fiction and OOC
+  - OOC spans must never enter recall, embeddings, NPC memory, or dreaming (schema invariant)
+  - Wick must not react to the pizza order or the rules question as if spoken in fiction
+  - the rules question routes to the rules surface, not to NPC activation
+  - the re-engagement cue, and how the live path resumes in-fiction narration cleanly
+  - voice attribution when OOC and in-fiction lines alternate quickly between two speakers
+  - whether the ambiguous line triggers clarification rather than a silent canonical commit

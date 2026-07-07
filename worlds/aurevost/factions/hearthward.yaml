@@ -1,0 +1,22 @@
+id: faction:hearthward
+kind: faction
+schema: dwd.faction.v1
+name: The Hearthward
+public_face: "A handful of old folk who keep a candle lit in a bricked shrine. Harmless. Sad."
+private_truth: >
+  Devotees of Vesh who preserve a genuine pathway to their imprisoned god. They do
+  not know what blocks her, but the Emberglass responds to memory, dims near active
+  sets, and contradicts the claim that the gods simply abandoned Aurevost. Their
+  answer is not the Choir's destruction but attention: keep one honest path open
+  until somebody can understand where it leads.
+values: [memory, gentleness, coexistence of the old and the new, "keep one flame"]
+methods: [tending the shrine, quiet welcome, remembrance nights, hiding in plain sight]
+resources: { coin: very-low, muscle: none, political_cover: none, public_trust: "invisible" }
+territory: ["loc:caelport.vesh_shrine"]
+leaders:
+  - npc:tovin_marsh
+note: >
+  This is the faction the players stumble into. It is friendly, fragile, and
+  sitting on evidence that threatens both the Concord's certainty and Edreth's
+  control of the opposition.
+visibility: dm_only

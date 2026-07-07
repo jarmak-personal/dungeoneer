@@ -1,0 +1,21 @@
+id: thread:the_false_opposition
+kind: thread
+schema: dwd.thread.v1
+name: The False Opposition
+status: locked
+summary: >
+  Evidence suggests Edreth repeatedly converts credible warnings into attacks that
+  strengthen the institutions and technologies he claims to oppose.
+stakes:
+  public: "The Choir is preparing an escalation that could kill people and trigger a state crackdown."
+  hidden: "Stopping an attack is not enough; the party must preserve the evidence and people Edreth has captured."
+participants: ["faction:choir", "npc:edreth_vale", "npc:ren_castavel", "faction:caelport_concord"]
+leads:
+  - "Edreth's twenty-year appearance coincides with rapid airship adoption"
+  - "Choir attacks reliably cause larger government setwork purchases"
+  - "warnings Edreth rejected because they could be independently tested"
+resolution_conditions:
+  - prevent_discrediting_attack
+  - expose_edreth_pattern_without_discrediting_evidence
+  - preserve_or_rehome_sincere_choir_members
+visibility: dm_only

@@ -1,0 +1,20 @@
+id: faction:second_setting_network
+kind: faction
+schema: dwd.faction.v1
+name: The Second Setting Network
+public_face: "None. The network is compartmentalized inside Ilvane engineering yards and research exchanges."
+values: [supply independence, sourced energy, reproducible figures, research survival]
+methods: [compartmentalized prototypes, coded publications, distributed testing, concealed procurement]
+resources: { prototypes: working-but-low-yield, researchers: scattered, funding: concealed, political_cover: fragile }
+territory: ["selected Ilvane yards and independent laboratories"]
+affiliation: faction:ilvane_accord
+composition: >
+  Scattered Ilvane engineers and researchers, joined recently by a few former Asha druids who
+  left the order to pursue the work. Their living-systems training opened a second line of inquiry.
+research_branches:
+  sourced_energy_figures: "Reproducing setwork's forms on measurable energy that obeys conservation."
+  bridge_neutral_tissue: >
+    A nascent line, led by the former Asha: studying why a rare veined creature stabilizes instead
+    of blooming, toward guided regeneration and medicine that integrates lattice and tissue without
+    drawing on the bridge. Early, unproven, and known to almost no one.
+visibility: faction_private:faction:second_setting_network

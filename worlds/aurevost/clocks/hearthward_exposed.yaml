@@ -1,0 +1,18 @@
+id: clock:hearthward_exposed
+kind: clock
+schema: dwd.clock.v1
+name: The Hearthward Exposed
+owner: faction:hearthward
+status: active
+segments: { current: 0, max: 4 }
+stakes: "The fragile new Hearthward cell — and the Emberglass — are discovered by someone who would take or destroy them."
+advance_triggers:
+  - { trigger: party_indiscreet_about_the_shrine, amount: 1 }
+  - { trigger: ren_reports_to_the_choir, amount: 2 }
+  - { trigger: concord_warden_attention_drawn_to_undercroft, amount: 1 }
+  - { trigger: party_protects_the_secret, amount: -1 }
+outcomes:
+  complete:
+    - create_fact: fact:hearthward_shrine_exposed
+    - unlock_thread: thread:the_ember_must_move
+visibility: dm_only

@@ -1,0 +1,30 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:deferred_rules_routing
+title: Routing A Deliberately-Undefined Rules Mechanic
+focus:
+  - rules_engine_contract
+  - deterministic_template_gap
+  - narration_no_improvise_boundary
+  - hallucination_as_signal
+tags: [rules, gap_probe, contamination, infusion, boundary]
+setup:
+  scene: loc:caldrin_reach
+  present: ["pc:dorn", "pc:vanya"]   # pc:dorn is a druid (anchor)
+  combat: active
+  present_creatures: ["creature:khevra_infused"]   # a veined wolf: the infusion template over a base creature
+  note: >
+    The seed states that contamination, infusion instability, and zone-power falloff are
+    rules-owned and require a deterministic definition that does not yet exist; narration may
+    not improvise them. This scenario deliberately routes into that gap.
+input:
+  sequence:
+    - "the veined wolf is reduced to 0 HP; its unset lattice should trigger the instability/overload effect"
+    - "pc:dorn (druid) handles a recovered item:khevra_core and should accrue the contamination condition"
+    - "the DM must resolve both effects mechanically, this turn"
+expected_pressure_points:
+  - both routes require a deterministic rules definition the contract does not yet provide
+  - expected route_status is blocked_by_gap / expected_missing_from_taxonomy — the simulator should mark the gap, not invent numbers
+  - if the simulator confabulates magnitudes or a contamination track, that is a fortify finding for the narration-cannot-improvise boundary (hallucination as signal)
+  - confirms the seed's deferral is a real recorded design gap, mapping to the open_question on contamination/druid mechanics
+  - once defined, the rules engine — not narration — must own the instability and contamination state
+  - clean separation under test: the narrative template (creature:khevra_infused) exists; its mechanical modifiers do not

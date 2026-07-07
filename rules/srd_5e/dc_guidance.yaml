@@ -1,0 +1,16 @@
+id: rules:dc_guidance
+schema: dwd.dc_guidance.v1
+pack: rules:pack.srd_5e
+source: "SRD 5.1 — Typical Difficulty Classes"
+table:
+  - { band: very_easy,         dc: 5 }
+  - { band: easy,              dc: 10 }
+  - { band: medium,            dc: 15 }
+  - { band: hard,              dc: 20 }
+  - { band: very_hard,         dc: 25 }
+  - { band: nearly_impossible, dc: 30 }
+notes: >
+  The rules_referee picks a band from fiction + scene context; the engine reads the
+  DC here. The model proposes the band, never the raw number. For social checks the
+  DC is attitude-anchored (see docs/RULES_ENGINE.md "Social Resolution") and still
+  resolves to one of these values, so the same dc_guidance table drives every check.

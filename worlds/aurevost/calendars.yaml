@@ -1,0 +1,59 @@
+id: calendar:aurevost
+kind: calendar
+schema: dwd.calendar.v1
+name: Aurevost Reckonings
+summary: >
+  Aurevost commonly understands history through three great ages: Before Tidegift,
+  Before Khevra, and After Khevra. The dominant modern civil calendar is the Common
+  Reckoning, dated from the First Setting rather than from the divine silence that
+  occurred during the same hour. The current year is 312 AS ("After Setting").
+epoch: "the First Setting"
+year_label: AS
+great_ages:
+  before_tidegift:
+    name: Before Tidegift
+    summary: >
+      Mythic cradle time before the gods opened the waters. Public stories describe
+      a shared, overburdened origin where the gods walked among the peoples rather
+      than ruling from a distant heaven.
+    reckoning: >
+      No universal civil count survives. Priestly, genealogical, and Asha memory
+      preserve sequence and sacred pattern more reliably than numbered years.
+  before_khevra:
+    name: Before Khevra
+    summary: >
+      The long opened-water age beginning with the Tidegift. Peoples became distinct
+      across island homelands, ships and sea law carried sacred ancestry, the gods
+      moved to the heavens, and strong threads of communion kept them accessible.
+      Conventional arcane craft stayed narrow and costly.
+    reckoning: >
+      Older temple, maritime, and legal traditions count from the Tidegift. Devotional
+      speech calls the same threshold the Opening of the Waters; folk and sailor speech
+      remembers it as when the gods taught the sea.
+  after_khevra:
+    name: After Khevra
+    summary: >
+      The modern age beginning with the First Setting, when scalable khevric setwork
+      made practical arcane power commonplace and reliable divine communion failed.
+      Older precedents of divine self-distancing made that silence easier to explain
+      as a divine decision, even when it remained painful.
+    reckoning: >
+      The official civil form is the Common Reckoning, counted AS from the First
+      Setting. "After Khevra" is common shorthand for the age; formal documents
+      usually use AS.
+months:
+  - { name: Kindle, season: late-winter }
+  - { name: Thaw, season: spring }
+  - { name: Brightwane, season: late-spring }
+  - { name: Highsun, season: summer }
+  - { name: Emberfall, season: late-summer }
+  - { name: Rust, season: autumn }
+  - { name: Greylock, season: winter }
+notes: >
+  The Hearthward call the coincident divine silence "the Night the Flame Bent."
+  The Asha preserve the phrase "the Inward Turning." Neither is common modern
+  speech. Many temple-named feast days remain on civil calendars as family, civic,
+  seasonal, and maritime holidays even though most temples behind those names are
+  gone, repurposed, or forgotten. The default campaign opens in Emberfall, 312 AS,
+  in the After Khevra age.
+visibility: table

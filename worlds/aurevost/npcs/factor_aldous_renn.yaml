@@ -1,0 +1,29 @@
+id: npc:factor_aldous_renn
+kind: npc
+schema: dwd.npc.v1
+name: Factor Aldous Renn
+lifecycle: active
+visibility: dm_only
+summary: >
+  Caelport's senior Concord factor: a competent administrator who sincerely believes
+  reliable setwork prevents more suffering than industrial secrecy causes.
+facets:
+  npc_profile:
+    public_role: "Chief certifier and trade representative of the Caelport Concord."
+    voice: "Precise, courteous, impatient with claims that cannot survive measurement."
+    values: [continuity, evidence, functioning infrastructure, Caelport's prosperity]
+    flaws: [confuses institutional legibility with truth, discounts slow harm, protects confidence during uncertainty]
+    fears:
+      - "a setwork panic that stops lifts, refrigeration, shipping, and public lamps"
+      - "another Caldrin-scale resonance event inside a city"
+    current_intention: "Contain Choir violence without legitimizing its claims about khevra."
+    goals:
+      - { id: "goal:preserve_caelport_setwork", priority: high, visibility: "npc_private:npc:factor_aldous_renn" }
+      - { id: "goal:explain_caldrin_rejection", priority: medium, visibility: "npc_private:npc:factor_aldous_renn" }
+  location_presence:
+    current_location: loc:caelport
+  rules_binding:
+    stat_block_ref: rules:npc.noble
+note: >
+  Aldous's strongest virtues support an institution unable to acknowledge evidence
+  outside its models; he does not require corruption to oppose the party sincerely.

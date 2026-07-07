@@ -1,0 +1,44 @@
+id: creature:khevra_infused
+kind: creature
+schema: dwd.creature.v1
+name: Khevra-Infused (Infusion Template)
+aliases: ["the veined", "veinwild", "set-beasts"]
+lifecycle: active
+visibility: table
+summary: >
+  A template, not a single creature: the changes that overtake ordinary animals after long
+  exposure to an active khevra deposit. Khevra aligns within living tissue into a raw, unset
+  lattice, threading crystalline veins through bone, organ, and hide. The process is most often
+  fatal — uncontrolled lattice growth behaves like a cancer and kills the creature before it
+  becomes anything dangerous. A rare animal stabilizes instead, and is then called veined.
+template:
+  application: "Applied to a base creature's stat block as a modifier. Most D&D creatures can be infused."
+  course: >
+    Infusion blooms in most creatures and kills them; the deposit margins are littered with
+    malformed dead and dying far more often than with live predators. The uncommon survivor has
+    set — its lattice reached a stable arrangement with the body — and grows stronger, faster, and
+    more aggressive than its kind, drawing on the same unexplained amplification that powers engineered setwork.
+  origin: "Environmental. It arises from prolonged proximity to active khevra, not from any wound, bite, or spore."
+  transmission: "None known. Infusion does not pass between creatures."
+  instability: >
+    The lattice is unset and undisciplined, lacking any engineered figure. It is prone to
+    resonance, overload, and catastrophic discharge — near active sets, under stress, or at death.
+    The effect is rules-owned; the magnitude and triggers require a deterministic definition and
+    may not be improvised in narration.
+occurrence:
+  clusters_at: ["active khevra deposits", "region:greywake khevra shoals", "worked refinery margins"]
+  scarce_or_absent: ["loc:caldrin_reach and other rejection zones, where khevra fails and a living lattice cannot hold"]
+harvest:
+  yields: item:khevra_core
+  note: "The dense organ where the lattice concentrated. Intact cores carry the value; a beast killed by overload is often worthless."
+detection: "Reads as contamination to druidic and other living-systems senses; dims devotional traces such as the Emberglass."
+trade_terms:
+  to_bloom: "the usual course — the lattice growing unchecked and killing its host"
+  to_set: "the rare stabilization; a survivor 'has set' and is 'veined'"
+  the_veined: "a stabilized infused creature, named for the visible lattice — a veined wolf, a veined crab"
+  a_bloom: "a die-off of infused animals at a deposit margin; cullers read a fresh bloom as a sign of activity"
+  core: "the harvested transducer organ"
+  culler: "one who hunts and clears the veined, licensed near settlements"
+rules_binding:
+  stat_block_ref: null
+  note: "Infusion is a deterministic template over a base stat block (set bonuses, resistances, an instability effect). The base creature and its rules-owned modifiers are defined in the rules engine, not here."

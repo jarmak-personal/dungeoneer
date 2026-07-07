@@ -1,0 +1,31 @@
+id: region:othara
+kind: region
+schema: dwd.region.v1
+name: Othara
+parent: world:aurevost
+summary: >
+  Aurevost's singular great continent. The Otharan Crown densely controls its coasts,
+  deltas, and navigable inland waterways, whose harvests feed much of the world. Its
+  enormous interior remains poorly mapped despite modern survey technology.
+geography:
+  features: [great rivers, fertile floodplains, populated deltas, immense interior, old-growth watersheds]
+  navigation: >
+    Conventional ships move easily along the settled waterways. Deeper inland,
+    channels shift, instruments drift, and active sets become unreliable. Society
+    treats this as an expensive magical nuisance rather than evidence of resistance.
+powers_in_tension:
+  - faction:otharan_crown
+  - faction:asha
+hidden_significance: >
+  Othara's interior is the common cradle of Aurevost's gods and peoples — the one origin
+  all the peoples diverged from before the gods opened the waters and led them to their
+  island homelands, long before the First Setting re-merged the borders into one economy.
+  The First Land was overburdened by holding all peoples, gods, divine traffic, and
+  origin-memory in one living place; the Tidegift was a protective dispersal that let
+  the peoples become distinct and let the land heal. The healed source now rejects khevra
+  and active setwork so strongly that modern survey, extraction, and military approaches
+  fail or turn back. The gods draw remaining followers toward it, creating an unplanned
+  convergence of partial truths. Neither the Asha nor the Cantor understands its full
+  significance at campaign start — and the Asha least of all suspect they have, in their
+  long turn inward, come home.
+visibility: dm_only

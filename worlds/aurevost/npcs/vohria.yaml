@@ -1,0 +1,43 @@
+id: npc:vohria
+kind: npc
+schema: dwd.npc.v1
+name: Vohria
+aliases: ["the green edge"]
+lifecycle: active
+visibility: dm_only
+summary: >
+  The youngblood who would seize the Hand and turn it outward — strike extraction, make
+  the world see, carry the recoil past the interior's edge. She is more right than her
+  elders about how fast the world is dying. An unidentified outside ally has been
+  quietly feeding her. Exposure of that source would force a choice; it would not
+  automatically make her the right or wrong Hand.
+facets:
+  npc_profile:
+    public_role: >
+      A fierce young pilgrim-leader who has buried too many to the slow poison and refuses
+      to call patience anything but cowardice. The young follow her; the elders fear her.
+    voice: "Fast, fierce, grief-sharpened. Makes urgency sound like the only honest answer."
+    values: [act now, carry the vaurn outward, the dead and the dying, "the young have no centuries to spend"]
+    flaws:
+      - "scorns patience as cowardice and discounts what immediate action can destroy"
+      - "takes help without auditing where it comes from"
+      - "needs the world to *see* — mistakes spectacle for proof"
+    fears:
+      - "being too late; that her elders' restraint is already a death sentence"
+      - "buried deep: that she is being used, and is afraid to look"
+    current_intention: >
+      Claim the Hand when the Heart falls and turn the Asha to direct action against
+      extraction, with whatever allies will arm the cause.
+    goals:
+      - { id: "goal:take_the_hand", priority: high, visibility: "npc_private:npc:vohria" }
+      - { id: "goal:strike_extraction", priority: high, visibility: "npc_private:npc:vohria" }
+  location_presence:
+    current_location: loc:othara.interior
+    routine:
+      - { when: often, location: "loc:caldrin_reach", note: "drawn to the rejection zone and to the edges where the fight is" }
+  knowledge:
+    - { holder: "npc:vohria", target: "secret:asha_recoil_evidence", mode: knows, can_share: true, secrecy: faction_private, note: "Knows the shared evidence and reads it as a threat requiring immediate outward action." }
+    - { holder: "npc:vohria", target: "fact:vohria_receives_anonymous_aid", mode: believes, can_share: false, secrecy: private, note: "Correctly knows the aid exists and believes its source is sympathetic." }
+  rules_binding:
+    stat_block_ref: rules:npc.druid
+    note: "A strong young druid, zone-bound like all the Asha but the most willing to range past the interior's edge — where she is weaker and knows it, and goes anyway."

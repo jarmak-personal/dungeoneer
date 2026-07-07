@@ -1,0 +1,23 @@
+# Local environments
+.venv/
+
+# Python caches and test output
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.py[cod]
+
+# Build/package output
+build/
+dist/
+*.egg-info/
+
+# OS/editor noise
+.DS_Store
+
+# Local simulation output, if a runner is pointed inside the repo by mistake.
+dungeoneer-sim-history/
+sim-history/

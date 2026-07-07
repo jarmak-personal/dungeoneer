@@ -1,0 +1,26 @@
+id: item:emberglass
+kind: item
+schema: dwd.item.v1
+name: The Emberglass
+category: relic
+summary: >
+  A cracked lantern of grey devotional glass holding a single ember that has not
+  gone out since the First Setting. It is not Vesh and cannot speak plainly for her.
+  It is a genuine trace that responds to memory, living presence, and nearby khevric
+  interference, making it a path toward evidence rather than an answer by itself.
+current_holder: faction:hearthward
+current_location: loc:caelport.vesh_shrine
+significance:
+  - thread:the_listening
+  - secret:the_kept_flame
+properties:
+  apparent: "An old lamp with a stubborn flame. No set, fuel, or visible figure; it simply burns."
+  observed: "It is warm to the soul, not the hand, and dims subtly near heavily loaded setwork."
+  true: "A durable divine trace of Vesh capable of grounding investigation through the Cantor's interference."
+custody_history:
+  - { holder: "faction:hearthward", note: "Kept hand to hand since the First Setting." }
+stakes: >
+  The Concord would suppress its implications, while Edreth would capture, discredit,
+  or destroy a pathway that could join divine evidence to the Asha's natural evidence.
+  The Hearthward cannot defend it against either institution alone.
+visibility: dm_only

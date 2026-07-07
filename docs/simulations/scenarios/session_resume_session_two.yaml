@@ -1,0 +1,28 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:session_resume_session_two
+title: Session Resume — Warm Boot Into Session Two
+focus:
+  - between_session_warmup
+  - dreaming_to_next_session_handoff
+  - recap_generation
+  - world_clock_advancement
+  - prepared_stance_consumption
+tags: [lifecycle, warmup, resume, dreaming, recap]
+setup:
+  campaign: campaign:aurevost_main
+  prior_session: session:aurevost_001   # ended; dreaming has run
+  dreaming_output: ["memento proposals accepted", "clock:choir_ascendant advanced to 3/8", "next-session prep bundle"]
+  state: starting session two, table reconvening
+input:
+  sequence:
+    - operator starts session two (session.started)
+    - warmup runs — but warm, not cold (capsules exist; dreaming prepared likely stances)
+    - the DM delivers a recap of session one to the table
+    - the first scene opens where the party left off, with world clocks advanced between sessions
+expected_pressure_points:
+  - "the warm (non-cold) warmup path: reuse existing capsules + dreaming's prepare_likely vs rebuild"
+  - how dreaming's next-session prep bundle is handed to warmup
+  - recap generation and delivery (source, audience, what it includes/excludes)
+  - world/faction clocks that advanced off-screen between sessions and how players learn of them
+  - prepared NPC stances consumed without a live fork
+  - what "where they left off" resolves to as the opening scene descriptor

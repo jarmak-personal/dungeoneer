@@ -1,0 +1,24 @@
+id: item:khevra_set
+kind: item
+schema: dwd.item.v1
+name: Khevra Set
+category: magitech_component
+summary: >
+  A piece of refined khevra whose internal crystal has been aligned into an arcane
+  lattice. Sets power nearly every modern convenience. Their figures reveal the
+  engineering tradition that made them and determine what they do well.
+properties:
+  apparent: >
+    A light crystalline component held in a protective frame. Active alignment
+    planes glow differently by figure, school, and energy being channeled.
+  use: >
+    Accepts arcane energy and amplifies a repeatable effect. Fractured alignment
+    planes can make a set inefficient, unstable, or catastrophically resonant.
+  common_terms:
+    - "setting: aligning raw khevra into a usable lattice"
+    - "figure: a named lattice architecture"
+    - "setwork: machinery powered by one or more sets"
+significance:
+  - "The basic component of modern life and the most common object of licensing, inspection, sabotage, theft, and repair."
+notes: "Useful as cargo, currency, evidence, sabotage target, industrial hazard, or small-scale quest object."
+visibility: table

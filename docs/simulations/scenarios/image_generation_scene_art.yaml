@@ -1,0 +1,24 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:image_generation_scene_art
+title: Image Generation — NPC Portrait Mid-Session
+focus:
+  - art_director
+  - privacy_boundary_sanitization
+  - async_media
+  - provenance_split
+  - shared_display_push
+tags: [image_gen, privacy, restricted_host, async]
+setup:
+  scene: loc:caelport.brass_lantern
+  present: ["pc:vanya", "pc:dorn", "npc:wick"]
+  hidden_context: ["secret:the_kept_flame"]   # Wick's guarded secret must NOT leak into the art brief
+  hardware: { restricted_host: rtx_6000_ada_on_lan }
+input:
+  operator: requests a portrait of Wick to show on the shared display
+expected_pressure_points:
+  - art_director turns private NPC/scene context into a sanitized, public-safe brief
+  - no transcript excerpts, private messages, or secret:the_kept_flame content cross to the restricted host
+  - the job runs async and does not block live conversation
+  - "dual provenance: full home-side source context stays home; only sanitized brief + asset metadata on the restricted host"
+  - the finished asset pushes to the shared display (display.content_pushed) when ready
+  - an unsanitized brief is rejected by the privacy-boundary validator

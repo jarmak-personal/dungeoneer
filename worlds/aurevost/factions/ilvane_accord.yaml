@@ -1,0 +1,35 @@
+id: faction:ilvane_accord
+kind: faction
+schema: dwd.faction.v1
+name: The Ilvane Accord
+aliases: ["the Accord", "the archipelago coalition"]
+public_face: >
+  A loose league of archipelago republics and free ports bound by mutual-defense
+  and trade compacts. Unimpressive ship for ship, collectively vast. Its yards are
+  known for modular cellular figures built for interchangeability and field repair —
+  the standard that keeps Accord fleets and trade networks running where richer
+  navies cannot resupply. With Savarre and the Otharan Crown, it completes the
+  balance against Marovar.
+values: [independence, interoperability, distributed resilience, hedged bets, pragmatism]
+methods: [trade compacts, mutual defense, modular engineering, open research networks, free captains and privateers, redundancy over prestige]
+resources:
+  fleets: vast-but-dispersed
+  coin: medium-and-distributed
+  unity: low
+  research: quietly-advancing
+  airships: few
+  public_trust: medium
+territory: ["the scattered archipelagos beyond the Greywake", "free ports and treaty harbors"]
+leaders: []
+stance:
+  on_marovar: >
+    The threat that justifies the Accord's existence. Marovari airships reach over any
+    single island's defenses, and Marovari deposits give it leverage no free port can
+    match. The Accord cannot out-build Marovar; it intends to stop needing what Marovar sells.
+  on_savarre: >
+    The senior partner whose credit, charts, and admiralty law the Accord depends on
+    and resents in equal measure. Useful, domineering, and quietly studied.
+  on_khevra: >
+    Reliant and politically exposed. Member states openly fund efficiency, alternative
+    suppliers, and conventional arcane research, but no public program can replace khevra.
+visibility: table

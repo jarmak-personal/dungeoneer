@@ -1,0 +1,55 @@
+id: faction:asha
+kind: faction
+schema: dwd.faction.v1
+name: The Asha
+public_face: >
+  Druid communities scattered through Othara's interior. The Crown acknowledges
+  their existence but describes them as isolated traditionalists obstructing surveyors.
+private_truth: >
+  A large, connected order drawn toward the interior by weakened but genuine divine
+  and natural guidance. They know khevra does not belong in Aurevost because living
+  systems recoil from its alignment, but their magic cannot prove an extraplanar
+  origin. They are assembling centuries of ecological evidence and searching downward.
+values: [continuity, patient evidence, living systems, resistance without spectacle]
+methods: [oral archives, ecological observation, guided pilgrimage, disruption of extraction, concealment]
+resources: { coin: very-low, local_knowledge: exceptional, divine_fragments: scattered, public_trust: low }
+territory: ["loc:othara.interior", "river approaches the Otharan Crown considers unsettled"]
+rules_hook: >
+  Druids who deliberately use khevra acquire cumulative contamination through a
+  rules-owned condition. Druid capabilities can detect contamination, resist its
+  effects, and disrupt khevric creatures or devices more effectively. Exact mechanics
+  require a deterministic rules definition; narrative prompts may not improvise them.
+knowledge_limits: >
+  The Asha do not know the Cantor's identity, the full planar mechanism, or that they
+  occupy the common cradle their own scattered people came from. Their evidence points
+  toward all three truths without proving them.
+leadership:
+  structure: >
+    A dyarchy. The Heart is the rooted inward seat — memory, the people, the order's
+    continuity. The Hand is the outward seat — contact with the world, disruption of
+    extraction, the pilgrim routes. The Heart holds; the Hand reaches.
+  heart: npc:tharivenna
+  hand: npc:orruvan
+leaders:
+  - npc:tharivenna
+  - npc:orruvan
+succession_crisis: >
+  The Heart is dying and the Hand will pass. Tharivenna wants continuity and patient
+  outward evidence but has named no successor. Vohria argues for intervention before
+  more land and people are lost, while accepting covert aid whose source she has not
+  audited. Orruvan argues that the Asha must first preserve their people and interior;
+  Emeric's genuine divine bond lends that position authority. Each approach protects
+  something real and risks sacrificing something else. The outcome is not authored in
+  advance: play determines who leads, what constraints bind them, and whether the dyarchy survives.
+external_influences:
+  - { actor: "npc:edreth_vale", on: "npc:vohria", note: "Covert backing through cutouts; Vohria does not know her benefactor is the Cantor." }
+  - { actor: "npc:emeric", on: "npc:orruvan", note: "Sincere, not a Cantor agent — which makes him the harder danger; he lends despair the authority of a god." }
+stance:
+  on_marovar: >
+    Marovar deliberately wounded Aurevost for status and remains responsible for that
+    choice, regardless of what its engineers failed to predict.
+  on_caldrin: >
+    The destruction is abhorrent; the resulting rejection zone is precious. The Asha
+    protect and study its recovery because the wounded land is now doing openly what
+    living systems elsewhere do too faintly to prove: refusing khevra's alignment.
+visibility: dm_only

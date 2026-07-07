@@ -1,0 +1,43 @@
+id: thread:the_long_reckoning
+kind: thread
+schema: dwd.thread.v1
+name: The Long Reckoning
+status: locked
+summary: >
+  Khevra raised Aurevost's population beyond the carrying capacity of its prior
+  economy. Any rapid loss of khevra now threatens famine and institutional collapse,
+  while continued use strengthens an incompletely understood planetary danger.
+stakes:
+  public: "If khevra fails, is restricted, or is replaced, who bears the disruption?"
+  hidden: >
+    No transition policy is canonically correct. Sourced-energy figures, demand
+    reduction, new food systems, continued limited khevra use, migration, Otharan
+    development, and preservation of the interior each carry different risks and
+    beneficiaries. Powerful factions will try to externalize every cost.
+participants:
+  - faction:second_setting_network
+  - faction:ilvane_accord
+  - faction:otharan_crown
+  - faction:asha
+  - faction:caelport_concord
+  - faction:house_sorrell
+  - faction:marovar
+leads:
+  - secret:the_second_setting
+  - secret:second_setting_significance
+  - clock:cantor_bridge_self_sustains
+  - clock:transition_window_closes
+  - "Crown proposals to cultivate selected interior land"
+  - "Asha evidence about what cultivation and setwork would destroy"
+  - "food, migration, rationing, and demand-reduction plans outside Othara"
+  - "who controls energy, yards, and distribution under each alternative"
+resolution_conditions:
+  - establish_a_table_chosen_strategy_for_bridge_and_civilian_risk
+  - make_distributional_costs_explicit
+  - resolve_land_and_food_policy_with_affected_people_as_participants
+  - accept_and_record_remaining_harm_instead_of_declaring_a_clean_victory
+visibility: dm_only
+note: >
+  Endgame pressure, not an opening quest. The thread records the strategy produced
+  through play; it does not require opening Othara, scaling one technology, or
+  banishing the Cantor in a prescribed order.

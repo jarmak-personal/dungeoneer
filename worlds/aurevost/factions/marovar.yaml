@@ -1,0 +1,25 @@
+id: faction:marovar
+kind: faction
+schema: dwd.faction.v1
+name: Marovar
+public_face: >
+  A maritime superpower built around shipyards, khevra deposits, and the engineering
+  legacy of House Sorrell. Three centuries ago it was young, weak, and easy to dismiss;
+  the Caldrin Demonstration made dismissing it strategically impossible. It now leads
+  Aurevost in airship design, construction, piloting, and doctrine.
+institutional_memory: >
+  Marovar understands Caldrin as a catastrophic engineering failure and the act that
+  secured a place among powers that had refused to recognize it.
+values: [invention, mobility, national ascent, Sorrellian prestige, recognition, command_of_the_sky]
+methods: [airship construction, pilot academies, shipbuilding, technical education, patent diplomacy, naval reach, industrial espionage, strategic demonstration]
+resources: { engineering: exceptional, navy: high, airships: world_leading, pilot_corps: world_leading, old_legitimacy: low }
+leaders:
+  - faction:house_sorrell
+stance:
+  on_caldrin: "A tragedy, a failure of prediction, and the moment the old powers were forced to take Marovar seriously."
+  on_othara: "An entrenched power that calls Marovari achievement negligence because it cannot forgive rapid ascent."
+  on_savarre: >
+    The establishment Marovar displaced technologically but not institutionally.
+    Savarran ships are overbuilt, overpriced, and infuriatingly difficult to sink,
+    but they cannot command a route that never touches the sea.
+visibility: table

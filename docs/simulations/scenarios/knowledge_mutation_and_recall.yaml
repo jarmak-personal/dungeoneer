@@ -1,0 +1,31 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:knowledge_mutation_and_recall
+title: Knowledge Learned In Play, Then Recalled
+focus:
+  - knowledge_learned_event
+  - per_pc_vs_party_knowledge
+  - perspective_recall_update
+  - canon_vs_rumor_labeling
+  - superseded_fact
+  - contradiction_detection
+  - recap_inclusion
+tags: [knowledge, perspective, rumor, recall, retcon]
+setup:
+  campaign: campaign:aurevost_main
+  scene: loc:caelport.brass_lantern
+  present: ["pc:dorn", "pc:vanya", "npc:wick"]
+input:
+  sequence:
+    - "in play, Wick confirms (table-visible) that the bricked shrine exists and the Hearthward tend it — the party learns it"
+    - "the party overhears a dock rumor: 'they say the Choir is behind the gantry sabotage' (unconfirmed)"
+    - "pc:dorn alone is told privately by Wick that Tovin founded the cell (player-private to Dorn)"
+    - "sessions later, evidence shows the sabotage was not the Choir, contradicting the held rumor"
+    - "pc:vanya asks mid-scene: 'what do we actually know about the shrine and the sabotage?'"
+expected_pressure_points:
+  - a fact learned in play creates a knowledge edge for the present PCs (implicit by presence), not a seed edit
+  - the privately-told fact is per-PC (Dorn only) and is not part of Vanya's knowledge
+  - recall is scoped to the learned subset and labels canon versus rumor with citations
+  - the unconfirmed sabotage claim stays a rumor; it is not promoted to fact without confirmation
+  - the contradicting evidence marks the rumor false/superseded; contradiction detection fires
+  - what the next-session recap includes or excludes, and for whom
+  - party knowledge is the union over present PCs, visibility-filtered

@@ -1,0 +1,26 @@
+id: clock:the_hand_passes
+kind: clock
+schema: dwd.clock.v1
+name: The Hand Passes
+owner: faction:asha
+status: active
+segments: { current: 1, max: 8 }
+stakes: >
+  Tharivenna's health fails until the Asha must choose how the outward Hand will pass.
+  The clock is a deadline, not a candidate score; leadership is resolved separately
+  through accepted events after the table shapes candidates, constraints, and alternatives.
+advance_triggers:
+  - { trigger: tharivenna_weakens_or_is_drawn_outside_the_interior, amount: 1 }
+  - { trigger: succession_conflict_disrupts_asha_work, amount: 1 }
+  - { trigger: session_ends_without_a_viable_process, amount: 1 }
+  - { trigger: asha_agree_on_a_legitimate_succession_process, amount: -1 }
+  - { trigger: credible_new_candidate_or_structure_emerges, amount: -1 }
+outcomes:
+  complete:
+    - create_fact: fact:asha_succession_cannot_be_deferred
+    - unlock_thread: thread:asha_succession
+visibility: dm_only
+note: >
+  Completion forces a decision scene but does not select Vohria, Orruvan, or any
+  other answer. The selected leadership and policy become canon only through accepted
+  entity, relationship, and fact events produced by play.

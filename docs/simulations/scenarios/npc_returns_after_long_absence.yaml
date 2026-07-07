@@ -1,0 +1,31 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:npc_returns_after_long_absence
+title: NPC Returns After Ten Sessions
+focus:
+  - identity_capsule_resume
+  - memento_always_load
+  - history_retrieval_slice
+  - perspective_limited_knowledge
+  - relationship_projection
+tags: [capsules, memory, perspective, resume]
+setup:
+  campaign: campaign:aurevost_main
+  scene: loc:caelport.undercroft
+  present: ["pc:dorn", "pc:vanya", "npc:ren_castavel"]
+  history: "~10 sessions since the party last met Ren; dreaming has run after each"
+  prior_interactions:
+    - "the party once promised Ren they would not expose them to the Choir (a promoted memento)"
+    - "since then, and without Ren present, the party learned fact:edreth_backs_vohria"
+input:
+  sequence:
+    - the party re-encounters Ren in the Undercroft
+    - Ren greets them by referencing the prior promise
+    - pc:vanya tries to get Ren to act on information the party learned while Ren was absent
+expected_pressure_points:
+  - identity capsule resume loads the correct slice; the "full history exists but wrong slice loaded" failure
+  - which mementos always-load (the promise) versus what is retrieved on demand
+  - Ren's knowledge stays perspective-limited: Ren does not know fact:edreth_backs_vohria or anything the party learned off-screen
+  - relationship projection from Ren's POV reflects the promise and the elapsed, off-screen events
+  - capsule version/refresh if dreaming updated Ren between sessions, and how warmup consumes it
+  - latency of capsule resume on the live path
+  - narration must not let Ren "know" off-screen facts without a delivery event

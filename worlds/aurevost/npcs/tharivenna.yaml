@@ -1,0 +1,52 @@
+id: npc:tharivenna
+kind: npc
+schema: dwd.npc.v1
+name: Tharivenna
+aliases: ["the Heart of the Asha", "the Heart"]
+lifecycle: active
+visibility: dm_only
+summary: >
+  The Heart of the Asha: the rooted inward seat of a dual leadership and an influential
+  keeper of the order's patient way. Beloved, gentle, and immensely powerful while rooted
+  in the interior or a rejection zone — and frail, dimming, almost ordinary anywhere khevra
+  runs thick, like a living Emberglass. She is dying, she knows the Hand must pass to a
+  successor, and she trusts no one who wants it. She reads the world's agony as a sickness
+  to be tended; that view preserves attention but may respond too slowly to an active threat.
+facets:
+  npc_profile:
+    public_role: >
+      To the Crown's surveyors, an obstinate druid-matriarch who will not move her people.
+      To the Asha, the center their whole world is arranged around.
+    voice: >
+      Warm, unhurried, certain in the old way. Speaks in living systems — roots, seasons,
+      the slow refusal of the land. Goes quiet and grieved whenever the talk turns to speed.
+    values: [the Asha's way, patient evidence, the living world, her people's continuity, "the vaurn"]
+    flaws:
+      - "gentleness as denial — she loves her people too much to frighten them into the speed the moment demands"
+      - "her sickness model can exclude evidence of deliberate attack"
+      - "hope and delay have become difficult to distinguish"
+    fears:
+      - "handing the Hand to the wrong successor and watching the Asha's way erased after she is gone"
+      - "that patience, her life's virtue, has become the thing that kills them"
+    current_intention: >
+      Choose a Hand she can trust to keep the patient outward reach — and she can find
+      neither a candidate nor the strength to let go.
+    goals:
+      - { id: "goal:keep_the_asha_whole", priority: high, visibility: "npc_private:npc:tharivenna" }
+      - { id: "goal:name_a_true_hand", priority: rising, visibility: "npc_private:npc:tharivenna" }
+    signature_line: "I know what I need to do. I don't know if I have the strength to do it."
+  location_presence:
+    current_location: loc:othara.thaenvohr
+    routine:
+      - { when: always, location: "loc:othara.thaenvohr", note: "she no longer travels; the journey out would unmake her" }
+  knowledge:
+    - { holder: "npc:tharivenna", target: "secret:asha_recoil_evidence", mode: knows, can_share: true, secrecy: faction_private, note: "Knows the shared evidence and interprets it as sickness requiring patient care." }
+    - { holder: "npc:tharivenna", target: "fact:some_asha_have_departed", mode: knows, can_share: true, secrecy: faction_private, note: "Knows a few have made the conscious choice to leave, and reads it among the signs her time is ending. She does not know what they left for." }
+  rules_binding:
+    stat_block_ref: rules:npc.archdruid
+    note: >
+      Power is zone-dependent and rules-owned: titanic while rooted in the interior or a
+      rejection zone (Thaenvohr, Caldrin), where living systems answer her; sharply
+      diminished in khevra-saturated places, where she dims like the Emberglass near active
+      sets. Exact thresholds require a deterministic rules definition; narrative prompts may
+      not improvise the falloff.

@@ -1,0 +1,13 @@
+id: faction:house_sorrell
+kind: faction
+schema: dwd.faction.v1
+name: House Sorrell
+public_face: >
+  Marovar's most celebrated shipwright dynasty, descended from Tavian Sorrell and
+  still dominant in high-performance propulsion figures. Its modern yards and
+  academies set the standard for airship engineering throughout Aurevost.
+values: [technical mastery, family legacy, Marovari power, proprietary knowledge]
+methods: [shipyards, apprenticeships, patents, archival secrecy, political marriage]
+resources: { coin: exceptional, engineers: exceptional, airship_yards: world_leading, pilot_academies: elite, political_access: high, archives: unique }
+territory: ["major Marovari shipyards"]
+visibility: table

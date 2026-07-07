@@ -1,0 +1,18 @@
+id: region:greywake
+kind: region
+schema: dwd.region.v1
+name: The Greywake
+parent: world:aurevost
+summary: >
+  A storm-bitten maritime region of drowned valleys, sky-harbors, fog, and competing
+  khevra claims. Shallow deposits and old shipping routes make it valuable enough
+  that distant powers interfere constantly without openly declaring war.
+geography:
+  features: [drowned valleys, sky-harbors, khevra shoals, fog]
+  weather: "Wet, grey, sudden squalls. Good airship weather is a luxury."
+powers_in_tension:
+  - faction:caelport_concord
+  - faction:choir
+  - "free captains and deposit claimants who answer to neither"
+tone: "Frontier money over old water. Everyone is one bad season from desperate."
+visibility: table

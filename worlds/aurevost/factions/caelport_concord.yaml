@@ -1,0 +1,20 @@
+id: faction:caelport_concord
+kind: faction
+schema: dwd.faction.v1
+name: The Caelport Concord
+public_face: >
+  The trade authority that certifies sets, licenses khevra imports, runs the lifts,
+  and keeps Caelport's airship gantries operating.
+values: [stability, profit, certified engineering, continuity of setwork]
+methods: [licensing, debt, wardens, quiet pressure, deposit concessions, certification]
+resources: { coin: high, muscle: medium, political_cover: high, public_trust: medium }
+territory: ["loc:caelport", "most surveyed khevra deposits in the Greywake"]
+leaders:
+  - npc:factor_aldous_renn
+stance:
+  on_choir: "A terror threat whose sabotage discredits every legitimate concern about khevra."
+  on_asha: "Foreign rural obstructionists with no relevance to Caelport trade."
+standards:
+  commercial_law: "Local code built on Savarran admiralty practice."
+  certification: "Concord certification is local, but insurers price against Savarran norms."
+visibility: table

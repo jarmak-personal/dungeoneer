@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+if ! command -v uv >/dev/null 2>&1; then
+  echo "pre-commit: uv is required to run dwdlint" >&2
+  exit 1
+fi
+
+echo "pre-commit: running dwdlint worlds/aurevost"
+uv run dwdlint worlds/aurevost

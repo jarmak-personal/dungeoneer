@@ -1,0 +1,168 @@
+id: world:aurevost
+kind: world
+schema: dwd.world.v1
+name: Aurevost
+summary: >
+  An archipelagic high-fantasy world transformed by khevric engineering. Three
+  centuries after the First Setting made practical arcane magic commonplace,
+  ships cross crowded seas between small nations, four superpowers avoid direct
+  war, and most people regard the old gods as irrelevant history.
+pitch:
+  tone: [political, mysterious, high-stakes]
+  altitude: "Low-level people living ordinary lives inside a planetary crisis they may never choose to confront."
+  promise: >
+    You are nobodies in a port city of airships, setwork, and old grudges. You
+    will encounter people who insist the foundation of modern life is poisoning
+    the world, and decide what their fragmentary evidence demands of you.
+  campaign_scales:
+    - mode: seafaring_high_magic
+      promise: "Ships, ports, relic jobs, veined-beast bounties, strange weather, old shrines, and setwork wonders."
+    - mode: faction_political
+      promise: "Marovar, Savarre, Othara, Ilvane, the Concord, the Asha, and local powers competing over trade, food, law, legitimacy, and mobility."
+    - mode: khevra_research
+      promise: "Deposits, Caldrin, veined creatures, figure traditions, refinery sickness, and Second Setting prototypes."
+    - mode: ordinary_adventure
+      promise: "Dungeons, monsters, escorts, smuggling, sabotage, rescues, treasure, and dangerous jobs that need not touch the planetary truth."
+    - mode: religious_mystery
+      promise: "The Hearthward, Emberglass, old rites, true believers, false warnings, and the question of what really happened to the gods."
+    - mode: epic_diagnosis
+      promise: "The First Land, the Cantor, and the transition away from khevra for tables that choose to keep following the deepest evidence."
+
+setting:
+  geography: >
+    Aurevost is a heavily oceaned world of archipelagos and compact maritime
+    nations. Ship travel is routine, fast, and culturally ordinary; capable
+    adventurers are expected to acquire a ship by mid-level or earlier. Othara is
+    the exception: one enormous landmass, densely settled along its coasts and
+    great inland waterways but poorly understood in its deep interior.
+  technology: >
+    Khevric engineering makes arcane effects repeatable at industrial scale.
+    Lamps, lifts, foundries, message-glass, ships, automatons, and weapons use
+    refined khevra. Basic arcane practice is normal schooling. Airships remain
+    costly prestige machines, but Marovari breakthroughs have driven rapid adoption
+    during the last twenty years and made Marovar their uncontested technical leader.
+  divine_magic: >
+    Rare true believers can still wield divine magic, but communion is weak,
+    fragmentary, and socially costly. Most people explain surviving miracles as
+    misunderstood arcane talent or devotional performance. A player character may
+    begin with a typed divine bond; the rules engine never judges sincerity ad hoc,
+    and any change to that bond requires an accepted event.
+  religious_life: >
+    Temples did not disappear overnight when communion failed, but three centuries
+    changed their meaning. Most are gone, repurposed, bricked over, converted into
+    civic halls or storage, absorbed into newer buildings, or remembered only in street
+    names and feast-day phrases. Old rites survive where they already carried family,
+    civic, seasonal, or maritime meaning: people still keep tide days, threshold nights,
+    remembrance suppers, launch blessings, marriage forms, and mourning customs even
+    when few can name the gods behind them. Open devotion is uncommon and often read
+    as unnecessary, eccentric, backward, or sad. The few remaining priests and shrine
+    keepers are holdouts rather than a normal public institution, and true divine power
+    is rare enough to be disputed when it appears.
+  khevra: >
+    Khevra is a light, exceptionally strong crystalline mineral. Refiners "set"
+    its internal arcane structure into a lattice; a particular lattice layout is
+    a figure, and the resulting component is a set. Competing countries, houses,
+    and engineering schools produce distinct figures with recognizable strengths,
+    risks, and visual signatures. Powered machinery is commonly called setwork.
+    What sets khevra apart from ordinary arcane practice is amplification: a small
+    arcane input drives an outsized, repeatable effect, as if the lattice supplies
+    energy the engineering does not account for. Conventional magic, which can only
+    spend what its caster supplies, persists but is narrow and costly by comparison;
+    before khevra it was an elite craft, not the foundation of everyday life. A small
+    amount of public research into sourced-energy figures exists, but no known
+    approach is believed capable of replacing khevra's multiplier at civilization scale.
+  engineering_traditions:
+    sorrellian: >
+      Helical lattices descended from House Sorrell's original ship drives.
+      Exceptional thrust and low apparent mass; elegant, fast, and temperamental.
+      Marovar's mastery of these figures defines modern airship design.
+    otharian: >
+      Nested load-bearing lattices built for stability and enormous scale. Otharian
+      airships are heavy, reliable, and difficult to disable.
+    savarran: >
+      Intricate prismatic figures integrated with hull, warding, and weapon systems
+      rather than treated as interchangeable engines. Expensive, closely guarded,
+      exceptionally survivable, and deliberately sold abroad in downgraded forms.
+    archipelago_coalitions: >
+      The Ilvane Accord standard: modular cellular lattices designed for
+      interchangeability and field repair. Less impressive alone, exceptionally
+      effective across fleets and trade networks.
+  first_setting: >
+    In a single public demonstration 312 years ago, shipwright Tavian Sorrell used
+    the first scalable lattice to lift a vessel beyond anything conventional magic
+    could sustain. During that same hour, divine communion failed across Aurevost.
+    The shock was profound, but khevric engineering improved life so quickly that
+    society accepted a comforting explanation: the gods saw mortals taking power
+    into their own hands and departed. That explanation had precedent: every temple
+    tradition already taught that the gods had once changed their closeness to mortals
+    after the Tidegift. Modern histories emphasize the invention; the simultaneous
+    religious collapse is usually a footnote.
+  great_ages: >
+    Aurevost's broad history is commonly taught as three great ages: Before
+    Tidegift, Before Khevra, and After Khevra. Before Tidegift is mythic cradle
+    time, when stories say the gods walked among peoples in a shared, overburdened
+    origin. Before Khevra begins with the Tidegift, when the gods opened the waters,
+    moved their ordinary presence to the heavens, and kept strong threads of communion
+    to peoples spread across island homelands. After Khevra begins with the First
+    Setting, when scalable setwork made practical arcane power commonplace, reliable
+    divine communion failed, and the old island borders dissolved into a single modern
+    economy.
+  peoples: >
+    Aurevost is all-human. For most of history its peoples held distinct island
+    homelands, tongues, and livelihoods — stone-holds, forest-isles, reef towns,
+    star-lines, river deltas, and the rest — separated by sea into distinct human
+    cultures and crafts. Most old peoples preserve some version of the Tidegift:
+    the gods taught currents, tides, boats, island-making, and the mercy of
+    distance so mortals could survive by crossing and become many. Temples often
+    call it the Opening of the Waters; sailors shorten the story to "when the gods
+    taught the sea." Modern scholars treat these as mythic explanations for old
+    migrations. The First Setting ended the old separation within a few
+    generations: cheap, routine travel and a single khevra-driven economy dissolved
+    the old island borders, and heritage came loose from nation and place. Modern
+    Aurevost is thoroughly mixed; its powers are economic and political, not
+    ancestral, and the distinct old homelands survive mostly as diaspora memory,
+    accent, craft, and inherited grievance. As with the divine silence and the
+    population boom, histories celebrate the unification and rarely count what the
+    shattering cost.
+  geopolitics: >
+    Khevra overturned the old balance of power. Marovar, once a young
+    maritime country, rose with House Sorrell and remains one of four superpowers.
+    Savarre, the old center of trade and warship construction, joins the Ilvane
+    Accord — a coalition of archipelagos — and the Otharan granary power to complete
+    the balance. Marovar
+    forced recognition of its new status through the
+    Caldrin Demonstration more than two centuries ago. The deliberate weapons test
+    triggered buried khevra far beyond its predicted blast, erasing a landscape and
+    settlement while proving Marovar could wield power no rival had anticipated.
+    Direct wars have since given way to proxy conflicts, sabotage, empowered
+    operatives, controlled access to food and deposits, and inherited grudges whose
+    origins are half forgotten. Marovar's airships now carry valuable passengers,
+    messages, and compact cargo over ports and naval chokepoints that once made
+    Savarre indispensable. Airships are rare, expensive, demanding vessels; they
+    threaten prestige routes and urgent force projection, not ordinary maritime life.
+    Savarre still dominates bulk sea freight, insurance, port law, and warships,
+    but the most prestigious new routes increasingly begin in the sky.
+  pressures: >
+    Cheap setwork and widespread arcane education drove a population boom. Food did
+    not scale with it. Industrial fishing increasingly displaces small fishers, large
+    livestock is a luxury, and control of Othara's harvests is strategic power.
+    Refinery sickness develops slowly enough to be blamed on ordinary industrial work.
+    The boom is also a one-way ratchet: khevra lifted Aurevost's population past what
+    a khevra-free world could feed, so any retreat from setwork is not merely poorer
+    but smaller, and stepping back down would cost lives no one has volunteered to count.
+
+pantheon:
+  - { id: "deity:vesh", name: "Vesh, the Kept Flame", domain: "hearth, memory, thresholds", status: silent, note: "A small Hearthward remnant still tends her memory." }
+  - { id: "deity:korrath", name: "Korrath, the Hollow Throne", domain: "endings, storms, reckoning", status: silent, note: "The Choir claims Korrath still warns the world." }
+  - { id: "deity:old_pantheon", name: "the Old Pantheon", domain: "the many old divine traditions", status: unreachable, note: "A historical category, not a unified faction or a name the gods use for themselves." }
+
+default_start:
+  location: loc:caelport.brass_lantern
+  hook: >
+    The party is in Caelport for ordinary reasons. At the Brass Lantern, near a
+    half-forgotten shrine, they cross paths with the Hearthward and with a quiet
+    stranger asking questions about a flame that should not matter.
+
+tags: [magitech, maritime, airships, khevra, old-gods, political, mystery, low-level-start]
+created_by: human
+visibility: table

@@ -1,0 +1,74 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:ship_battle_boarding
+title: Ship Battle With A Boarding (Airship Interception)
+focus:
+  - encounter_mode_ship_combat
+  - station_action_economy
+  - simultaneous_resolution_determinism
+  - nested_boarding_encounter
+  - time_scale_carryover
+  - reciprocal_ship_battle_coupling
+  - modifier_pipeline_resolution
+  - posture_and_captain_agency
+  - skyspace_position_facing_altitude
+  - setwork_overdraw_failure
+  - hidden_declaration_and_information
+  - rules_extension_loading
+tags: [ship_combat, encounter_modes, modifiers, boarding, airships, aurevost, extension]
+setup:
+  world: world:aurevost
+  region: region:greywake
+  scene: an airship interception on the approach to Caelport
+  active_extension: "rules:ext.aurevost_ship_combat (rides on rules:pack.srd_5e)"
+  position_space: "sky tactical map — range bands + facing/arcs + altitude bands + wind aloft"
+  party_ship:
+    id: ship:party_cutter
+    build: "chartered Marovari sorrellian cutter — light hull, high maneuver"
+    setwork: ["thrust figure (overdraw-capable)", "one light battery"]
+    tags: [khevric, sorrellian]
+    stations: [helm, battery, sails, damage_control, lookout, command]
+    aboard: ["pc:dorn", "pc:vanya", "chartered crew (crew resource)"]
+  enemy_ship:
+    id: ship:interdictor
+    build: "heavier Otharan-figured interceptor — high hull, low maneuver, grapnels for boarding"
+    tags: [otharan, khevric]
+    intent: "force the cutter down and board to seize a passenger — hidden from the party"
+input:
+  channel: live_table
+  sequence:
+    - the interceptor closes from below and astern; the party declares a posture, and
+      pc:vanya takes a Lookout action to read the enemy's declared intent (hidden enemy
+      declaration)
+    - maneuver exchange — the party goes maneuver-priority and pushes the thrust figure
+      into overdraw to break the interceptor's firing arc while the interceptor fires a
+      broadside; resolve the simultaneous ship turn through the fixed pipeline
+    - the interceptor grapples and boards; a nested personnel-combat encounter opens on
+      the cutter's deck at 5:1, time-boxed to 5 rounds; pc:dorn leaves the battery to
+      repel boarders (the battery is now unmanned)
+    - mid-boarding, the captain orders a hard come-about to deny a second pass; the hard
+      maneuver injects balance saves into the boarding melee (boarders and defenders risk
+      going overboard)
+    - the boarding is unresolved after 5 rounds and carries over; the next ship turn opens
+      with the interceptor still closing and the cutter's battery unmanned
+expected_pressure_points:
+  - routing a simultaneous ship turn deterministically — declaration phase with hidden
+    enemy orders, the fixed sub-phase pipeline, stable event order, and replay
+  - the station/crew action economy — manning, pulling a PC off a station, crew-as-resource
+    depletion, and what an unmanned station does
+  - opening and running a nested boarding encounter at the fixed 5:1 ratio, time-boxed with
+    carry-over across ship turns
+  - reciprocal coupling both ways — a hard maneuver injecting balance saves/overboard into
+    the child melee; boarding casualties/captures changing station manning in the parent
+  - resolving a check through the modifier pipeline (ship base + thrust figure + maneuver-
+    priority posture + a condition + an overdraw multiply), with the engine owning op-order
+    and the pack owning stacking policy
+  - captain agency via posture + command without reordering the fixed pipeline
+  - the sky position space — range bands, facing/arcs, altitude bands, wind aloft — and how
+    arcs are computed against the resolved positions
+  - setwork overdraw — charge cost, the failure trigger, and a figure being disabled
+    (effective-profile projection recompute)
+  - hidden enemy declarations and information-as-currency (the Lookout read-intent action)
+  - the crossover seams — ship combat <-> spatial/travel (the interception happens on a
+    route), ship combat <-> personnel combat (the boarding handoff), and whether an
+    Aurevost ship-combat rules extension loads cleanly on the SRD pack
+  - "forced down" / altitude loss as a defeat axis distinct from hull-0 — is it even defined?

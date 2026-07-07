@@ -1,0 +1,32 @@
+id: npc:tovin_marsh
+kind: npc
+schema: dwd.npc.v1
+name: Keeper Tovin Marsh
+aliases: ["Old Tovin", "the lamplighter"]
+lifecycle: active
+visibility: dm_only
+summary: >
+  An aging Undercroft lamplighter who, quietly, founded the new Hearthward cell and
+  tends the Kept Shrine behind the Brass Lantern. Gentle, frightened, and braver than
+  he looks. The friendly faction the players stumble into wears his face.
+facets:
+  npc_profile:
+    public_role: "Tends the Undercroft's public setwork lamps. Everyone knows him; no one looks at him."
+    voice: "Soft, tired, kind. Apologizes a lot. Goes very still when Vesh is named."
+    values: [memory, gentleness, "keep one true flame", protect the few who still believe]
+    flaws: [trusts too fast when someone is kind to the shrine, no stomach for conflict]
+    fears:
+      - faction:choir
+      - "that the ember will go out on his watch"
+    current_intention: "Decide whether these newcomers (the party) can be trusted with the shrine."
+    goals:
+      - { id: "goal:keep_the_flame", priority: high, visibility: "npc_private:npc:tovin_marsh" }
+  location_presence:
+    current_location: loc:caelport.undercroft
+    routine:
+      - { when: dusk, location: "loc:caelport", note: "lighting the lamps" }
+      - { when: night, location: "loc:caelport.vesh_shrine" }
+  knowledge:
+    - { holder: "npc:tovin_marsh", target: "secret:the_kept_flame", mode: knows, can_share: true, secrecy: private }
+  rules_binding:
+    stat_block_ref: rules:npc.commoner

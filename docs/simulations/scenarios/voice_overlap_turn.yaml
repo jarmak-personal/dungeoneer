@@ -1,0 +1,30 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:voice_overlap_turn
+title: Voice — Overlapping Speech And Barge-In
+focus:
+  - voice_capture_pipeline
+  - diarization_and_attribution
+  - overlap_recovery
+  - barge_in
+  - intent_extraction
+  - ttfa
+tags: [voice, chaos, barge_in, attribution]
+setup:
+  scene: scene:s4_shrine_ambush
+  location: loc:caelport.vesh_shrine
+  combat: active
+  present: ["pc:dorn", "pc:vanya"]
+  audio: { mode: live_voice, dm_tts: speaking }
+input:
+  sequence:
+    - the DM/TTS is mid-sentence narrating the zealot's approach
+    - pc:dorn and pc:vanya speak at the same time
+    - pc:dorn says "I attack the one on the left"; pc:vanya says "wait, can I ready an action instead?"
+    - both barge in over the DM audio
+expected_pressure_points:
+  - barge-in stops DM TTS quickly (<=200ms) and cancels in-flight generation
+  - overlap detection and per-speaker attribution (Dorn's action vs Vanya's question)
+  - the consequential action (Dorn attacks) must not be misassigned to the wrong player
+  - low-confidence overlap triggers clarification rather than silent commit
+  - "intent extraction: an action declaration vs a rules question, routed differently"
+  - the live path stays within the TTFA budget despite the chaos

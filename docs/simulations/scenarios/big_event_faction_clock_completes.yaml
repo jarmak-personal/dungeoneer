@@ -1,0 +1,28 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:big_event_faction_clock_completes
+title: Big Event — A Faction Clock Completes Mid-Session
+focus:
+  - clock_advancement
+  - live_vs_dream_commit
+  - cascading_consequences
+  - high_impact_patch_review
+  - memento_promotion
+  - world_state_mutation_boundary
+tags: [big_event, clocks, factions, review, consequences]
+setup:
+  scene: loc:caelport
+  present: ["pc:dorn", "pc:vanya", "npc:ren_castavel"]
+  active_clocks: ["clock:hearthward_exposed"]   # currently 3/4
+  state: mid_session
+input:
+  sequence:
+    - the party publicly denounces the Choir before the Concord, intending to get them suppressed
+    - but a triggered consequence advances clock:hearthward_exposed to 4/4 (the denunciation reveals the shrine the Choir was hunting)
+    - "the clock's outcome fires: create_fact fact:hearthward_shrine_exposed, unlock_thread thread:the_ember_must_move"
+expected_pressure_points:
+  - clock advancement during live play vs deferring to dreaming — which commits live?
+  - clock outcomes (create_fact, unlock_thread) as typed events, not model narration
+  - a high-impact world change (the Choir now knows where the flame is) — operator review vs auto-apply
+  - cascading NPC reactions (Ren, the Hearthward keepers) and memento promotions
+  - players experience the consequence in fiction; the bookkeeping is not their decision
+  - whether this large mutation is allowed live or must be a reviewable patch

@@ -1,0 +1,26 @@
+id: thread:the_ember_must_move
+kind: thread
+schema: dwd.thread.v1
+name: The Ember Must Move
+status: locked
+summary: >
+  The Kept Shrine has been exposed. The Hearthward cannot defend the Emberglass, and
+  moving it risks losing the stable conditions that make its faint responses legible.
+stakes:
+  public: "Old people need help moving a devotional relic before authorities or militants seize it."
+  hidden: "Its route can connect Caelport's divine evidence to Caldrin or eventually the Asha, but Edreth can follow careless movement."
+participants:
+  - faction:hearthward
+  - faction:choir
+  - faction:caelport_concord
+  - npc:tovin_marsh
+  - npc:wick
+leads:
+  - loc:caldrin_reach
+  - "records of relics behaving strangely near the Otharan interior"
+  - "ship captains who transport devotional objects without Concord manifests"
+resolution_conditions:
+  - establish_safe_custody
+  - preserve_emberglass_observations
+  - choose_between_caldrin_and_otharan_leads
+visibility: dm_only

@@ -1,0 +1,21 @@
+id: loc:caelport.vesh_shrine
+kind: location
+schema: dwd.location.v1
+name: The Kept Shrine of Vesh
+parent: loc:caelport.brass_lantern
+scale: room
+summary: >
+  A small bricked-over shrine behind the Brass Lantern's bar. At its heart, in a
+  cracked lantern of grey glass, an ember burns that has never gone out since the
+  First Setting. The Hearthward believe it preserves a path to an imprisoned god.
+access: { public: false, restrictions: ["known only to the Hearthward and Wick"] }
+atmosphere:
+  sights: ["the Emberglass — a cracked grey lantern holding a steady ember", "faded remembrance-night marks", "kneeling-worn stone"]
+  sounds: ["near-silence", "the lift-hum, fainter here"]
+  smells: ["cold stone", "a faint warmth that should not have a smell but does"]
+contains:
+  - item:emberglass
+security:
+  danger_level: 1
+  note: "The danger here is not physical. If the Choir learns what the ember is, that changes."
+visibility: dm_only

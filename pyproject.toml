@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dungeoneer-dwdlint"
+version = "0.1.0"
+description = "A structural linter for Dungeoneer World Definition YAML"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+  "PyYAML>=6.0.2,<7",
+]
+
+[project.scripts]
+dwdlint = "dwdlint.cli:main"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<9",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dwdlint"]

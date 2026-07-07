@@ -1,0 +1,67 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:game_start_cold_boot
+title: Game Start (Cold Boot)
+focus:
+  - campaign_bootstrap
+  - world_import
+  - session_zero_to_dm_profile
+  - pc_onboarding_and_identity
+  - device_pairing
+  - cold_capsule_creation
+  - first_scene_assembly
+  - opening_narration_delivery
+  - safety_guardrails
+  - shared_display
+tags:
+  - bootstrap
+  - lifecycle
+  - cold_start
+  - session_zero
+  - capsules
+setup:
+  starting_state:
+    campaigns: none
+    events: none
+    capsules: none
+    dreaming_runs: none
+    world_packs_available:
+      - worlds/aurevost   # DWD seed pack on disk, not yet imported
+  session_zero_choices:
+    tone: heroic but grounded
+    rating: PG-13
+    lines: ["no on-screen harm to children"]
+    veils: ["torture fades to black"]
+    dm_profile_preset: "The Storyteller"
+    profile_overrides:
+      lethality: standard
+      story_pressure: guided
+  participants:
+    host: operator
+    players:
+      - { name: A, device: phone, status: unpaired, pc: "pc:dorn" }
+      - { name: B, device: phone, status: unpaired, pc: "pc:vanya" }
+      - { name: C, device: phone, status: unpaired, pc: new }
+    table_console: { device: laptop, status: unpaired }
+    shared_display: { device: tv, status: unpaired }
+input:
+  channel: operator_console
+  sequence:
+    - import the Aurevost world pack into a new campaign
+    - run session zero; record safety/tone choices and seed the dm_profile
+    - pair the three player phones, the table console, and the shared display
+    - onboard PCs — select pc:dorn and pc:vanya, create C's new PC
+    - start session one
+    - open the first scene at loc:caelport.brass_lantern and deliver the
+      opening narration to the table, with a scene card on the shared display
+expected_pressure_points:
+  - bootstrap ordering and lifecycle events (campaign.created / session.started /
+    scene.opened are likely absent from the event taxonomy)
+  - cold capsule creation from seed before any dreaming has run (capsules are
+    described as dreaming-maintained; the initial-from-seed path may be undefined)
+  - session-zero questionnaire to dm_profile mapping, and lines/veils becoming
+    enforceable guardrails rather than prose
+  - PC onboarding plus binding a player device identity to a PC; device pairing auth
+  - empty-history context assembly when opening a scene with zero prior events
+  - authorship of the first narration under the chosen persona, and routing the
+    scene card to the shared display
+  - no dm_only seed content leaking into the opening table narration

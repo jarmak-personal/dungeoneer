@@ -1,0 +1,131 @@
+# Seed relationships. Directional, multi-axis. Projections; rebuilt from events in play.
+relationships:
+  - id: rel:ren_castavel->edreth_vale
+    schema: dwd.relationship.v1
+    source: npc:ren_castavel
+    target: npc:edreth_vale
+    axes: { trust: 40, fear: 35, respect: 70, affinity: 25, suspicion: 30 }
+    summary: "Ren reveres the Cantor's apparent courage but has begun to question why every strategy ends in public terror and more setwork."
+    visibility: dm_only
+
+  - id: rel:wick->tovin_marsh
+    schema: dwd.relationship.v1
+    source: npc:wick
+    target: npc:tovin_marsh
+    axes: { trust: 90, fear: 0, respect: 60, affinity: 85, suspicion: 0 }
+    summary: "Wick would burn Caelport down before letting anything happen to the old man or his flame."
+    visibility: dm_only
+
+  - id: rel:hearthward->choir
+    schema: dwd.relationship.v1
+    source: faction:hearthward
+    target: faction:choir
+    axes: { fear: 80, trust: -90, affinity: -40, suspicion: 75, sympathy: 25 }
+    summary: "The Hearthward recognize real pain inside the Choir but believe Edreth turns every warning away from patient understanding."
+    visibility: dm_only
+
+  - id: rel:choir->caelport_concord
+    schema: dwd.relationship.v1
+    source: faction:choir
+    target: faction:caelport_concord
+    axes: { fear: 30, trust: -100, affinity: -100, respect: -40 }
+    summary: "Choir members see the Concord as proof that no institution will investigate a danger on which its comfort depends."
+    visibility: dm_only
+
+  - id: rel:otharan_crown->asha
+    schema: dwd.relationship.v1
+    source: faction:otharan_crown
+    target: faction:asha
+    axes: { fear: 0, trust: -20, affinity: -10, respect: -50, suspicion: 15 }
+    summary: "The Crown regards the Asha as numerous enough to inconvenience surveys and too weak to affect state policy."
+    visibility: dm_only
+
+  - id: rel:otharan_crown->marovar
+    schema: dwd.relationship.v1
+    source: faction:otharan_crown
+    target: faction:marovar
+    axes: { trust: -65, fear: 25, respect: 20, affinity: -70, suspicion: 55 }
+    summary: "Othara accepts Marovar's destructive capacity but rejects its claim that Caldrin made that capacity legitimate power."
+    visibility: table
+
+  - id: rel:asha->marovar
+    schema: dwd.relationship.v1
+    source: faction:asha
+    target: faction:marovar
+    axes: { trust: -90, fear: 40, respect: -45, affinity: -80, suspicion: 80 }
+    summary: "The Asha condemn Marovar for Caldrin while protecting the rejection zone its violence accidentally created."
+    visibility: dm_only
+
+  - id: rel:savarre->marovar
+    schema: dwd.relationship.v1
+    source: faction:savarre
+    target: faction:marovar
+    axes: { trust: -20, fear: 55, respect: 75, affinity: -30, suspicion: 60, rivalry: 90 }
+    summary: "Savarre respects Marovari invention and fears airships will make its ports, sea lanes, and admiralty institutions optional for the world's most prestigious urgent traffic."
+    visibility: dm_only
+
+  - id: rel:marovar->savarre
+    schema: dwd.relationship.v1
+    source: faction:marovar
+    target: faction:savarre
+    axes: { trust: -30, fear: 20, respect: 75, affinity: -35, suspicion: 60, rivalry: 90 }
+    summary: "Marovar owns the airship frontier but still borrows under Savarran law, insures cargo through Savarran institutions, and cannot cheaply move bulk freight through the sky."
+    visibility: dm_only
+
+  # --- The Asha succession ---
+
+  - id: rel:tharivenna->orruvan
+    schema: dwd.relationship.v1
+    source: npc:tharivenna
+    target: npc:orruvan
+    axes: { trust: 75, fear: 0, respect: 80, affinity: 90, suspicion: 25 }
+    summary: "Fifty years of love, now divided by where the Hand should go. She trusts the man entirely and cannot trust his counsel of walls — and grieves the gap between the two."
+    visibility: dm_only
+
+  - id: rel:tharivenna->vohria
+    schema: dwd.relationship.v1
+    source: npc:tharivenna
+    target: npc:vohria
+    axes: { trust: 25, fear: 30, respect: 55, affinity: 35, suspicion: 70 }
+    summary: "She distrusts where Vohria would lead and sees her own young self in the girl. The distrust is right for reasons she cannot name: a hand she cannot see rests on Vohria's shoulder."
+    visibility: dm_only
+
+  - id: rel:vohria->tharivenna
+    schema: dwd.relationship.v1
+    source: npc:vohria
+    target: npc:tharivenna
+    axes: { trust: 40, fear: 0, respect: 65, affinity: 45, suspicion: 30 }
+    summary: "Reveres the Heart and loves her, and believes with her whole grief that the old woman's patience is now the obstacle killing everyone."
+    visibility: dm_only
+
+  - id: rel:vohria->edreth_vale
+    schema: dwd.relationship.v1
+    source: npc:vohria
+    target: npc:edreth_vale
+    axes: { trust: 70, fear: 0, respect: 60, affinity: 50, suspicion: 10 }
+    summary: "Trusts a sympathetic outside benefactor who arms the cause and asks little. Does not know his name, his face, or that he is the thing she is fighting."
+    visibility: internal
+
+  - id: rel:edreth_vale->vohria
+    schema: dwd.relationship.v1
+    source: npc:edreth_vale
+    target: npc:vohria
+    axes: { trust: 0, fear: 0, respect: 20, affinity: 0, suspicion: 0 }
+    summary: "A useful, expendable instrument. He steers her toward the spectacle that will discredit the Asha and drive governments to more setwork. The warmth is craft."
+    visibility: internal
+
+  - id: rel:orruvan->emeric
+    schema: dwd.relationship.v1
+    source: npc:orruvan
+    target: npc:emeric
+    axes: { trust: 70, fear: 0, respect: 75, affinity: 55, suspicion: 15 }
+    summary: "Leans on the cleric's certainty to fill the space his own hope used to hold. Emeric's holiness lets Orruvan call his despair wisdom."
+    visibility: dm_only
+
+  - id: rel:emeric->orruvan
+    schema: dwd.relationship.v1
+    source: npc:emeric
+    target: npc:orruvan
+    axes: { trust: 55, fear: 0, respect: 50, affinity: 45, suspicion: 10 }
+    summary: "Sees in Orruvan the reachable Asha vessel for sanctuary — sincere regard braided with the hope of winning the order to seal the deep."
+    visibility: dm_only

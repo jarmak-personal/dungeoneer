@@ -1,0 +1,43 @@
+id: loc:othara.first_land
+kind: location
+schema: dwd.location.v1
+name: The First Land
+parent: loc:othara.interior
+scale: site
+summary: >
+  The common cradle of Aurevost's gods and peoples — the single origin all the peoples
+  diverged from before the gods opened the waters and led them to their separate island
+  homelands. The First Land was not abandoned because it was corrupt or dead; it was
+  overburdened by holding all peoples, gods, divine traffic, and origin-memory in one living
+  place. The Tidegift let the peoples become many and let the land heal. Now, as the
+  birthplace of the gods, it rejects khevra more strongly than anywhere else in Aurevost.
+  Its significance is not known at campaign start, including by the Asha who unknowingly
+  protect its approaches and do not suspect it is the home their whole people came from.
+access:
+  public: false
+  restrictions:
+    - "unknown route"
+    - "requires converging divine and natural evidence"
+    - "active khevra sets, modern instruments, and setwork-supported expeditions fail on approach"
+properties:
+  tidegift: >
+    The gods did not drive mortals out. They taught currents, tides, boatcraft,
+    island-making, and the sacred law of distance so the First Land could stop bearing
+    all life at once and the peoples could become distinct. Temple speech calls this
+    the Opening of the Waters; sailor speech remembers it as when the gods taught the sea.
+    As the peoples spread outward, the gods stopped walking the world as their ordinary
+    mode of presence and moved to the heavens, keeping strong threads back to the peoples.
+  healed_source: >
+    The land's long rest made return possible in a limited, covenantal sense: witnesses,
+    pilgrims, and low/no-khevra travelers can be received. Armies, survey companies,
+    airship expeditions, refineries, and extraction projects bring the modern pressure the
+    Tidegift was meant to relieve.
+  divine: "Imprisoned gods can exert slightly more guidance toward this place than elsewhere."
+  natural: "Living systems resist khevra alignment and planar contamination with unusual strength."
+  strategic: "Understanding and amplifying this rejection is part of the path to banishing the Cantor."
+  current_absence: >
+    Modern Aurevost avoids the place because the tools it uses to map, reach, exploit,
+    and hold territory break down there. The Asha remain compatible with its margins
+    because their practice is living-systems aligned and low/no-khevra, though they do
+    not know the source they protect.
+visibility: internal

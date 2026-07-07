@@ -1,0 +1,39 @@
+id: npc:edreth_vale
+kind: npc
+schema: dwd.npc.v1
+name: Cantor Edreth Vale
+aliases: ["the Cantor"]
+lifecycle: active
+visibility: internal
+summary: >
+  The Cantor's current Aurevost body, introduced twenty years ago as airships began
+  spreading rapidly. Edreth leads the most visible anti-khevra movement so that
+  genuine warnings become associated with his extremism.
+facets:
+  npc_profile:
+    public_role: >
+      A warm, compelling preacher who argues that powered industry has poisoned
+      bodies, seas, and now the sky. The Concord has placed a quiet price on him.
+    voice: "Warm, certain, sorrowful. Never raises his voice. Makes desperation sound like moral clarity."
+    values: [control of opposition, increased khevra use, completion of planar merger]
+    flaws: [near-limitless hubris, cannot take local resistance seriously, enjoys turning truth into ridicule]
+    fears:
+      - "a scalable rejection of khevra before the planar connection becomes self-sustaining"
+      - "genuine divine pathways joining with the Asha's evidence"
+    goals:
+      - { id: "goal:edreth_complete_planar_merger", priority: high, visibility: internal }
+      - { id: "goal:control_anti_khevra_opposition", priority: high, visibility: internal }
+      - { id: "goal:understand_the_caelport_ember", priority: rising, visibility: internal }
+    current_intention: >
+      Let Ren identify Caelport's faithful and determine whether their flame is merely
+      devotional or a pathway Edreth must discredit, capture, or destroy.
+  location_presence:
+    current_location: "mobile; not presently in Caelport"
+  knowledge:
+    - { holder: "npc:edreth_vale", target: "secret:cantor_operational_knowledge", mode: knows, can_share: false, secrecy: private }
+  rules_binding:
+    stat_block_ref: rules:creature.cantor_body
+    note: "Power scales with the current planar connection; an ordinary fixed zealot stat block is insufficient."
+facets_note: >
+  Edreth is a recent identity, not a visibly ageless historical person. Destroying
+  this body severely reduces the Cantor's local agency but does not kill its whole.

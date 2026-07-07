@@ -1,0 +1,28 @@
+id: rules:pc.vanya
+schema: dwd.character_sheet.v1
+pack: rules:pack.srd_5e
+binds: pc:vanya         # narrative entity in worlds/aurevost/pcs/vanya.yaml
+note: >
+  Pregen starter sheet — campaign rules state built from the srd_5e pack. Illustrative
+  level-1 Rogue build.
+level: 1
+class: { name: Rogue }
+proficiency_bonus: 2
+abilities: { str: 9, dex: 16, con: 12, int: 12, wis: 14, cha: 13 }
+ac: 14                  # leather + dex
+hp: { max: 9, current: 9, hit_die: d8 }
+speed: { walk: 30 }
+saving_throw_proficiencies: [dex, int]
+skill_proficiencies: [insight, perception, investigation, stealth]
+skills:
+  insight: 4            # wis +2, prof +2
+  perception: 4         # wis +2, prof +2
+  investigation: 3      # int +1, prof +2
+  stealth: 5            # dex +3, prof +2
+attacks:
+  - name: Rapier
+    kind: melee_weapon_attack
+    to_hit: 5           # dex +3, prof +2
+    reach: 5
+    damage: { roll: "1d8+3", type: piercing }
+conditions: []

@@ -1,0 +1,37 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:dreaming_run_clock_advance
+title: Dreaming Run — Replay, Patches, And A Clock Advance
+focus:
+  - session_replay_determinism
+  - patch_generation
+  - review_tier_routing
+  - rejected_patch
+  - memento_promotion
+  - clock_advancement
+  - capsule_refresh
+  - conflicting_patches
+tags: [dreaming, patches, review, clocks, offline]
+setup:
+  campaign: campaign:aurevost_main
+  prior_session: session:aurevost_003   # ended; the dreaming job starts
+  channel: offline_dreaming_job
+  in_session_events:
+    - "the party publicly sided with Vohria's faction at the Rootmoot"
+    - "pc:dorn privately promised Orruvan he would protect the interior routes"
+    - "an inference: the party's stance shifted the Asha succession"
+input:
+  sequence:
+    - dreaming replays session:aurevost_003 from its frozen event range
+    - it proposes advancing clock:the_hand_passes (trigger succession_conflict_disrupts_asha_work)
+    - it proposes promoting a memento for Orruvan from pc:dorn's promise
+    - it proposes a relationship flip — the Asha now distrust the party — a loyalty-level change
+    - two proposals conflict on the same events: one reads succession_conflict_disrupts_asha_work (+1), the other credible_new_candidate_or_structure_emerges (-1)
+expected_pressure_points:
+  - replay is ordered by append sequence, not world_time; the rebuild must be deterministic
+  - review-tier routing: a routine clock tick with a defined outcome auto-applies; the loyalty-level relationship flip requires operator review, not auto-apply
+  - a rejected patch remains an append-only audit record
+  - memento promotion requires a source event (the promise); no memento without provenance
+  - the two conflicting clock patches must be resolved, not both applied
+  - capsule refresh for Orruvan and Vohria after accepted patches
+  - the clock outcome is a typed event with a defined outcome, not model narration
+  - no silent world mutation; players learn of the off-screen change through play next session

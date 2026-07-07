@@ -1,0 +1,26 @@
+id: pc:vanya
+kind: pc
+schema: dwd.pc.v1
+name: Vanya
+lifecycle: active
+visibility: table
+summary: >
+  A sharp-eyed Caelport fixer who reads people before they finish their sentence.
+  Pregen perceptive scout/face for the Aurevost starter table.
+tags: [aurevost, pregen, scout, caelport_start]
+created_by: human
+facets:
+  pc_profile:
+    pronouns: she/her
+    heritage: "Mixed Otharan-Savarran; grew up between Caelport's harbor offices and its undercrofts."
+    concept: "Scout and face — quick reads, quicker exits, trusts her gut over a ledger."
+    voice: "Wry, watchful, economical. Asks the question nobody else thought to ask."
+    values: [reading the room, her people over contracts, always knowing the exits]
+    flaws: [keeps her own counsel too long, will gamble on a hunch]
+    hooks:
+      - "In Caelport chasing a contact who let slip the words 'the kept flame.'"
+      - "Has a knack for telling when someone is bluffing about strength they do not have."
+  location_presence:
+    current_location: loc:caelport.brass_lantern
+  rules_binding:
+    sheet_ref: rules:pc.vanya

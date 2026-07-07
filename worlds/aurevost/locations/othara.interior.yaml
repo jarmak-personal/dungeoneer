@@ -1,0 +1,19 @@
+id: loc:othara.interior
+kind: location
+schema: dwd.location.v1
+name: Othara's Interior
+parent: region:othara
+scale: territory
+summary: >
+  A vast region beyond the Crown's reliable river charts. It is not empty: the Asha
+  maintain communities, routes, archives, and places of gathering throughout it.
+access:
+  public: false
+  restrictions: ["shifting waterways", "setwork failure", "incomplete Crown charts", "Asha-controlled routes"]
+atmosphere:
+  sights: ["river branches absent from official maps", "enormous root systems", "abandoned survey sets left where they failed"]
+  sounds: ["dense living water", "distant gatherings", "no industrial resonance"]
+  smells: ["wet earth", "leaf mold", "clean rain"]
+contains:
+  - loc:othara.first_land
+visibility: dm_only

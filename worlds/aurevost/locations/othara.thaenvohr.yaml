@@ -1,0 +1,27 @@
+id: loc:othara.thaenvohr
+kind: location
+schema: dwd.location.v1
+name: Thaenvohr
+parent: loc:othara.interior
+scale: site
+summary: >
+  The Rootmoot: the deep-grown heart of Asha country, seat of the Heart and the Hand and home
+  of the living oral archives. A vast old-growth gathering-place around a single immense tree
+  whose heartwood the Asha read like a chronicle. Here living systems answer the order most
+  strongly, and the land's refusal of khevra — the vaurn — is something a visitor can almost
+  feel against the skin.
+access:
+  public: false
+  restrictions: ["Asha-controlled routes only", "shifting waterways", "setwork fails on the approach", "outsiders come blindfolded or not at all"]
+atmosphere:
+  sights: ["one tree wider than a ship, its heartwood scarred with generations of marks", "no metal, no sets, no lamps — only fire and daylight", "elders who remember rivers that have since moved"]
+  sounds: ["water with no industrial resonance under it", "many voices keeping the archives by speaking them", "wind in a canopy that swallows sound"]
+  smells: ["wet earth", "green wood", "woodsmoke", "no ozone, no hot set-housing — its absence is the first thing outsiders notice"]
+contains: []
+security:
+  danger_level: 1
+  controlling_faction: faction:asha
+  note: >
+    The danger here is not violence. It is that the Asha's whole future is being decided at the
+    Rootmoot while the Heart fails, and a wrong word to the wrong faction can tip it.
+visibility: dm_only

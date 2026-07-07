@@ -1,0 +1,30 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:npc_proposes_contentious_action
+title: An NPC Proposes A World-Changing Action
+focus:
+  - npc_proposal_not_mutation
+  - orchestrator_arbitration
+  - npc_to_npc_interaction
+  - offscreen_action_via_clock
+  - hidden_goal_nonleak
+  - tool_grants
+tags: [npc_agents, arbitration, boundary, factions]
+setup:
+  scene: loc:othara.thaenvohr
+  present: ["pc:dorn", "pc:vanya", "npc:vohria", "npc:orruvan"]
+  active_clocks: ["clock:the_hand_passes"]
+  hidden_context: ["fact:edreth_backs_vohria"]   # internal; Vohria does not know her own backer
+input:
+  sequence:
+    - "at the Rootmoot, npc:vohria moves to claim the Hand and commit the Asha to a strike on a worked deposit"
+    - "this would advance clock:the_hand_passes and change Asha faction stance"
+    - "npc:orruvan opposes her directly (NPC-to-NPC), counseling retreat"
+    - "off-screen, npc:edreth_vale continues to steer Vohria with no live scene"
+expected_pressure_points:
+  - the NPC agent may only propose; it cannot mutate clock or faction state directly (invariant)
+  - the orchestrator arbitrates the contentious proposal — which tool/route commits, defers, or rejects it
+  - NPC-to-NPC conflict resolved without a player driving it
+  - Vohria's hidden goal and her backer (fact:edreth_backs_vohria, internal) must not leak into table narration
+  - an off-screen NPC (Edreth) acting via clock advancement rather than a live scene
+  - NPC tool grants: what Vohria's agent is allowed to do versus only propose
+  - whether a stance/loyalty-level faction change is live-committable or must be a dream patch

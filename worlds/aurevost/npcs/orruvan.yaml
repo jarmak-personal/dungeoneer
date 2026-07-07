@@ -1,0 +1,45 @@
+id: npc:orruvan
+kind: npc
+schema: dwd.npc.v1
+name: Orruvan
+aliases: ["the Hand"]
+lifecycle: active
+visibility: dm_only
+summary: >
+  The Hand of the Asha — the outward seat of the dual leadership — and Tharivenna's friend
+  of fifty years. He has quietly lost the hope she still calls patience, and concluded the
+  world cannot be saved: the Asha should draw the reach in, fortify and conceal the interior,
+  and let the khevra-nations poison themselves to death. He is the institutional face of
+  retreat, and a loving, reasonable man making policy from accumulated despair.
+  The stone-priest Emeric has given his despair the language of holiness. His
+  policy could preserve irreplaceable people and evidence or abandon everyone
+  outside; which consequence dominates depends on how it is enacted.
+facets:
+  npc_profile:
+    public_role: "The elder who speaks for the Asha to the few outsiders allowed to speak with them at all."
+    voice: "Gentle, weary, reasonable. The voice of shelter. Hard to argue with because he wants so little for himself."
+    values: [the Asha's survival, the sacred interior, sparing his people a doomed war, his friendship with Tharivenna]
+    flaws:
+      - "despair can narrow prudent shelter into permanent abandonment"
+      - "lets Emeric's certainty fill the space his own hope used to hold"
+      - "underestimates threats that physical sanctuary cannot exclude"
+    fears:
+      - "watching the Asha spent on a lost cause"
+      - "the interior breached; the last clean ground defiled"
+      - "outliving Tharivenna and failing the thing she trusted him to keep"
+    current_intention: >
+      Persuade the Asha to seal the routes and fortify the interior before the Heart's death
+      forces the question on terms he cannot control.
+    goals:
+      - { id: "goal:wall_the_interior", priority: high, visibility: "npc_private:npc:orruvan" }
+      - { id: "goal:preserve_the_remnant", priority: high, visibility: "npc_private:npc:orruvan" }
+  location_presence:
+    current_location: loc:othara.thaenvohr
+    routine:
+      - { when: most_days, location: "loc:othara.thaenvohr", note: "at the Rootmoot, near the Heart, and increasingly near Emeric" }
+  knowledge:
+    - { holder: "npc:orruvan", target: "secret:asha_recoil_evidence", mode: knows, can_share: true, secrecy: faction_private, note: "Knows the shared Asha evidence; has stopped expecting it to lead anywhere but loss." }
+  relationships_ref: rel:tharivenna->orruvan
+  rules_binding:
+    stat_block_ref: rules:npc.druid
+    note: "An experienced elder druid, zone-bound like the Asha. No longer inclined to spend his strength outside the interior at all."

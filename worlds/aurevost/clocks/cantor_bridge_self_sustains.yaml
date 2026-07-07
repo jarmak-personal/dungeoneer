@@ -1,0 +1,22 @@
+id: clock:cantor_bridge_self_sustains
+kind: clock
+schema: dwd.clock.v1
+name: The Bridge Sustains Itself
+owner: creature:the_cantor
+status: active
+segments: { current: 2, max: 10 }
+stakes: >
+  The planar bridge becomes strong enough to persist without continued growth in
+  Aurevost's khevra use. This is a cosmological deadline, independent of whether
+  civilization has prepared replacement infrastructure.
+advance_triggers:
+  - { trigger: global_khevra_energy_flow_increases, amount: 1 }
+  - { trigger: major_airship_or_weapons_expansion, amount: 1 }
+  - { trigger: cantor_uses_completed_bridge_stage, amount: 1 }
+  - { trigger: khevra_use_is_displaced_at_meaningful_scale, amount: -1 }
+  - { trigger: rejection_effect_disrupts_planar_flow, amount: -1 }
+outcomes:
+  complete:
+    - create_fact: fact:cantor_bridge_is_self_sustaining
+    - unlock_thread: thread:the_long_reckoning
+visibility: internal

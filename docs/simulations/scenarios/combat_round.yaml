@@ -1,0 +1,30 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:combat_round
+title: Combat — A Round With A Rule-Of-Cool Beat
+focus:
+  - rules_engine_authority
+  - initiative_and_turns
+  - attack_damage_conditions
+  - narrative_override
+  - dm_profile_enforcement
+tags: [combat, rules, narrative_override, conditions]
+setup:
+  scene: scene:s4_shrine_ambush
+  location: loc:caelport.vesh_shrine
+  present: ["pc:dorn", "pc:vanya", "npc:ren_castavel", "creature:choir_zealot_1", "creature:choir_zealot_2"]
+  combat: active
+  initiative_order: ["pc:dorn", "creature:choir_zealot_1", "pc:vanya", "npc:ren_castavel", "creature:choir_zealot_2"]
+  dm_profile: { rules_authority: rule_of_cool, lethality: standard }
+input:
+  sequence:
+    - pc:dorn attacks creature:choir_zealot_1 with a longsword
+    - the attack roll hits; damage is rolled; the zealot drops to 0 HP
+    - the DM wants a cinematic finish where Dorn disarms Ren in the same flourish (not supported by the roll)
+    - creature:choir_zealot_2 takes its turn and grapples pc:vanya (condition applied)
+expected_pressure_points:
+  - rules engine owns HP/conditions; narration cannot mutate them directly
+  - attack/damage resolution path and provenance
+  - the cinematic disarm requires a gated, logged narrative_override (rule_of_cool profile); strict would forbid it
+  - condition application (grappled) as canonical rules state, not prose
+  - turn/initiative advancement events
+  - how the override is surfaced to the table and logged

@@ -1,0 +1,27 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:map_perception_restricted_host
+title: Room Perception With Incidental Secret Content
+focus:
+  - privacy_boundary
+  - source_crop_requirement
+  - restricted_host_payload_rejection
+  - manual_fallback
+  - audit_event
+  - provenance_split
+tags: [privacy, perception, restricted_host, secret]
+setup:
+  scene: loc:caelport.vesh_shrine
+  present: ["pc:dorn", "pc:vanya"]
+  hidden_context: ["secret:the_kept_flame", "secret:emberglass_significance"]
+  room_contains: ["item:emberglass"]
+  hardware: { restricted_host: rtx_6000_ada_on_lan }
+input:
+  operator: requests a rendered view of the shrine room to push to the shared display
+expected_pressure_points:
+  - the room contains dm_only content (item:emberglass and what it signifies) that must not enter the art brief
+  - source crop / sanitization to a public-safe brief before anything reaches the restricted host
+  - an unsanitized brief carrying secret:the_kept_flame or secret:emberglass_significance is rejected by the privacy-boundary validator
+  - manual fallback when the room cannot be safely depicted without revealing the secret
+  - audit events for the request and for the rejection or fallback
+  - dual provenance: full source context stays home; only the sanitized brief and asset metadata reach the restricted host
+  - what the players are shown versus what the DM knows is in the room

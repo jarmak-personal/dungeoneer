@@ -1,0 +1,28 @@
+id: pc:dorn
+kind: pc
+schema: dwd.pc.v1
+name: Dorn
+aliases: ["Dorn Stoneward"]
+lifecycle: active
+visibility: table
+summary: >
+  A dock-warden turned wanderer who treats "I'll keep you safe" as a binding
+  word. Pregen frontline guardian for the Aurevost starter table.
+tags: [aurevost, pregen, frontline, caelport_start]
+created_by: human
+facets:
+  pc_profile:
+    pronouns: he/him
+    heritage: "Raised in a drowned stone-hold diaspora and Caelport's dock wards."
+    concept: "Guardian fighter — shield-first, oath-bound, slow to anger and slower to break a promise."
+    voice: "Plainspoken and blunt, warm under the gruff. Says little and means all of it."
+    values: [keeping his word, shielding whoever is smaller, the interior folk the maps ignore]
+    flaws: [takes on burdens that are not his, distrusts khevric shortcuts]
+    hooks:
+      - "Came to the Brass Lantern chasing word of the Hearthward."
+      - "Will guard the interior routes and the people who walk them if asked plainly."
+  location_presence:
+    current_location: loc:caelport.brass_lantern
+  rules_binding:
+    # ability scores, class, equipment live in rules state, not this entity
+    sheet_ref: rules:pc.dorn

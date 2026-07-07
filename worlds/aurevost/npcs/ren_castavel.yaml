@@ -1,0 +1,35 @@
+id: npc:ren_castavel
+kind: npc
+schema: dwd.npc.v1
+name: Ren Castavel
+aliases: ["the quiet one at the end of the bar"]
+lifecycle: active
+visibility: dm_only
+summary: >
+  A Choir "listener" (their word for an investigator/spy) sent to Caelport
+  to understand the new faithful. Soft-spoken, observant, not yet committed to
+  violence. The party's likely first contact with the antagonist — and a person who
+  could, plausibly, be turned.
+facets:
+  npc_profile:
+    public_role: "A traveling appraiser of 'old devotional objects.' Buys odd relics, asks gentle questions."
+    voice: "Low, unhurried, disarmingly kind. Listens more than speaks."
+    values: [the Choir's warning, compassion for the harmed, "I want to see it before I burn it"]
+    flaws: [doubt they hide even from themselves, loyalty to Edreth they are starting to question]
+    fears: ["that the Cantor is wrong", "being found out as Choir before they understand the ember"]
+    current_intention: "Befriend whoever tends the Caelport flame. Learn what it is. Report — or not."
+    goals:
+      - { id: "goal:identify_the_ember", priority: high, visibility: "npc_private:npc:ren_castavel" }
+  location_presence:
+    current_location: loc:caelport.brass_lantern
+    routine:
+      - { when: evenings, location: "loc:caelport.brass_lantern" }
+  knowledge:
+    - { holder: "npc:ren_castavel", target: "secret:the_kept_flame", mode: suspects, can_share: false, secrecy: private }
+  relationships_ref: rel:ren_castavel->edreth_vale
+  rules_binding:
+    stat_block_ref: rules:npc.spy
+note: >
+  Ren is the campaign's first feeler and a genuine hero line inside a captured
+  movement. Turning them can preserve the Choir's evidence while exposing Edreth's
+  pattern of steering every warning toward terror and public rejection.

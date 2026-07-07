@@ -1,0 +1,25 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:world_recall_lore_query
+title: World Recall — A Lore Query Mid-Scene
+focus:
+  - loremaster_capsule
+  - live_path_discipline
+  - retrieval_and_citation
+  - canon_vs_rumor
+  - perspective_knowledge
+tags: [world_recall, loremaster, retrieval, live_path]
+setup:
+  scene: loc:caelport.brass_lantern
+  present: ["pc:vanya", "pc:dorn", "npc:wick"]
+  state: mid_session, no combat
+input:
+  player: pc:dorn
+  channel: voice
+  text: "Hang on — what do we actually know about the Choir so far?"
+expected_pressure_points:
+  - a loremaster fork is a model call; on the live path it must use prepared material, not a synchronous fork (TTFA)
+  - the answer is scoped to what the PCs have learned (perspective), not full world canon
+  - canon vs rumor must be distinguished in the recall
+  - retrieval supplies exact supporting events and citations beyond the capsule summary
+  - visibility tiers must hold: the dm_only truth (Edreth's control of the Choir) and especially the internal truth (secret:the_cantor — that Edreth *is* the Cantor) must not leak into the player-facing answer
+  - if no prepared loremaster material exists for this query, what happens within the live budget?

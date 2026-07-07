@@ -1,0 +1,28 @@
+id: rules:pc.dorn
+schema: dwd.character_sheet.v1
+pack: rules:pack.srd_5e
+binds: pc:dorn          # narrative entity in worlds/aurevost/pcs/dorn.yaml
+note: >
+  Pregen starter sheet — campaign rules state built from the srd_5e pack, not system
+  content. Illustrative level-1 Fighter build. The engine owns this state and changes
+  it only through typed events (hp_changed, condition_applied, ...).
+level: 1
+class: { name: Fighter, fighting_style: Defense }
+proficiency_bonus: 2
+abilities: { str: 16, dex: 12, con: 14, int: 10, wis: 13, cha: 8 }
+ac: 16                  # chain mail
+hp: { max: 12, current: 12, hit_die: d10 }
+speed: { walk: 30 }
+saving_throw_proficiencies: [str, con]
+skill_proficiencies: [athletics, perception, intimidation]
+skills:                 # ability mod + proficiency where proficient
+  athletics: 5          # str +3, prof +2
+  perception: 3         # wis +1, prof +2
+  insight: 1            # wis +1 (not proficient)
+attacks:
+  - name: Longsword
+    kind: melee_weapon_attack
+    to_hit: 5           # str +3, prof +2
+    reach: 5
+    damage: { roll: "1d8+3", type: slashing }
+conditions: []          # active condition instances land here as typed events apply them
