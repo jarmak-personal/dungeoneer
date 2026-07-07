@@ -137,6 +137,9 @@ Warmup responsibilities:
   [Spatial and travel system](SPATIAL_TRAVEL.md).
 - **Populate `prepare_likely`.** Assemble the prepared stance/context for the
   opening scene so the orchestrator consumes ready material, not a live fork.
+- **Consume lore prepare requests.** Include open `lore.prepare_requested` records
+  relevant to the opening or next likely scenes, refresh the target capsules, and
+  mark each request prepared, superseded, or rejected.
 - **Warm residency.** Ensure live-path models (DM, STT/TTS) are resident per the
   latency budget, so the first turn is not a cold load.
 - **Assemble opening context.** Starting location facts, present actors, active
@@ -152,7 +155,8 @@ blocks the first scene opening, not live play.
 The warmup pass is a named service with a defined contract, surfaced by system
 simulation as the load-bearing piece of the bootstrap.
 
-**Inputs.** `{ world_id, campaign_id, session_id, opening_scene_descriptor }`.
+**Inputs.** `{ world_id, campaign_id, session_id, opening_scene_descriptor,
+open_lore_prepare_requests }`.
 
 **Opening scene is chosen before it is instantiated.** Warmup must prepare for a
 scene that `scene.opened` has not yet created, so it targets an **opening scene

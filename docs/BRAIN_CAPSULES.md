@@ -208,9 +208,11 @@ loremasters (world, regions, seas, routes, cities, factions, threads, calendars,
 rules domains);
 refreshing all of them every session would blow the "dreaming finishes before the
 next session" budget. Dreaming refreshes only capsules whose source event range
-was touched this session, plus the `prepare_likely` set for the next session.
-Untouched capsules keep their existing snapshot. Capsule refresh is one reason
-dreaming can be slow, which is exactly why it must be scoped.
+was touched this session, capsules in the `prepare_likely` set for the next
+session, and capsules targeted by open `lore.prepare_requested` events. Duplicate
+prepare requests are coalesced by topic and target capsule. Untouched capsules
+keep their existing snapshot. Capsule refresh is one reason dreaming can be slow,
+which is exactly why it must be scoped.
 
 ## Cold Start: Initial Capsules
 

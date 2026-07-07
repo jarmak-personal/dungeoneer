@@ -63,8 +63,8 @@ but a player can always ask something unprepared. The fallback, *this turn*:
    synchronous fork.
 2. If even that is thin, give a **caveated recall** ("what you remember is…") rather
    than stalling or fabricating.
-3. **Flag the domain** for the next warmup / prepare_likely pass, so the gap closes
-   for next time.
+3. Emit `lore.prepare_requested` for the next warmup / prepare_likely pass, so the
+   gap closes for next time.
 
 Players never feel the machinery; they get a bounded honest answer now and a better
 one later.
@@ -86,7 +86,7 @@ channel: voice
 audience: table
 topic:
   kind: entity
-  refs: [faction:sundered_choir]
+  refs: [faction:choir]
   text: "what do we know about the Choir?"
 ```
 
@@ -105,6 +105,35 @@ Default routing:
 If the system has no player-safe support for a claim, it says so. It may return a
 caveated recall claim, but it must mark that claim as uncertain and cite no hidden
 source text.
+
+### Lore Prepare Request
+
+When `lore.recall` returns `caveated`, `empty`, or `deferred` because prepared
+material is thin or missing, the orchestrator records a durable preparation
+request.
+
+```yaml
+schema: dwd.lore_prepare_requested.v1
+type: lore.prepare_requested
+payload:
+  topic:
+    kind: entity | thread | location | faction | freeform
+    refs: [faction:choir]
+    text: "what do we know about the Choir?"
+  scene: scene:s12_brass_lantern
+  triggering_message: msg:s12_0180
+  audience: table
+  reason: missing_prepared_capsule | thin_player_safe_support | unresolved_contradiction
+  urgency: next_warmup | before_next_scene | operator_review
+  target_capsules:
+    - loremaster:faction.choir
+  privacy_classification: player_safe | dm_only | mixed
+status: requested
+```
+
+Warmup and dreaming consume the projection of open `lore.prepare_requested`
+records, coalesce duplicates by topic/scene/capsule, refresh the relevant
+`prepare_likely` material, and mark the request prepared, superseded, or rejected.
 
 ## Spatial And Travel Queries
 

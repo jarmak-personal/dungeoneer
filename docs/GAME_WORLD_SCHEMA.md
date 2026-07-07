@@ -1036,6 +1036,7 @@ weather.changed
 item.transferred
 clock.advanced
 thread.updated
+lore.prepare_requested
 check_resolved
 hp_changed
 resource_changed
@@ -1148,6 +1149,35 @@ Rules:
 - Social disclosure provenance cites the check, NPC knowledge edge, and disclosure
   decision. Clue discovery or operator review can also reveal secrets, but must use
   the same event payload.
+
+### Lore Prepare Request Payload
+
+`lore.prepare_requested` closes the loop between live recall misses and future
+warmup. It is a durable request, not a player-facing apology.
+
+```yaml
+type: lore.prepare_requested
+payload:
+  topic:
+    kind: entity | thread | location | faction | freeform
+    refs: [faction:choir]
+    text: "what do we know about the Choir?"
+  scene: scene:s12_brass_lantern
+  triggering_message: msg:s12_0180
+  audience: table
+  reason: missing_prepared_capsule | thin_player_safe_support | unresolved_contradiction
+  urgency: next_warmup | before_next_scene | operator_review
+  target_capsules:
+    - loremaster:faction.choir
+  privacy_classification: player_safe | dm_only | mixed
+  status: requested | prepared | superseded | rejected
+provenance:
+  tool_call: tool:lore_recall_012
+```
+
+Warmup/dreaming consumes open requests, coalesces duplicates by topic and target
+capsule, refreshes `prepare_likely`, and records whether the request was prepared,
+superseded, or rejected.
 
 ### Rules Event Payloads
 
@@ -1627,6 +1657,10 @@ Minimum validators:
 - No recall answer may render dm-only, internal, aborted, undelivered, or OOC
   source text to a player/table audience. Redacted source references may remain
   audit-only.
+- No `lore.recall` result with `mode: caveated`, `empty`, or `deferred` due to
+  missing prepared support without a corresponding `lore.prepare_requested` event.
+- No `lore.prepare_requested` without topic, triggering message, audience, reason,
+  target capsule, privacy classification, and status.
 - No party-knowledge query may include an absent PC's implicit knowledge unless
   `include_absent_pcs` is true and provenance records why that PC is in scope.
 - No table-facing recall may include one PC's private knowledge unless that

@@ -45,3 +45,15 @@ expected_contracts:
         - secret:the_kept_flame
       no_player_facing_claim_without_source_or_uncertain_marker: true
       delivered_as: message.delivered
+    prepare_miss:
+      emit_when_answer_mode: [caveated, empty, deferred]
+      event_type: lore.prepare_requested
+      payload_requires:
+        - topic
+        - scene
+        - triggering_message
+        - audience
+        - reason
+        - urgency
+        - target_capsules
+        - privacy_classification
