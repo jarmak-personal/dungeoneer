@@ -204,8 +204,9 @@ See [Rules engine](RULES_ENGINE.md) for the full contract.
   citations, truth labels, and redaction metadata.
 - Add the orchestrator live-decision layer (see
   [Orchestration](ORCHESTRATION.md)): hybrid input-intent classification, the
-  parallel side-channel, loremaster live fallback, and player-facing capsule
-  redaction.
+  parallel side-channel with QoS/resource isolation, private hidden-check
+  provenance, loremaster live fallback, `lore.prepare_requested`, and
+  player-facing capsule redaction.
 - Add the override tell and the player "something's off" channel.
 - Add regression tests for common combat and skill-check flows, scored against the
   saved simulation traces. Combat scenarios need executable rules fixtures for

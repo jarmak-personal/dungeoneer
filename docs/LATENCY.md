@@ -116,6 +116,27 @@ This is why the LLM and TTS calls on the live path must be cancellable streams,
 not fire-and-await. Any component that cannot be aborted cheaply cannot sit on
 the live path.
 
+## Side-Channel Resource Budget
+
+Parallel side-channel work must not borrow from the live turn's latency budget.
+Private hidden checks, private DM questions, lore queries, and rules
+clarifications are useful only if the table-visible conversation remains smooth.
+
+Rules:
+
+- The serial table lane owns the resident live DM model, streaming TTS voice, ASR
+  stream, audio playback, and barge-in cancellation path.
+- Side-channel work may use local deterministic tools and retrieval while the live
+  lane runs, but may not evict, cold-start over, or preempt live-lane resources.
+- If the side-channel needs model work while the live DM model is busy, it either
+  uses an already-resident non-live worker, returns private text from deterministic
+  support, or defers.
+- Side-channel answers are text-first under contention. Private TTS is disabled
+  while table audio is active unless a future deployment profile proves it cannot
+  affect the shared stream.
+- Side-channel tasks carry deadlines and cancellation. A missed deadline records a
+  queued/deferred private notice, not a silent stall or table-visible pause.
+
 ## Endpointing
 
 Deciding when the player is done talking is a latency source that sits *before*

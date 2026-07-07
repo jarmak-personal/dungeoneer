@@ -53,6 +53,86 @@ This is a genuine capability, not just a concurrency fix: parallelized DM attent
 smooths interactions in a way no human DM can, letting a player get a private
 answer without the table waiting.
 
+### Side-Channel QoS
+
+The side-channel is subordinate to the table-visible live lane. It must not protect
+private convenience by degrading the shared turn.
+
+```yaml
+schema: dwd.side_channel_task.v1
+task_id: task:s4_private_insight
+source_message: msg:s4_0132
+kind: private_hidden_check | lore_query | rules_clarification | private_dm_question
+audience: player:pc:vanya
+priority: background_interactive
+deadline_ms: 1200
+resource_policy:
+  may_use_rules_tools: true
+  may_use_retrieval: true
+  may_use_live_dm_model: only_when_idle
+  may_use_tts: false
+  evict_live_models: false
+  preempt_serial_lane: false
+degradation:
+  on_contention: text_only_or_defer
+  on_deadline_miss: queue_private_notice
+  cancellable: true
+```
+
+Rules:
+
+- The serial table lane always has priority over side-channel tasks.
+- A side-channel task may use local deterministic tools and retrieval if they do
+  not stall the live lane.
+- It may not evict the resident live DM model, TTS voice, ASR stream, or other
+  resources needed for the current table-visible turn.
+- Under contention, the side-channel degrades to private text, a short queued
+  notice, or deferral. It does not synthesize private audio or force the table to
+  wait.
+- Side-channel work is cancellable. If the triggering context expires before
+  completion, the task records `expired` or `aborted` delivery and does not enter
+  player-facing recall.
+
+### Private Hidden Check Pattern
+
+A private hidden check is a side-channel task with a concrete event chain. It is
+private because the result audience is private, not because it is unlogged.
+
+```yaml
+schema: dwd.private_hidden_check.v1
+source_message: msg:s4_0132
+check:
+  schema: dwd.check_spec.v1
+  kind: ability_check
+  skill: insight
+  actor: pc:vanya
+  target: npc:ren_castavel
+  adjudication_visibility: dm_only
+  result_audience: player:pc:vanya
+  dice_source: digital
+result_chain:
+  - check_resolved
+  - social_disclosure_decision
+  - message.delivered
+  - knowledge.learned
+```
+
+The usual chain is:
+
+1. The player sends a private DM question.
+2. The rules engine emits `check_resolved` with private adjudication visibility.
+3. The orchestrator records a bounded disclosure decision.
+4. The answer is delivered to that player (`message.delivered`, audience
+   `player:<pc>`).
+5. If the fiction gives the PC knowledge, emit a private `knowledge.learned` edge
+   for that PC.
+
+The table does not learn the answer until the player discloses it through a
+table-delivered event. Usually that is just the player speaking aloud in character
+or at the table. An optional remote "share" affordance is only another way to emit
+the same kind of table-delivered disclosure event; it is not required for normal
+play.
+
 ## Loremaster Live Fallback
 
 A live loremaster fork is forbidden (latency), and warmup prepares likely experts —

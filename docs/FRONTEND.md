@@ -122,6 +122,13 @@ Only delivered messages should enter player-facing recall. A private message
 enters recall only for its intended recipient(s), the DM orchestrator, and
 audit/replay systems.
 
+A player can disclose private knowledge to the table by simply saying it aloud.
+That table speech emits a normal `message.delivered` event with table audience,
+and table recall cites that disclosure event. The original private message remains
+private unless the player explicitly reveals that message. A remote "share to
+table" affordance is optional; if built, it is only another way to emit a
+table-delivered disclosure event, not a required step for normal play.
+
 ## Safety And Agency
 
 Private messages are powerful, so they need guardrails.

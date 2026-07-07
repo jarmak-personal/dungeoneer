@@ -1150,6 +1150,27 @@ Rules:
   decision. Clue discovery or operator review can also reveal secrets, but must use
   the same event payload.
 
+Private hidden checks use this provenance pattern:
+
+```yaml
+schema: dwd.private_hidden_check.v1
+source_message: msg:s4_0132
+source_task: task:s4_private_insight
+check_event: event:s4_0133
+disclosure_decision: tool:social_disclosure_009
+delivery_event: event:s4_0134
+knowledge_event: event:s4_0135
+result_audience: player:pc:vanya
+table_disclosure:
+  status: not_disclosed
+  source_event: null
+```
+
+If the player later says the private conclusion aloud, that table speech is a new
+`message.delivered` event with `audience: table`. Table recall cites that table
+disclosure event. The original private answer remains private unless the player
+explicitly reveals it.
+
 ### Lore Prepare Request Payload
 
 `lore.prepare_requested` closes the loop between live recall misses and future
@@ -1666,6 +1687,11 @@ Minimum validators:
 - No table-facing recall may include one PC's private knowledge unless that
   knowledge has been delivered to the table or the PC explicitly shares it through
   an accepted event.
+- No private hidden-check result may enter table recall through its private answer.
+  Table recall requires a later table-delivered disclosure event, usually the
+  player saying the conclusion aloud.
+- No `dwd.private_hidden_check.v1` without source message, check event,
+  disclosure decision, private delivery event, and result audience.
 - No NPC knowledge edge for a fact the NPC could not have learned without a
   source event or seed definition.
 - No NPC knowledge gained from a private in-fiction message without a
