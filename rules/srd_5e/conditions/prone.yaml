@@ -5,14 +5,32 @@ name: Prone
 source: "SRD 5.1 — Conditions"
 effects:
   - movement: "Only crawl (half speed), unless the creature stands and ends the condition."
-  - actor_attack_rolls: disadvantage
-  - incoming_attack_rolls:
-      advantage_if: "attacker is within 5 feet"
-      disadvantage_if: "attacker is beyond 5 feet"
+modifiers:
+  - id: modifier:prone_actor_attack_disadvantage
+    schema: dwd.modifier.v1
+    source: { kind: condition, id: rules:condition.prone }
+    target: { roll: attack, actor: self }
+    op: { kind: roll_shape, value: disadvantage }
+    when: { condition_active: rules:condition.prone }
+    lifecycle: while_source_active
+  - id: modifier:prone_incoming_melee_advantage
+    schema: dwd.modifier.v1
+    source: { kind: condition, id: rules:condition.prone }
+    target: { roll: attack, target: self }
+    op: { kind: roll_shape, value: advantage }
+    when: { attacker_distance_lte_ft: 5 }
+    lifecycle: while_source_active
+  - id: modifier:prone_incoming_ranged_disadvantage
+    schema: dwd.modifier.v1
+    source: { kind: condition, id: rules:condition.prone }
+    target: { roll: attack, target: self }
+    op: { kind: roll_shape, value: disadvantage }
+    when: { attacker_distance_gt_ft: 5 }
+    lifecycle: while_source_active
 ends:
   - "The creature stands up, costing half its movement."
 # The engine applies/removes this via typed events; the mechanical content above is
 # what those events mean. Advantage/disadvantage here is pack content (a 5e idiom),
-# not engine procedure.
+# represented as roll_shape modifiers, not engine procedure.
 applied_by_event: condition_applied
 removed_by_event: condition_removed

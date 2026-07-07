@@ -482,6 +482,7 @@ Expected value: exercises privacy boundary.
 Tests:
 
 - Rules engine authority.
+- Bounded `narrative_adjustment`.
 - Gated `narrative_override`.
 - State mutation provenance.
 - DM profile enforcement.
@@ -535,8 +536,9 @@ and forcing boundary decisions:
 
 - `gameplay_skill_check` — baseline gameplay: a social skill check, rules
   resolution, NPC activation, relationship update.
-- `combat_round` — a combat round with conditions and a rule-of-cool
-  `narrative_override`; rules-engine authority.
+- `combat_round` — a combat round with conditions, a bounded
+  `narrative_adjustment`, and a rule-of-cool `narrative_override`; rules-engine
+  authority.
 - `player_secret_question_mid_action` — a private player→DM question during a live
   combat turn; hidden check, dm-only routing, no live-flow stall.
 - `voice_overlap_turn` — overlapping speech and barge-in mid-TTS; attribution,
@@ -552,28 +554,36 @@ and forcing boundary decisions:
 
 ## Skill Shape
 
-This should become a Dungeoneer/Deep Agents skill, not a live gameplay feature.
-
-Proposed skill:
+Fresh simulation is a repo-local Codex skill, not a live gameplay feature. Use
+the skill when rerunning scenarios, comparing model families, or saving raw
+simulation artifacts:
 
 ```text
-skills/system_simulator/
+.agents/skills/simulate/
   SKILL.md
-  scenarios/
-    private_whisper.md
-    ooc_tangent.md
-    loremaster_fork.md
-  rubrics/
-    privacy.md
-    rules_boundary.md
-    capsule_behavior.md
-    latency.md
-  templates/
-    simulation_run.yaml
-    trace_table.md
+  scripts/
+    run_fresh_simulation.sh
+  references/
+    artifacts.md
 ```
 
-Subagents:
+The bundled runner creates a clean temporary workspace, excludes `.git`,
+`docs/SYSTEM_SIMULATION_RUNS.md`, and prior run history, invokes Codex with the
+requested model, validates `simulation_run.yaml`, and optionally persists the raw
+run plus runtime trace into `../dungeoneer-sim-history`.
+
+Use:
+
+```bash
+.agents/skills/simulate/scripts/run_fresh_simulation.sh \
+  --scenario docs/simulations/scenarios/combat_round.yaml \
+  --model gpt-5.4-mini \
+  --model-label gpt-5.4-mini \
+  --run-label rules_event_validation \
+  --persist
+```
+
+Subagent roles remain the conceptual split:
 
 - `fresh_simulator`: low-context runner; routes from docs/contracts only.
 - `boundary_critic`: checks privacy, visibility, rules, canon, and latency.

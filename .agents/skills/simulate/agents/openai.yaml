@@ -1,0 +1,7 @@
+interface:
+  display_name: "Dungeoneer Simulation"
+  short_description: "Run fresh Dungeoneer sim scenarios."
+  default_prompt: "Use $simulate to run a fresh Dungeoneer simulation scenario and save the structured artifact."
+
+policy:
+  allow_implicit_invocation: true

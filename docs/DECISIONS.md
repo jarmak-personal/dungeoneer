@@ -144,9 +144,10 @@ pressure, spotlight, pacing, safety) is system-enforced, because the architectur
 must guarantee it rather than hope the model complies.
 
 The load-bearing case is rules authority. Rule-of-cool is not a prompt instruction
-to fudge; it is a gated, logged `narrative_override` capability the rules engine
-exposes only when the profile allows it, with provenance on every use. Strict mode
-simply does not expose it. This keeps even rule-of-cool inspectable.
+to fudge; it is gated through logged `narrative_adjustment` and
+`narrative_override` capabilities the rules engine exposes only when the profile
+allows them, with provenance on every use. Strict mode simply does not expose
+them. This keeps even rule-of-cool inspectable.
 
 Style adapts through a human-in-the-loop loop, never silent optimization. Fun is
 subjective and easy to Goodhart, so post-session dreaming proposes profile

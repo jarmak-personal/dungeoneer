@@ -40,3 +40,22 @@ ladder_mapping:
     strong:  "natural 20 (critical hit)"
     success: "total >= target_ac"
     fail:    "total < target_ac  or  natural 1"
+
+# Pack-owned modifier policy. The engine owns modifier collection and operation
+# order; this pack owns 5e's roll-shaping idioms.
+modifier_policy:
+  stacking:
+    numeric_bonus_default: stack_unless_same_named_source
+    same_named_bonus: highest
+    same_source: highest
+  roll_shapes:
+    d20:
+      values: [normal, advantage, disadvantage]
+      operation: roll_shape
+      multiple_same_value: no_stack
+      cancellation:
+        advantage_and_disadvantage: normal
+      resolution:
+        normal: "roll 1d20"
+        advantage: "roll 2d20, keep highest"
+        disadvantage: "roll 2d20, keep lowest"

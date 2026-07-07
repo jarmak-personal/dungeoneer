@@ -88,8 +88,8 @@ that as a signal to stop and discuss.
   required world-model capabilities, but geometry, routes, territories, and travel
   plans are rebuilt from DWD definitions and accepted events.
 - **The rules engine owns canonical mechanical state.** Models propose and explain;
-  typed tools make the changes. Rule-of-cool is a gated, logged
-  `narrative_override` capability.
+  typed tools make the changes. Rule-of-cool is expressed only through gated,
+  logged `narrative_adjustment` and `narrative_override` capabilities.
 - **Conversation content stays in the home trusted domain.** Raw audio and
   transcripts remain home; restricted hosts receive only sanitized, non-conversation
   payloads. The boundary is defined by trust level, not hardware ownership.

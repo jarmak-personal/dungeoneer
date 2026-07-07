@@ -22,11 +22,16 @@ These cannot be prompt text, because the architecture must enforce them, not hop
 the model complies.
 
 - **Rules authority** — strict / balanced / rule-of-cool. Controls whether the
-  rules engine's `narrative_override` capability is available and how freely the
-  DM may use it. Strict: no override; the rules engine is final. Rule-of-cool: the
-  DM may override outcomes for dramatic effect, and every override is logged with
-  provenance. A controlled, inspectable relaxation of determinism, not an
-  abandonment of it.
+  rules engine exposes `narrative_adjustment` and `narrative_override`. Strict:
+  no rule-of-cool adjustment or override; the rules engine is final. Balanced:
+  bounded adjustment grants can modify roll inputs when logged and capped.
+  Rule-of-cool: the DM may also use high-friction overrides for dramatic
+  NPC/world consequences. Every adjustment and override is logged with provenance:
+  a controlled, inspectable relaxation of determinism, not an abandonment of it.
+  Narrative override is intentionally a binary gate for now, not a rate-limited
+  or numerically capped subsystem. Its constraints are target legality, typed
+  consequence validation, provenance, and the override tell; do not over-mechanize
+  a feel-based table judgment unless play proves the binary gate is too loose.
 - **Lethality** — soft / standard / deadly. Whether monsters pull punches, whether
   HP/consequence fudging is permitted (and logged), how openly danger is
   telegraphed. Interacts with the tactics advisor.
@@ -102,11 +107,12 @@ A human DM earns the table's trust over years; an AI DM has not yet, so it needs
 two mechanisms a veteran human would not.
 
 - **Override tell.** A human DM hides their fudging; a new AI DM should not, until
-  trust is built. A `narrative_override` is always audit-logged, and by default
-  carries a light **tell** — a subtle, dialable signal (operator-visible always; a
-  soft diegetic or UI cue configurable per table) — so drift is catchable mid-play.
-  As trust grows the tell can be turned down. Inspectability in the log is never
-  optional; the tell is the *table-facing* dial.
+  trust is built. A `narrative_adjustment` or `narrative_override` is always
+  audit-logged, and by default an override carries a light **tell** — a subtle,
+  dialable signal (operator-visible always; a soft diegetic or UI cue configurable
+  per table) — so drift is catchable mid-play. As trust grows the tell can be
+  turned down. Inspectability in the log is never optional; the tell is the
+  *table-facing* dial.
 - **"Something's off" channel.** Players get a first-class meta way to tell the DM
   it is going wrong — railroading, a contradiction, a tone miss, "that's not what
   happened." This is **distinct from the X-card**: the X-card is for *safety*; this
@@ -131,6 +137,12 @@ campaign: campaign:greyhaven_main
 preset: the_storyteller
 policy:
   rules_authority: strict | balanced | rule_of_cool
+  narrative_adjustments:
+    max_bonus: 2
+    allow_roll_shape: true
+    max_roll_shape_steps: 1
+    allow_damage_bonus: false
+  # narrative_override has no numeric cap block yet; rules_authority is the gate.
   lethality: soft | standard | deadly
   story_pressure: sandbox | guided | railroad
   spotlight_balance: { mode: even | weighted, per_player: {} }
@@ -181,8 +193,8 @@ sequence.
 
 - Phase 1: `dm_profile` as first-class config; session-zero seeds it; the persona
   layer drives DM prompting.
-- Phase 2: the rules engine exposes the gated, logged `narrative_override`
-  capability so rules-authority is enforced, not prompted.
+- Phase 2: the rules engine exposes gated, logged `narrative_adjustment` and
+  `narrative_override` capabilities so rules-authority is enforced, not prompted.
 - Phase 6: dreaming produces reviewable profile-adjustment proposals.
 - Phase 7: style evals score DM behavior against the active profile.
 

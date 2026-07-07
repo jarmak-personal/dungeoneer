@@ -14,6 +14,7 @@ rules/
     dc_guidance.yaml       # SRD Typical Difficulty Classes
     conditions/prone.yaml  # a typed condition (what "prone" mechanically means)
     statblocks/commoner.yaml
+    statblocks/spy.yaml
     README.md              # this file
   aurevost_pregens/        # instances built FROM the pack (campaign rules state)
     pc.dorn.yaml           # resolves rules:pc.dorn  (binds pc:dorn)
@@ -38,7 +39,8 @@ player intent (NL)
   -> rules_referee: intent + scene context -> typed check spec
   -> rules tool (deterministic)             -> structured result
   -> map result onto the engine degree ladder (via pack.ladder_mapping)
-  -> typed event (provenance)               -> projection update
+  -> consequence plan                       -> validated state events
+  -> projection update
   -> orchestrator narrates the result
 ```
 
@@ -73,9 +75,10 @@ Every step below is engine procedure; every *number* it reads comes from a pack 
    provenance: { tool_call: tool:contested_check_0007 }
    ```
 6. **Consequence is pack content, not engine logic.** Next round, Vanya's melee
-   attack against the now-prone commoner gets **advantage** — the engine reads that
-   from `conditions/prone.yaml` (`incoming_attack_rolls.advantage_if: within 5 ft`).
-   Advantage/disadvantage is a 5e idiom; it lives in the pack, never in the engine.
+   attack against the now-prone commoner gets **advantage** — the engine reads a
+   `dwd.modifier.v1` `roll_shape: advantage` modifier from `conditions/prone.yaml`
+   and resolves it through `pack.yaml`'s `modifier_policy`. Advantage/disadvantage
+   is a 5e idiom; it lives in the pack, never in the engine.
 
 ---
 
@@ -119,9 +122,9 @@ Every step below is engine procedure; every *number* it reads comes from a pack 
 - **The procedure is identical** across a contest and a solo check, across combat and
   social — `rules_referee → typed tool → ladder map → typed event`. That is the "how."
 - **Every number came from a pack file:** DCs from `dc_guidance.yaml`, the contest
-  rule and tie-handling and the degree thresholds from `pack.yaml`, the condition's
-  meaning from `conditions/prone.yaml`, the modifiers from the sheets/statblock. That
-  is the "what."
+  rule, tie-handling, degree thresholds, roll-shape policy from `pack.yaml`, the
+  condition's modifiers from `conditions/prone.yaml`, and the modifiers from the
+  sheets/statblock. That is the "what."
 - **The ladder mapping is the seam.** 5e's binary RAW is mapped onto the engine's
   four-band ladder *by the pack*; the engine never assumes a success model. Swapping
   to a pack whose native model already has four degrees (PF2e) changes only this file.

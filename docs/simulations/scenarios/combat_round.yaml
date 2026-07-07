@@ -5,9 +5,10 @@ focus:
   - rules_engine_authority
   - initiative_and_turns
   - attack_damage_conditions
+  - narrative_adjustment
   - narrative_override
   - dm_profile_enforcement
-tags: [combat, rules, narrative_override, conditions]
+tags: [combat, rules, narrative_adjustment, narrative_override, conditions]
 setup:
   scene: scene:s4_shrine_ambush
   location: loc:caelport.vesh_shrine
@@ -15,15 +16,60 @@ setup:
   combat: active
   initiative_order: ["pc:dorn", "creature:choir_zealot_1", "pc:vanya", "npc:ren_castavel", "creature:choir_zealot_2"]
   dm_profile: { rules_authority: rule_of_cool, lethality: standard }
+  rules_fixture:
+    schema: dwd.simulation_rules_fixture.v1
+    purpose: "Executable combat state for replay/math checks; this is scenario-local fixture data, not world canon."
+    actors:
+      pc:dorn:
+        sheet_ref: rules:pc.dorn
+        hp: { current: 12, max: 12 }
+        ac: 16
+        position: grid:e5
+        held_items:
+          hand_main: fixture_item:dorn_longsword
+      pc:vanya:
+        sheet_ref: rules:pc.vanya
+        hp: { current: 9, max: 9 }
+        ac: 14
+        position: grid:e7
+      npc:ren_castavel:
+        stat_block_ref: rules:npc.spy
+        hp: { current: 27, max: 27 }
+        ac: 12
+        position: grid:g6
+        held_items:
+          hand_main: fixture_item:ren_shortsword
+      creature:choir_zealot_1:
+        stat_block_inline:
+          name: Choir Zealot
+          ac: 12
+          hp: { current: 7, max: 7 }
+          abilities: { str: 12, dex: 12, con: 10, int: 10, wis: 11, cha: 10 }
+        position: grid:f5
+      creature:choir_zealot_2:
+        stat_block_inline:
+          name: Choir Zealot
+          ac: 12
+          hp: { current: 9, max: 9 }
+          abilities: { str: 12, dex: 12, con: 10, int: 10, wis: 11, cha: 10 }
+          skills: { athletics: 3 }
+        position: grid:f7
+    expected_fixture_transitions:
+      - "Dorn's hit can reduce creature:choir_zealot_1 from 7 HP to 0 HP."
+      - "Ren's shortsword can move from hand_main to scene position as item_state/item.transferred."
+      - "Vanya's +2 narrative adjustment applies to the next matching saving throw."
+      - "creature:choir_zealot_2 can apply grappled to pc:vanya through contested_check -> condition_applied."
 input:
   sequence:
     - pc:dorn attacks creature:choir_zealot_1 with a longsword
     - the attack roll hits; damage is rolled; the zealot drops to 0 HP
     - the DM wants a cinematic finish where Dorn disarms Ren in the same flourish (not supported by the roll)
+    - pc:vanya invokes the old oath while resisting the zealot; the DM grants a bounded +2 saving throw adjustment
     - creature:choir_zealot_2 takes its turn and grapples pc:vanya (condition applied)
 expected_pressure_points:
   - rules engine owns HP/conditions; narration cannot mutate them directly
   - attack/damage resolution path and provenance
+  - the saving throw bonus requires a logged rules.adjustment_granted event and replay-valid modifier math
   - the cinematic disarm requires a gated, logged narrative_override (rule_of_cool profile); strict would forbid it
   - condition application (grappled) as canonical rules state, not prose
   - turn/initiative advancement events

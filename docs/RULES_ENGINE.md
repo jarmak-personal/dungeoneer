@@ -4,7 +4,8 @@ The rules engine owns canonical mechanical state. Models propose and explain;
 typed tools make the changes. It is deterministic, inspectable, and the boundary
 that keeps narrative out of mechanics. This doc defines its tool surface, dice
 sourcing, typed events, the combat model, social resolution, the
-`narrative_override` capability, and the rules-pack boundary.
+`narrative_adjustment` / `narrative_override` capabilities, and the rules-pack
+boundary.
 
 ## Position — How, Not What
 
@@ -14,10 +15,10 @@ underdetermines play, and the table's actual ruleset is the book plus a DM who
 adjudicates it consistently. We split that into three owned, typed, swappable layers.
 
 - **Engine — the adjudication procedure and resolution grammar.** When a check is
-  called: intent → typed check spec, DC-selection procedure, the degree ladder, dice
-  sourcing, applying typed effects, and replay. System-agnostic. It encodes a thin
-  universal *what* — that play is checks-with-DCs resolving on a ladder into typed,
-  replayable effects — but never which numbers.
+  called: intent -> typed check spec, DC-selection procedure, the degree ladder, dice
+  sourcing, typed consequences, and replay. System-agnostic. It encodes a thin
+  universal *what* — that play is checks-with-DCs resolving on a ladder into
+  replayable consequences — but never which numbers.
 - **Rules pack — the content.** Conditions, stat blocks, what a spell does, DC
   guidance, the SRD tables themselves, shipped as data behind the engine's typed
   contracts (the `rules:` namespace already referenced by `rules_binding` /
@@ -25,17 +26,19 @@ adjudicates it consistently. We split that into three owned, typed, swappable la
   separation worlds use. The first pack is the **D&D 5e SRD (CC-BY-4.0)**; a PF2e or
   OSR pack can swap in later without touching the engine.
 - **`dm_profile` — the table's dialect of adjudication.** rules-authority, lethality,
-  story-pressure, how readily `narrative_override` fires: the DM's house style made
-  into typed knobs. Same pack, different profile, different table. See
+  story-pressure, how readily narrative adjustments and overrides fire: the DM's
+  house style made into typed knobs. Same pack, different profile, different table.
+  See
   [DM profile](DM_PROFILE.md).
 
 Two consequences of holding this line:
 
 - **The "how" is the *disciplined* version of a DM's adjudication, not the freeform
   one.** A human DM's rulings are unbounded and unrepeatable; here rule-bending is
-  fenced into one logged, high-friction gate (`narrative_override`) that never touches
-  a PC and routes durable change to dreaming. That fence is what makes the engine
-  replayable, which a real table's "how" never is.
+  split into two logged gates: bounded `narrative_adjustment` for roll inputs, and
+  high-friction `narrative_override` for exceptional NPC/world consequences. Durable
+  world change routes to dreaming. That fence is what makes the engine replayable,
+  which a real table's "how" never is.
 - **Keep system idioms out of the engine.** Some 5e-isms are content (they belong in
   the pack); some *feel* like universal procedure but are not. Advantage/disadvantage
   is the trap — it reads like "how you roll" but is a 5e resolution mechanic (PF2e
@@ -73,13 +76,37 @@ does not belong in the game.
   hand-maintains mechanical state — keeping HP, resources, conditions, and
   advancement in sync is the engine's job, not the player's bookkeeping.
 
+## State And Replay Guardrails
+
+The live session has a current rules projection for speed, but it is not an
+agent-editable global state bag. Canon is the accepted event log; the projection
+is rebuilt from rules definitions plus accepted events.
+
+Every mechanical write crosses three gates:
+
+1. **Proposal gate.** The orchestrator or `rules_referee` may propose intent,
+   check specs, adjustments, overrides, or consequence plans, but none of those
+   are state writes.
+2. **Append gate.** The deterministic rules tool validates the proposal against
+   the current projection, the active rules pack, `dm_profile`, dice source, and
+   accepted modifier/consequence grammar before emitting events.
+3. **Replay gate.** Rebuild verifies that every `before` value matched the prior
+   projection, every `after` value matches deterministic recomputation, and every
+   modifier or consequence has accepted provenance.
+
+So "the player convinced the AI DM they get +20 damage" is not a valid state
+change. The model can propose it; the append gate rejects it unless a rules-pack
+feature or explicitly capped profile capability authorizes that exact modifier or
+consequence, and replay can still reproduce the math.
+
 ## Resolution Flow
 
 ```text
 player intent (NL)
   -> rules_referee: intent + scene context -> typed check spec
   -> rules tool (deterministic)             -> structured result
-  -> typed event (provenance)               -> projection update
+  -> consequence plan                       -> validated state events
+  -> projection update
   -> orchestrator narrates the result
 ```
 
@@ -95,7 +122,7 @@ actor: pc:iona
 target: npc:marra_vell            # or a DC source
 skill: persuasion                 # ability/skill as applicable
 dc_source: { kind: social_attitude, ... }   # see Social Resolution
-modifiers: { proficiency: true, advantage: none }
+modifiers: [modifier:persuasion_proficiency]  # roll shape is just another modifier
 dice_source: physical | digital | declared   # defaulting rule below
 adjudication_visibility: table | dm_only | player:pc:iona   # who sees the raw roll/DC/provenance
 result_audience: table | dm_only | player:pc:iona           # who receives the conclusion
@@ -170,11 +197,13 @@ re-prompt, budgeted at <= 700 ms round-trip (see [Latency budget](LATENCY.md)).
 - `ability_check(actor, skill, dc, modifiers, dice_source)` -> result + degree.
 - `saving_throw(actor, save, dc, modifiers, dice_source)` -> result + degree.
 - `attack_roll(attacker, target, weapon, modifiers, dice_source)` -> hit/miss + crit.
-- `damage_roll(source, target, formula, type, dice_source)` -> amount applied.
+- `damage_roll(source, target, formula, type, dice_source)` -> damage consequence.
 - `contested_check(actor, opponent, axis, dice_source)` -> winner + margin.
 
 All return a structured payload (roll, modifiers, DC, outcome, degree, provenance)
-and emit a typed event. None of them accept free-form state writes.
+and emit a typed event. If a result changes mechanical state, the rules engine
+applies a consequence plan (below) and emits domain events. None of the tools
+accept free-form state writes.
 
 ## Typed Events
 
@@ -185,23 +214,186 @@ predictable and replay is exact (see the taxonomy in
 ```text
 check_resolved        a check/save/contest resolved (may or may not mutate state)
 hp_changed            HP delta with cause
+resource_changed      rules-owned resource delta with cause
 condition_applied     a condition instance attached
 condition_removed     a condition instance removed/expired
 initiative_set        initiative order established or changed
 position_changed      a token/actor position changed
+combat.disposition_changed  combat availability changed
+rules.adjustment_granted  a bounded narrative modifier grant (see below)
 rules.override_applied  a gated narrative override (see below)
 ```
 
 `check_resolved` is non-mutating by itself (an Insight check that reveals nothing
 mechanical still emits one), which is why it is separate from `hp_changed` et al.
 
+## Consequences — One Pipeline, Many State Domains
+
+A combat action resolves into **consequences**. Damage, disarm, shove, grapple,
+trip, healing, resource spend, forced movement, and a narration-only flourish are
+not separate architectural shapes. They are configured instances of one
+consequence grammar that mutates different rules-owned state domains.
+
+This keeps the rules surface small:
+
+- `damage` mutates HP/temp HP and may change combat disposition.
+- `resource` mutates charges, spell slots, ammunition, action slots, reactions, or
+  other rules-owned counters.
+- `condition` applies or removes a typed condition instance.
+- `movement` mutates tactical position.
+- `item_state` mutates custody, equipment slots, held items, or item position.
+- `combat_disposition` mutates whether an actor is active, defeated,
+  unconscious, dying, dead, fled, surrendered, or removed from the encounter.
+- `narration_only` records that the rules effect is purely descriptive and emits
+  no mechanical state event.
+
+Maneuver names such as `disarm`, `grapple`, `shove`, and `trip` live in rules-pack
+content as action/effect templates. They compile to the consequence kinds above;
+they do **not** become custom event types. A spell uses the same path: a spell is
+pack content that produces a configured consequence plan.
+
+```yaml
+schema: dwd.rules_consequence_plan.v1
+resolution_id: rulesres:s4_021
+source_event: event:s4_0209          # usually check_resolved or rules.override_applied
+source_tool_call: tool:attack_roll_014
+actor: pc:kael
+action: rules:action.attack
+consequences:
+  - order: 1
+    kind: damage
+    target: npc:sevran_oke
+    damage_type: slashing
+    amount: { rolled: 8, final: 6 }
+    mitigation:
+      - { kind: resistance, source: condition:stoneskin, amount_removed: 2 }
+    hp_before: 18
+    hp_after: 12
+    emits: [event:s4_0210]
+```
+
+The plan is not a second source of truth. It is the validated explanation of why
+events were emitted. Canon is still the accepted event log; replay rebuilds state
+from the domain events. The plan's `resolution_id` ties the events together for
+audit, rollback, and debugging.
+
+The rules engine applies a consequence plan atomically:
+
+1. Validate each consequence against current rules state and the rules pack.
+2. Check preconditions (`item is held`, `target is in range`, `resource exists`,
+   `condition can stack`, `target can be affected`).
+3. Emit the domain events in plan order.
+4. Rebuild the projection and assert that every `before` field matched the prior
+   projection and every `after` field matches the result.
+5. Reject the whole plan if any consequence fails validation.
+
+The key discipline: **consequence kind is thematic, event type is state-domain**.
+Damage emits `hp_changed`; disarm emits `item.transferred` (and optionally
+`condition_applied`); grapple emits `condition_applied`; shove emits
+`position_changed` or `condition_applied` (`prone`); spending a reaction emits
+`resource_changed`. This keeps same things same without hiding important state
+behind a generic `effect_applied`.
+
+### Worked Consequences
+
+Damage:
+
+```yaml
+schema: dwd.rules_consequence_plan.v1
+resolution_id: rulesres:s4_030
+source_event: event:s4_0299
+source_tool_call: tool:damage_roll_008
+actor: creature:ledger_thug_1
+action: rules:action.scimitar
+consequences:
+  - order: 1
+    kind: damage
+    target: pc:dorn
+    damage_type: slashing
+    amount: { rolled: 5, final: 5 }
+    hp_before: 17
+    hp_after: 12
+    emits: [event:s4_0300]
+```
+
+Disarm:
+
+```yaml
+schema: dwd.rules_consequence_plan.v1
+resolution_id: rulesres:s4_041
+source_event: event:s4_0407
+source_tool_call: tool:contested_check_011
+actor: pc:kael
+action: rules:action.disarm
+consequences:
+  - order: 1
+    kind: item_state
+    reason: disarm
+    item: item:sevran_blade
+    from: { actor: npc:sevran_oke, slot: hand_main }
+    to: { scene: scene:s4_dock_ambush, position: grid:g7 }
+    emits: [event:s4_0408]
+```
+
+Grapple:
+
+```yaml
+schema: dwd.rules_consequence_plan.v1
+resolution_id: rulesres:s4_052
+source_event: event:s4_0511
+source_tool_call: tool:contested_check_019
+actor: creature:ledger_thug_2
+action: rules:action.grapple
+consequences:
+  - order: 1
+    kind: condition
+    operation: apply
+    condition:
+      type: grappled
+      target: pc:iona
+      source: creature:ledger_thug_2
+      origin: { resolution_id: rulesres:s4_052 }
+      duration: { kind: until_escape }
+      removal: [escape_check_success, source_incapacitated]
+      stacking: replace
+      visibility: table
+    emits: [event:s4_0512]
+```
+
+0 HP:
+
+```yaml
+schema: dwd.rules_consequence_plan.v1
+resolution_id: rulesres:s4_063
+source_event: event:s4_0621
+source_tool_call: tool:damage_roll_014
+actor: pc:dorn
+action: rules:action.greataxe
+consequences:
+  - order: 1
+    kind: damage
+    target: creature:ledger_thug_1
+    damage_type: slashing
+    amount: { rolled: 11, final: 11, overkill: 4 }
+    hp_before: 7
+    hp_after: 0
+    emits: [event:s4_0622]
+  - order: 2
+    kind: combat_disposition
+    target: creature:ledger_thug_1
+    from: active
+    to: defeated
+    reason: hp_zero_creature
+    emits: [event:s4_0623]
+```
+
 ## Effects And Modifiers
 
-Everything that changes a number or a capability — a condition, a piece of setwork, a
-ship posture, a spell, cover, terrain, the weather gauge — does it by contributing a
-**modifier**. The modifier is the engine's universal currency of effects; the
-`modifiers` argument on the typed tools above is the *resolved* set of applicable
-modifiers from every source.
+Modifiers are reusable rules facts that alter how future checks or consequences
+resolve. Consequences are what an action does now. A condition, a piece of
+setwork, a ship posture, a spell, cover, terrain, or the weather gauge can
+contribute a **modifier**; the `modifiers` argument on the typed tools above is
+the *resolved* set of applicable modifiers from every source.
 
 A modifier is atomic and typed:
 
@@ -243,6 +435,54 @@ declares the formula that composes them — a Helm check is `d20 + helmsman skil
 ship's resolved maneuver`. And `multiply` is potent on large quantities (damage,
 distance, hull, speed) but weak on a small check bonus (`+4 → +6` is meh), so
 amplifiers belong on the big numbers, not on a +2.
+
+### Narrative Adjustments Are Modifiers
+
+A **narrative adjustment** is the rule-of-cool version of cover, inspiration, or
+favorable footing: a first-class modifier grant with a narrative reason and hard
+mechanical bounds. It is not prompt permission for the DM to change a result.
+
+```yaml
+schema: dwd.narrative_adjustment.v1
+adjustment_id: adjustment:s4_held_line_bonus
+target: pc:vanya
+profile_gate: balanced            # must be allowed by dm_profile.rules_authority
+reason: "Vanya invokes the old oath while holding the bridge alone."
+modifier:
+  schema: dwd.modifier.v1
+  source: { kind: narrative_adjustment, id: adjustment:s4_held_line_bonus }
+  target: { check_kind: saving_throw, save: wisdom }
+  op: { kind: add, value: 2 }
+  when: { next_matching_check: true }
+  lifecycle: next_matching_check
+caps:
+  add_max: 2
+  roll_shape_steps_max: 1
+  damage_bonus_allowed: false
+provenance: { source_message: msg:s4_0088, tool_call: tool:adjustment_002 }
+```
+
+Every grant emits `rules.adjustment_granted`. When the matching check resolves,
+`check_resolved.modifiers` cites the adjustment's modifier ID, and replay verifies
+that the modifier existed, matched the check, was still live, obeyed the profile
+caps, and was consumed or expired exactly once.
+
+Allowed initial targets are check math and roll shape: ability checks, saving
+throws, attack rolls, contested checks, DC nudges within declared bounds, and
+pack-declared `roll_shape` values such as advantage. Direct HP, resource,
+condition, item, position, combat-disposition, or damage changes are
+**consequences**, not adjustments. A table can later choose to allow a bounded
+narrative damage modifier, but that must be an explicit pack/profile capability
+with its own cap; it is not part of the default adjustment surface. The guardrail
+against "I talked the AI DM into +20 damage" is that damage math and state
+mutation are validated by the rules engine, not accepted from narration.
+
+For PCs, narrative adjustments may grant beneficial roll inputs under the active
+profile. Harmful PC penalties from narrative color are not adjustments; they need
+a rules-pack source such as a condition, spell, terrain rule, exhaustion state, or
+other typed game effect. For NPCs and creatures, the same adjustment grammar can
+grant bounded bonuses or penalties when the profile allows it, but the event still
+needs provenance and replay-valid math.
 
 ## Components
 
@@ -410,42 +650,65 @@ A relationship moves via the `relationship.update` tool (see
 A direct in-fiction promise can also promote a social **memento** (mechanical:
 auto; purely interpretive: model-proposed, reviewed).
 
-## narrative_override — Principle First
+## Narrative Adjustment And Override
 
-Rule-of-cool is a sanctioned, logged capability — but it is fenced hard, because
-the easy version of it is railroading.
+Rule-of-cool is sanctioned, but split by authority:
 
-- **It never touches a PC. Ever.** Players own their characters. Only a rules-legal
-  game effect (through the engine — a spell, a condition, an ability) can constrain
-  a PC, and that is not an override. A `narrative_override` targeting a player
-  character is rejected, unconditionally.
-- **NPC and world overrides are allowed but deliberately high-friction.** It is not
-  a default tool. It exists for the rare cinematic beat (a flourish that disarms an
-  NPC the roll did not support), gated by the `dm_profile` rules-authority setting,
-  and it should feel costly to reach for.
+- **`narrative_adjustment` changes roll inputs.** It grants bounded modifiers such
+  as a +2 attack bonus, a small saving-throw bonus, a bounded DC nudge, or a
+  pack-declared roll-shape change like advantage. It may benefit a PC when the
+  active `dm_profile` allows it, because the grant is typed, capped, logged, and
+  replay-validated.
+- **`narrative_override` authorizes exceptional consequences.** It is the rare
+  high-friction tool for an NPC/world cinematic beat that ordinary rules did not
+  produce, such as a disarm flourish against an NPC. It is not a default tool.
+- **Override authority is binary for now.** `dm_profile.rules_authority` either
+  exposes `narrative_override` or it does not. Do not add rate limits, point
+  budgets, or per-session caps until play shows the binary gate is too loose; the
+  current enforceable checks are profile gate, target legality, consequence-plan
+  validation, provenance, audit log, and tell.
+- **PC state and agency remain protected.** A PC may be the actor of an override
+  beat, and a PC may receive a beneficial `narrative_adjustment`, but
+  `narrative_override` cannot target a PC with a consequence, move them, damage
+  them, change their resources, impose or remove a condition, alter their items,
+  set their combat disposition, or decide their choices. Harmful PC effects need a
+  rules-pack source and normal rules-engine validation.
 - **Durable world change is dreaming's job**, not live override. If a change wants
   to reshape the world (a faction turns, a fact becomes canon), it goes through the
-  slow, reviewed dreaming path — not a live fudge.
+  slow, reviewed dreaming path, not a live fudge.
 
 ```yaml
 schema: dwd.narrative_override.v1
 actor: pc:kael                    # the in-fiction agent of the beat
-affected_entities: [npc:sevran_oke]   # NPC/world only; a PC here is rejected
+affected_entities: [npc:sevran_oke]   # override consequence targets are NPC/world only
 override_type: disarm
 justification: "cinematic flourish on the killing blow"
 profile_gate: rule_of_cool        # must match dm_profile.rules_authority
+consequence:
+  kind: item_state
+  reason: disarm
+  item: item:sevran_blade
+  from: { actor: npc:sevran_oke, slot: hand_main }
+  to: { scene: scene:s4_dock_ambush, position: grid:g7 }
+tell:
+  operator_visible: true
+  table_cue: diegetic              # diegetic | ui | none
 provenance: { source_message: msg:s4_0091, tool_call: tool:override_003 }
 ```
 
-Every use emits `rules.override_applied` and is always audit-logged. Whether the
-table *sees* a tell that an override happened is a disclosure policy (see
+Every use emits `rules.override_applied` and is always audit-logged. If it has
+mechanical impact, the impact is still expressed through the same consequence
+plan and domain events as any other action; the override is the audited authority
+to produce that plan, not a special state-writing path. Whether the table *sees*
+a tell that an override happened is a disclosure policy (see
 [DM profile](DM_PROFILE.md)) — but inspectability in the log is non-negotiable.
 
 ## Build Order
 
-- Phase 2: rules_referee + typed tools + typed events; combat state, conditions,
-  turn/round events; the dice-source contract (digital first, physical read
-  integrated with the vision pipeline); social DC + ladder + disclosure;
-  `narrative_override` with its PC-immunity rule and profile gate.
+- Phase 2: rules_referee + typed tools + consequence plans + typed events;
+  combat state, conditions, resources, combat disposition, turn/round events; the
+  dice-source contract (digital first, physical read integrated with the vision
+  pipeline); social DC + ladder + disclosure; `narrative_adjustment` and
+  `narrative_override` with profile gates and replay validation.
 - Regression fixtures for the common combat and skill-check flows, scored against
   the saved simulation traces.

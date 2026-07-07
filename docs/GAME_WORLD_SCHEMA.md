@@ -124,6 +124,13 @@ secret:       restricted fact or knowledge bundle
 asset:        image, video, audio, handout
 source:       source material reference
 event:        durable event ID
+encounter:    rules-owned encounter instance
+condition_instance: rules-owned condition attachment
+modifier:     reusable rules modifier instance
+adjustment:   narrative adjustment grant
+rulesres:     rules resolution grouping ID
+tool:         deterministic tool call ID
+dice:         dice result ID
 ```
 
 IDs are lowercase slugs with optional local suffixes:
@@ -945,14 +952,17 @@ clock.advanced
 thread.updated
 check_resolved
 hp_changed
+resource_changed
 condition_applied
 condition_removed
 initiative_set
 position_changed
+combat.disposition_changed
 turn.started
 turn.ended
 round.started
 round.ended
+rules.adjustment_granted
 rules.override_applied
 secret.revealed
 asset.created
@@ -977,6 +987,179 @@ audience), `message.delivered_to_npc` (an in-fiction utterance reached an NPC an
 may update that NPC's knowledge), and `message.observed` (a content-free shell
 recording that an observable act — e.g. a whisper — was witnessed, carrying no
 text). Inbound capture lives in the message tables; state change lives in events.
+
+### Rules Event Payloads
+
+Rules events must be replayable from the event log without reading narration.
+Every event emitted from a single rules resolution carries a common spine:
+
+```yaml
+resolution_id: rulesres:s4_021
+source_event: event:s4_0209        # intent event; consequences usually cite check_resolved or override
+source_tool_call: tool:saving_throw_006
+actor: pc:vanya
+order: 1                           # order within this resolution's consequences
+```
+
+`resolution_id` groups the consequence events from one action. It is not a second
+source of truth; replay still rebuilds projections from accepted domain events.
+The ID is the audit spine that lets us ask which state changes came from this
+attack, spell, maneuver, or override.
+
+Minimum payload contracts:
+
+```yaml
+type: check_resolved
+payload:
+  check_kind: attack | ability_check | saving_throw | contested_check
+  actor: pc:vanya
+  targets: [creature:choir_zealot_2]
+  check_spec: tool_input:saving_throw_006
+  dice_result: dice:s4_014
+  modifiers: [modifier:bless, modifier:held_line_bonus]
+  dc_or_defense: { kind: save_dc, ability: wisdom, value: 14 }
+  outcome: success | failure
+  degree: fail | partial | success | strong
+  adjudication_visibility: table
+  result_audience: table
+```
+
+```yaml
+type: rules.adjustment_granted
+payload:
+  adjustment_id: adjustment:s4_held_line_bonus
+  target: pc:vanya
+  profile_gate: balanced
+  reason: "Vanya invokes the old oath while holding the bridge alone."
+  modifier:
+    id: modifier:held_line_bonus
+    schema: dwd.modifier.v1
+    source: { kind: narrative_adjustment, id: adjustment:s4_held_line_bonus }
+    target: { check_kind: saving_throw, save: wisdom }
+    op: { kind: add, value: 2 }
+    when: { next_matching_check: true }
+    lifecycle: next_matching_check
+  caps:
+    add_max: 2
+    roll_shape_steps_max: 1
+    damage_bonus_allowed: false
+  granted_by: dm_orchestrator
+  expires: { kind: next_matching_check, actor: pc:vanya }
+  provenance:
+    source_message: msg:s4_0088
+    tool_call: tool:adjustment_002
+```
+
+```yaml
+type: rules.override_applied
+payload:
+  override_id: override:s4_disarm_flourish
+  actor: pc:dorn
+  affected_entities: [npc:ren_castavel]
+  override_type: disarm
+  profile_gate: rule_of_cool
+  justification: "cinematic flourish on the killing blow"
+  authority:
+    kind: binary_profile_gate
+    allowed_by: dm_profile:greyhaven_main
+  tell:
+    operator_visible: true
+    table_cue: diegetic          # diegetic | ui | none
+    table_cue_text: "The moment bends toward spectacle."
+  consequence_plan: rulesres:s4_041
+  provenance:
+    source_message: msg:s4_0091
+    tool_call: tool:override_003
+```
+
+```yaml
+type: hp_changed
+payload:
+  target: npc:sevran_oke
+  hp_before: 18
+  delta: -6
+  hp_after: 12
+  amount: { rolled: 8, final: 6 }
+  damage_type: slashing
+  mitigation:
+    - { kind: resistance, source: condition:stoneskin, amount_removed: 2 }
+```
+
+```yaml
+type: resource_changed
+payload:
+  owner: pc:iona
+  resource: reaction
+  before: 1
+  delta: -1
+  after: 0
+  reason: opportunity_attack
+```
+
+```yaml
+type: condition_applied
+payload:
+  condition_id: condition_instance:s4_grapple_001
+  condition:
+    type: grappled
+    target: pc:iona
+    source: creature:ledger_thug_2
+    origin: { resolution_id: rulesres:s4_052 }
+    duration: { kind: until_escape }
+    removal: [escape_check_success, source_incapacitated]
+    stacking: replace
+    visibility: table
+```
+
+```yaml
+type: condition_removed
+payload:
+  condition_id: condition_instance:s4_grapple_001
+  target: pc:iona
+  reason: escape_check_success
+```
+
+```yaml
+type: item.transferred
+payload:
+  item: item:sevran_blade
+  from: { actor: npc:sevran_oke, slot: hand_main }
+  to: { scene: scene:s4_dock_ambush, position: grid:g7 }
+  reason: disarm
+```
+
+```yaml
+type: position_changed
+payload:
+  target: pc:iona
+  from: { scene: scene:s4_dock_ambush, position: grid:f6 }
+  to: { scene: scene:s4_dock_ambush, position: grid:f7 }
+  movement_kind: forced | voluntary | teleport | fall
+  reason: shove
+```
+
+```yaml
+type: combat.disposition_changed
+payload:
+  target: creature:ledger_thug_1
+  from: active
+  to: defeated          # active | defeated | unconscious | dying | dead | fled | surrendered | removed
+  reason: hp_zero_creature
+```
+
+```yaml
+type: turn.ended
+payload:
+  encounter: encounter:s4_dock_ambush
+  round: 2
+  actor: creature:ledger_thug_1
+  reason: normal | skipped | incapacitated | delayed | readied | defeated_before_turn | interrupted | no_valid_action
+  next_actor: pc:iona
+```
+
+Rules-owned redundancy is deliberate. `before` and `after` values are checked
+against the projection during replay; a mismatch means the event stream or
+projection code is wrong.
 
 Rules:
 
@@ -1128,8 +1311,10 @@ feature; the host remains the default and the fallback.
 
 Live play commits canon in real time through typed tools: `knowledge.revealed`,
 `relationship.changed`, `item.transferred`, and the typed rules events
-(`check_resolved`, `hp_changed`, `condition_applied`/`condition_removed`,
-`initiative_set`, `position_changed`, `rules.override_applied`). These are
+(`check_resolved`, `hp_changed`, `resource_changed`,
+`condition_applied`/`condition_removed`, `initiative_set`, `position_changed`,
+`combat.disposition_changed`, `rules.adjustment_granted`,
+`rules.override_applied`). These are
 low-stakes, in-budget, and validator-checked at write time — not queued for
 review. Dreaming is where *proposed* higher-order changes (mementos, clock
 movement, new facts, capsule refreshes) are generated as patches and routed
@@ -1287,6 +1472,27 @@ Minimum validators:
 - No travel event moving an actor or vehicle along an impossible route without an
   explicit override or magical exception.
 - No rules-owned field mutated by narrative patch.
+- No `check_resolved` modifier without an accepted source: rules-pack rule,
+  condition, component, item, resource, spell effect, or
+  `rules.adjustment_granted`.
+- No `rules.adjustment_granted` outside the active `dm_profile` cap, scope,
+  lifecycle, stacking policy, or permitted target. A default narrative adjustment
+  cannot produce direct damage or any HP/resource/condition/item/position/combat
+  disposition consequence.
+- No `hp_changed`, `resource_changed`, `condition_applied`,
+  `condition_removed`, `item.transferred`, `position_changed`, or
+  `combat.disposition_changed` event without an accepted source event, rules tool
+  call, and consequence-plan provenance.
+- No typed rules event whose `before` value disagrees with the prior projection,
+  whose `after` value disagrees with deterministic recomputation, or whose
+  roll/modifier math cannot be reproduced from dice source plus accepted
+  modifiers.
+- No `narrative_override` consequence targeting PC state or agency. A PC can
+  receive a bounded `narrative_adjustment`; a PC cannot be moved, damaged,
+  conditioned, disarmed, resource-changed, disposition-changed, or choice-set by
+  override.
+- No `rules.override_applied` without a typed `tell` payload. Operator visibility
+  is always true; the table cue may be diegetic, UI, or none per profile.
 - No clock segment outside range.
 - No thread resolution without accepted event.
 - No memento without provenance: its `source_event` must reference an accepted,
@@ -1299,14 +1505,24 @@ Minimum validators:
 - No OOC event included in recall, embeddings, NPC memory, or dreaming.
 - No restricted-host media/perception payload containing private source text.
 
+There are two validator classes. `dwdlint` is the static authoring linter for DWD
+seed files: IDs, references, visibility, vocabulary, and pack shape. Rules-event
+validation is an execution and replay concern: the live rules engine validates
+tool calls and consequence plans before append, and a replay verifier recomputes
+projection state afterward. Early code can share schema models and diagnostics,
+but the user-facing contract should name the job being done rather than treating
+event replay as ordinary lint.
+
 These should run in CI/evals later and in the CLI from day one:
 
 ```bash
+dwdlint worlds/aurevost
 dungeoneer world validate --campaign greyhaven
 dungeoneer world inspect npc:marra_vell
 dungeoneer world graph --around faction:ash_ledger
 dungeoneer world patch review patch:dream_s12_marra_trust
 dungeoneer world replay --campaign greyhaven --to event:s12_0048
+dungeoneer rules verify-events --campaign greyhaven
 ```
 
 ## Realism Model

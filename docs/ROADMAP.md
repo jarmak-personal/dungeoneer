@@ -175,12 +175,19 @@ See [Rules engine](RULES_ENGINE.md) for the full contract.
 - Add the `rules_referee` tool contract and typed rules tools (`ability_check`,
   `saving_throw`, `attack_roll`, `damage_roll`, `contested_check`) with structured
   result payloads; replace generic `rules.state_changed` with typed events.
+- Add consequence plans and the rules event/replay verifier: every HP, resource,
+  condition, item, position, disposition, and modifier change must cite accepted
+  rules provenance and replay to the same projection.
+- Add pack-owned modifier policy for stacking and roll-shape mechanics, including
+  machine-readable advantage/disadvantage cancellation in the SRD pack.
 - Add `dwd.combat_state.v1`, turn/round lifecycle events, and typed condition
   instances.
 - Add the dice-source contract: digital roller first; physical-dice reading via the
   vision system (discrete capture + confidence/confirm) as the default expectation.
-- Add the gated, logged `narrative_override` capability — enforced not prompted,
-  with its absolute PC-immunity rule (overrides never target a player character).
+- Add gated, logged `narrative_adjustment` and `narrative_override` capabilities
+  — enforced not prompted. Adjustments can grant bounded roll-input bonuses or
+  roll-shape changes under the active profile; overrides cannot target PC state or
+  agency.
 - Add social resolution: attitude-anchored DCs, the degree-of-success ladder, and
   the outcome->disclosure bridge (`secret.revealed`, bounded knowledge transitions).
 - Establish the world-state storage pattern: event-sourced JSONB projections under
@@ -198,14 +205,16 @@ See [Rules engine](RULES_ENGINE.md) for the full contract.
   redaction.
 - Add the override tell and the player "something's off" channel.
 - Add regression tests for common combat and skill-check flows, scored against the
-  saved simulation traces.
+  saved simulation traces. Combat scenarios need executable rules fixtures for
+  actor HP, AC, resources, held items, conditions, positions, and initiative.
 
 Exit criteria:
 
 - The DM can run a small combat using canonical rules state and physical-dice reads.
 - Model narration cannot directly mutate HP, positions, conditions, or resources.
-- A `narrative_override` can never target a PC; NPC/world overrides are logged and
-  profile-gated.
+- A `narrative_adjustment` can grant only bounded, sourced modifiers, and
+  `narrative_override` cannot target PC state or agency; both are logged,
+  profile-gated, and replay-valid.
 - A non-mechanical player question is answered on the side-channel without stalling
   an active turn.
 - A faction, quest, or clock can be advanced through a typed event and rebuilt by
