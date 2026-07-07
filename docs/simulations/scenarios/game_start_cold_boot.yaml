@@ -65,3 +65,18 @@ expected_pressure_points:
   - authorship of the first narration under the chosen persona, and routing the
     scene card to the shared display
   - no dm_only seed content leaking into the opening table narration
+expected_contracts:
+  session_zero:
+    questionnaire_schema: dwd.session_zero_questionnaire.v1
+    response_schema: dwd.session_zero_response.v1
+    mapping_schema: dwd.session_zero_mapping.v1
+    delivery_surfaces:
+      operator_console: required
+      player_remotes: optional_private
+      shared_display: public_summary_only
+    emits:
+      - dm_profile.seeded
+      - safety.configured
+    preset_expands_to_explicit_knobs: true
+    private_safety_answers_not_table_visible: true
+    final_operator_review_required: true

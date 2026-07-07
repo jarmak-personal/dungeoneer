@@ -18,7 +18,8 @@
 - Define the lifecycle and bootstrap layer: world/campaign/session/scene/device
   entity kinds and namespaces; campaign, session, scene, device, control, and
   display lifecycle events; the bootstrap sequence; and the dm_profile and
-  safety_config schemas. See LIFECYCLE.md.
+  safety_config schemas; and the session-zero questionnaire that maps table/player
+  answers to `dm_profile.seeded` and `safety.configured`. See LIFECYCLE.md.
 - Define generic brain capsule contracts for identity capsules and forkable
   expert/loremaster capsules, including snapshot provenance.
 - Define the system simulation run artifact/history schema and a small scenario

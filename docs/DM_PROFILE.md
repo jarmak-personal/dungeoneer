@@ -189,6 +189,51 @@ is required to start; the loop only refines the profile. See
 [Lifecycle and bootstrap](LIFECYCLE.md) for where session zero sits in the boot
 sequence.
 
+### Questionnaire Mapping
+
+Session-zero answers compile into explicit profile and safety fields. Presets are
+allowed only as UI shortcuts that expand before events are emitted.
+
+```yaml
+schema: dwd.session_zero_mapping.v1
+inputs:
+  table_style:
+    tone: grounded_adventure
+    humor: light
+    narration_density: medium
+    npc_voice: distinct_but_not_theatrical
+  rules_authority:
+    preset: balanced
+    expanded:
+      rules_authority: balanced
+      narrative_adjustments:
+        max_bonus: 2
+        allow_roll_shape: true
+        max_roll_shape_steps: 1
+        allow_damage_bonus: false
+  challenge:
+    lethality: standard
+    story_pressure: active
+    spotlight: rotate
+  safety:
+    rating: PG-13
+    lines: ["no on-screen harm to children"]
+    veils: ["torture fades to black"]
+outputs:
+  - dm_profile.seeded
+  - safety.configured
+```
+
+Rules:
+
+- A stored `dm_profile` records explicit fields, not an opaque preset name.
+- The `safety_config` is emitted separately from `dm_profile.seeded` even when the
+  questionnaire collects both in one flow.
+- Private safety responses are visible to the operator/safety gate, not to the
+  shared display or table recap.
+- Operator review records the mapping from answers to emitted fields so a later
+  profile/safety dispute is auditable.
+
 ## Build Order
 
 - Phase 1: `dm_profile` as first-class config; session-zero seeds it; the persona

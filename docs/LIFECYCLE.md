@@ -50,6 +50,71 @@ the event log.
    opening narration is delivered (`message.delivered`, audience `table`); a scene
    card is pushed to the shared display (`display.content_pushed`).
 
+## Session Zero Questionnaire
+
+Session zero is a structured elicitation flow that compiles table answers into
+`dm_profile.seeded` and `safety.configured`. The questionnaire is not a freeform
+chat whose summary becomes policy.
+
+```yaml
+schema: dwd.session_zero_questionnaire.v1
+campaign: campaign:greyhaven_main
+surfaces:
+  operator_console: required
+  player_remotes: optional_private
+  shared_display: public_summary_only
+sections:
+  - id: table_style
+    visibility: table
+    collection: table_discussion
+    maps_to: dm_profile.seeded
+  - id: rules_authority
+    visibility: table
+    collection: operator_confirmed
+    maps_to: dm_profile.seeded
+  - id: safety_lines_veils
+    visibility: private_per_player
+    collection: player_remote_or_operator_entry
+    maps_to: safety.configured
+  - id: final_review
+    visibility: operator
+    collection: operator_acceptance
+    maps_to: [dm_profile.seeded, safety.configured]
+```
+
+Responses are structured and provenance-bearing:
+
+```yaml
+schema: dwd.session_zero_response.v1
+questionnaire: questionnaire:greyhaven_main
+respondent: table | player:iona | operator
+visibility: table | player:iona | operator
+answers:
+  rules_authority: balanced
+  lethality: standard
+  narration_density: medium
+  safety_rating: PG-13
+  lines: ["no on-screen harm to children"]
+  veils: ["torture fades to black"]
+provenance:
+  source_messages: [msg:s0_0011]
+  operator_review: tool:session_zero_review_001
+```
+
+Rules:
+
+- The operator console is the canonical review surface. Player remotes can collect
+  private safety input; the shared display can show only non-private summary.
+- Presets are shortcuts, not stored policy. A preset must expand to explicit
+  `dm_profile` enum/knob values and `safety_config` fields before events are
+  emitted.
+- Public style/rules answers are table-visible. Private safety answers remain
+  private to the operator/safety gate and are merged into the resulting
+  `safety_config` without exposing who supplied which boundary.
+- `dm_profile.seeded` and `safety.configured` are emitted only after final
+  operator review. Later changes use `dm_profile.updated` or a new
+  `safety.configured` version event; nothing silently mutates.
+
 ## Device Pairing
 
 Devices join a session through session-scoped pairing (QR/token; see
