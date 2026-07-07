@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Iterator, Mapping, Sequence
 from dataclasses import dataclass, field
 from enum import StrEnum
 from pathlib import Path
-from typing import Any, Iterator, Mapping, Sequence
+from typing import Any
 
 import yaml
 from yaml.constructor import ConstructorError
@@ -140,6 +141,10 @@ ID_PATTERN = re.compile(
     r"^[a-z][a-z0-9_]*:[a-z0-9_][a-z0-9_.-]*(?:->[a-z0-9_.-]+)?$"
 )
 
+# A single token shaped like a namespaced ID: used to spot reference candidates
+# (and malformed references) without matching prose or URLs that contain colons.
+NAMESPACE_SHAPE = re.compile(r"^[a-z][a-z0-9_]*:\S+$")
+
 ENTITY_PREFIXES = {
     "world": "world",
     "calendar": "calendar",
@@ -161,7 +166,19 @@ MANAGED_PREFIXES = set(ENTITY_PREFIXES.values()) | {
     "fact",
     "goal",
     "rel",
+    "rules",
 }
+
+RULES_DOCUMENT_SCHEMAS = {
+    "dwd.rules_pack.v1",
+    "dwd.statblock.v1",
+    "dwd.condition.v1",
+    "dwd.dc_guidance.v1",
+    "dwd.character_sheet.v1",
+}
+RULES_NAMED_SCHEMAS = {"dwd.rules_pack.v1", "dwd.statblock.v1", "dwd.condition.v1"}
+
+SIMULATION_FIXTURE_SCHEMA = "dwd.simulation_rules_fixture.v1"
 
 VISIBILITY_VALUES = {"table", "dm_only", "internal", "ooc"}
 VISIBILITY_PREFIXES = ("player:", "players:", "npc_private:", "faction_private:")
@@ -260,6 +277,25 @@ def _namespace(identifier: str) -> str:
     return identifier.split(":", 1)[0]
 
 
+def _is_record_definition(value: Mapping[str, Any]) -> bool:
+    """Whether a mapping defines a durable record, as opposed to referencing one.
+
+    DWD definitions carry a schema, a name, a visibility, or a recognized entity
+    kind alongside their ID (inline goal declarations are id + visibility).
+    Mappings whose only ID-bearing role is pointing at another record
+    (``source: {kind: condition, id: rules:condition.prone}``) and foreign ID
+    fields (``license: {id: CC-BY-4.0}``) are not definitions.
+    """
+    if not isinstance(value.get("id"), str):
+        return False
+    return (
+        "schema" in value
+        or "name" in value
+        or "visibility" in value
+        or value.get("kind") in ENTITY_PREFIXES
+    )
+
+
 class DwdLinter:
     def __init__(self, documents: Sequence[Document], diagnostics: list[Diagnostic]) -> None:
         self.documents = documents
@@ -267,6 +303,7 @@ class DwdLinter:
         self.records: dict[str, Record] = {}
         self.future_facts: set[str] = set()
         self.predicates: set[str] = set()
+        self.document_locals: dict[Path, set[str]] = {}
 
     def add(
         self,
@@ -293,9 +330,9 @@ class DwdLinter:
     def _collect_records(self) -> None:
         for document in self.documents:
             for value in _walk_mappings(document.data):
-                identifier = value.get("id")
-                if not isinstance(identifier, str):
+                if not _is_record_definition(value):
                     continue
+                identifier = value["id"]
                 if not ID_PATTERN.fullmatch(identifier):
                     self.add(
                         document,
@@ -319,15 +356,28 @@ class DwdLinter:
                     continue
                 self.records[identifier] = Record(identifier, value, document)
 
-                created_fact = value.get("create_fact")
-                if isinstance(created_fact, str):
-                    self.future_facts.add(created_fact)
-
         for document in self.documents:
             for value in _walk_mappings(document.data):
                 created_fact = value.get("create_fact")
                 if isinstance(created_fact, str):
                     self.future_facts.add(created_fact)
+                if value.get("schema") == SIMULATION_FIXTURE_SCHEMA:
+                    self._collect_fixture_locals(document, value)
+
+    def _collect_fixture_locals(self, document: Document, fixture: Mapping[str, Any]) -> None:
+        """Register scenario-local actor IDs declared by a simulation rules fixture.
+
+        Fixture actors are keyed by ID (``creature:choir_zealot_1``) and defined
+        inline for that scenario only; they resolve within their own document but
+        are not world canon and must not satisfy references elsewhere.
+        """
+        actors = fixture.get("actors")
+        if not isinstance(actors, Mapping):
+            return
+        locals_ = self.document_locals.setdefault(document.path, set())
+        locals_.update(
+            key for key in actors if isinstance(key, str) and ID_PATTERN.fullmatch(key)
+        )
 
     def _collect_predicates(self) -> None:
         for document in self.documents:
@@ -340,8 +390,11 @@ class DwdLinter:
     def _validate_document(self, document: Document) -> None:
         root = document.data
         schema = root.get("schema")
-        if isinstance(root.get("id"), str) and isinstance(root.get("kind"), str):
+        root_id = root.get("id")
+        if isinstance(root_id, str) and isinstance(root.get("kind"), str):
             self._validate_entity(document, root)
+        elif isinstance(root_id, str) and _namespace(root_id) == "rules":
+            self._validate_rules_document(document, root)
         elif schema == "dwd.fact_collection.v1":
             self._validate_fact_collection(document, root)
         elif schema == "dwd.predicate_vocabulary.v1":
@@ -416,6 +469,35 @@ class DwdLinter:
         elif kind == "secret":
             self._validate_secret(document, entity)
 
+    def _validate_rules_document(self, document: Document, root: Mapping[str, Any]) -> None:
+        schema = root.get("schema")
+        if schema not in RULES_DOCUMENT_SCHEMAS:
+            self.add(
+                document,
+                root,
+                Severity.EXTENSION,
+                "DWD912",
+                f"unrecognized rules document schema {schema!r}",
+                "schema",
+            )
+            return
+        if schema in RULES_NAMED_SCHEMAS and not isinstance(root.get("name"), str):
+            self.add(
+                document,
+                root,
+                Severity.ERROR,
+                "DWD601",
+                "rules document is missing required field 'name'",
+            )
+        if schema != "dwd.rules_pack.v1" and not isinstance(root.get("pack"), str):
+            self.add(
+                document,
+                root,
+                Severity.ERROR,
+                "DWD602",
+                "rules document must cite its pack",
+            )
+
     def _validate_fact_collection(self, document: Document, root: Mapping[str, Any]) -> None:
         facts = root.get("facts")
         if not isinstance(root.get("source_refs"), list) or not root["source_refs"]:
@@ -432,7 +514,9 @@ class DwdLinter:
             return
         for fact in facts:
             if not isinstance(fact, Mapping):
-                self.add(document, root, Severity.ERROR, "DWD203", "each fact must be a mapping", "facts")
+                self.add(
+                    document, root, Severity.ERROR, "DWD203", "each fact must be a mapping", "facts"
+                )
                 continue
             required = {
                 "id",
@@ -483,7 +567,11 @@ class DwdLinter:
                     "truth_status",
                 )
             confidence = fact.get("confidence")
-            if not isinstance(confidence, (int, float)) or isinstance(confidence, bool) or not 0 <= confidence <= 1:
+            if (
+                not isinstance(confidence, (int, float))
+                or isinstance(confidence, bool)
+                or not 0 <= confidence <= 1
+            ):
                 self.add(
                     document,
                     fact,
@@ -516,7 +604,10 @@ class DwdLinter:
                 "predicate vocabulary must contain predicates",
                 "predicates",
             )
-        elif any(not isinstance(description, str) or not description.strip() for description in predicates.values()):
+        elif any(
+            not isinstance(description, str) or not description.strip()
+            for description in predicates.values()
+        ):
             self.add(
                 document,
                 root,
@@ -599,11 +690,15 @@ class DwdLinter:
         segments = clock.get("segments")
         current = segments.get("current") if isinstance(segments, Mapping) else None
         maximum = segments.get("max") if isinstance(segments, Mapping) else None
-        valid_ints = all(
-            isinstance(number, int) and not isinstance(number, bool)
-            for number in (current, maximum)
+        valid_segments = (
+            isinstance(current, int)
+            and not isinstance(current, bool)
+            and isinstance(maximum, int)
+            and not isinstance(maximum, bool)
+            and maximum >= 1
+            and 0 <= current <= maximum
         )
-        if not valid_ints or maximum < 1 or not 0 <= current <= maximum:
+        if not valid_segments:
             self.add(
                 document,
                 clock,
@@ -624,7 +719,11 @@ class DwdLinter:
             )
         else:
             for trigger in triggers:
-                if not isinstance(trigger, Mapping) or not isinstance(trigger.get("trigger"), str) or not isinstance(trigger.get("amount"), int):
+                if (
+                    not isinstance(trigger, Mapping)
+                    or not isinstance(trigger.get("trigger"), str)
+                    or not isinstance(trigger.get("amount"), int)
+                ):
                     self.add(
                         document,
                         trigger if isinstance(trigger, Mapping) else clock,
@@ -674,9 +773,23 @@ class DwdLinter:
                     str(action),
                 )
             elif action == "create_fact" and not target.startswith("fact:"):
-                self.add(document, outcome, Severity.ERROR, "DWD307", "create_fact target must use fact:", str(action))
+                self.add(
+                    document,
+                    outcome,
+                    Severity.ERROR,
+                    "DWD307",
+                    "create_fact target must use fact:",
+                    str(action),
+                )
             elif action == "unlock_thread" and not target.startswith("thread:"):
-                self.add(document, outcome, Severity.ERROR, "DWD308", "unlock_thread target must use thread:", str(action))
+                self.add(
+                    document,
+                    outcome,
+                    Severity.ERROR,
+                    "DWD308",
+                    "unlock_thread target must use thread:",
+                    str(action),
+                )
 
     def _validate_thread(self, document: Document, thread: Mapping[str, Any]) -> None:
         if thread.get("status") not in THREAD_STATUSES:
@@ -720,7 +833,14 @@ class DwdLinter:
     def _validate_secret(self, document: Document, secret: Mapping[str, Any]) -> None:
         holders = secret.get("holders")
         if not isinstance(holders, list):
-            self.add(document, secret, Severity.ERROR, "DWD321", "secret holders must be a list", "holders")
+            self.add(
+                document,
+                secret,
+                Severity.ERROR,
+                "DWD321",
+                "secret holders must be a list",
+                "holders",
+            )
         if secret.get("visibility") == "internal" and holders:
             self.add(
                 document,
@@ -737,7 +857,13 @@ class DwdLinter:
             return
         for edge in knowledge:
             if not isinstance(edge, Mapping):
-                self.add(document, document.data, Severity.ERROR, "DWD332", "knowledge edge must be a mapping")
+                self.add(
+                    document,
+                    document.data,
+                    Severity.ERROR,
+                    "DWD332",
+                    "knowledge edge must be a mapping",
+                )
                 continue
             missing = {"holder", "target", "mode"} - edge.keys()
             if missing:
@@ -763,7 +889,14 @@ class DwdLinter:
             return
         visibility = value.get("visibility")
         if not isinstance(visibility, str):
-            self.add(document, value, Severity.ERROR, "DWD401", "visibility must be a string", "visibility")
+            self.add(
+                document,
+                value,
+                Severity.ERROR,
+                "DWD401",
+                "visibility must be a string",
+                "visibility",
+            )
             return
         if visibility in VISIBILITY_VALUES:
             return
@@ -807,25 +940,41 @@ class DwdLinter:
 
     def _iter_references(self, value: object) -> Iterator[str]:
         if isinstance(value, Mapping):
+            skip_id = _is_record_definition(value)
             for key, child in value.items():
-                if key in {"id", "schema", "visibility", "create_fact"}:
+                if key in {"schema", "visibility", "create_fact"}:
+                    continue
+                if key == "id" and skip_id:
                     continue
                 yield from self._iter_references(child)
         elif isinstance(value, list):
             for child in value:
                 yield from self._iter_references(child)
-        elif isinstance(value, str) and ID_PATTERN.fullmatch(value):
+        elif isinstance(value, str) and NAMESPACE_SHAPE.fullmatch(value):
             yield value
 
     def _validate_references(self) -> None:
         known = self.records.keys() | self.future_facts
         for document in self.documents:
+            resolvable = known | self.document_locals.get(document.path, set())
             for reference in self._iter_references(document.data):
-                if _namespace(reference) in MANAGED_PREFIXES and reference not in known:
+                if _namespace(reference) not in MANAGED_PREFIXES:
+                    continue
+                if not ID_PATTERN.fullmatch(reference):
                     self.diagnostics.append(
                         Diagnostic(
                             document.path,
-                            1,
+                            document.line(reference),
+                            Severity.ERROR,
+                            "DWD113",
+                            f"malformed reference syntax {reference!r}",
+                        )
+                    )
+                elif reference not in resolvable:
+                    self.diagnostics.append(
+                        Diagnostic(
+                            document.path,
+                            document.line(reference),
                             Severity.ERROR,
                             "DWD111",
                             f"dangling reference {reference!r}",
@@ -914,8 +1063,9 @@ class DwdLinter:
                             "DWD405",
                             f"table-visible object references internal truth {reference!r}",
                         )
+            passed_down = visibility if isinstance(visibility, str) else inherited
             for child in value.values():
-                self._walk_visibility(document, child, visibility if isinstance(visibility, str) else inherited)
+                self._walk_visibility(document, child, passed_down)
         elif isinstance(value, list):
             for child in value:
                 self._walk_visibility(document, child, inherited)

@@ -20,10 +20,17 @@ allows unknown fields. Unknown kinds, schemas, enum options, and typed actions
 are reported as `EXTENSION`: lint fails so the validator cannot silently drift,
 but the diagnostic means the linter may need to learn a valid format addition.
 
+The lint unit is the whole authored surface — worlds, rules packs, and
+simulation scenarios — linted together, because references cross those corpora
+(worlds bind NPCs to `rules:` stat blocks; scenarios reference world entities;
+scenario fixtures may declare scenario-local actors that resolve only within
+their own file). Running `dwdlint` with no arguments lints `worlds`, `rules`,
+and `docs/simulations` where present.
+
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install -e '.[dev]'
-.venv/bin/dwdlint worlds/aurevost
+.venv/bin/dwdlint
 .venv/bin/pytest
 ```
 
@@ -38,7 +45,7 @@ To enable the tracked Git pre-commit hook for this checkout:
 git config core.hooksPath .githooks
 ```
 
-The hook runs `uv run dwdlint worlds/aurevost` before each commit.
+The hook runs `uv run dwdlint worlds rules docs/simulations` before each commit.
 
 ## Architecture Docs
 

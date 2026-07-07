@@ -6,5 +6,5 @@ if ! command -v uv >/dev/null 2>&1; then
   exit 1
 fi
 
-echo "pre-commit: running dwdlint worlds/aurevost"
-uv run dwdlint worlds/aurevost
+echo "pre-commit: running dwdlint worlds rules docs/simulations"
+uv run dwdlint worlds rules docs/simulations

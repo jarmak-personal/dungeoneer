@@ -1506,7 +1506,10 @@ Minimum validators:
 - No restricted-host media/perception payload containing private source text.
 
 There are two validator classes. `dwdlint` is the static authoring linter for DWD
-seed files: IDs, references, visibility, vocabulary, and pack shape. Rules-event
+seed files: IDs, references, visibility, vocabulary, and pack shape. Its lint unit
+is the whole authored surface — worlds, rules packs, and simulation scenarios
+together — because references cross those corpora (world `rules_binding` entries
+cite `rules:` stat blocks; scenarios cite world entities). Rules-event
 validation is an execution and replay concern: the live rules engine validates
 tool calls and consequence plans before append, and a replay verifier recomputes
 projection state afterward. Early code can share schema models and diagnostics,
@@ -1516,7 +1519,7 @@ event replay as ordinary lint.
 These should run in CI/evals later and in the CLI from day one:
 
 ```bash
-dwdlint worlds/aurevost
+dwdlint worlds rules docs/simulations
 dungeoneer world validate --campaign greyhaven
 dungeoneer world inspect npc:marra_vell
 dungeoneer world graph --around faction:ash_ledger
