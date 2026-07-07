@@ -54,6 +54,59 @@ intent:
     durable without erasing inherited culture: people can celebrate old holy days
     sincerely, casually, commercially, or merely because their grandparents did, while
     still finding actual religious commitment strange.
+  pc_casters: >
+    Every class is playable; rarity lives in the world, not at the table (the party
+    is a selection effect, not a sample). The design rule: specialness is never an
+    announced status — it is carried by the channel a caster uses, the costs they
+    pay, and the world's reaction to them. Wizards are conservation-bound pre-khevra
+    casters and living proof of the Second Setting's thesis, which is why the Ilvane
+    line quietly cares about them. Divine casters split power from communication:
+    their casting is reliable because kept belief is the fuel (never deny a divine PC
+    their spell slots by location), while hearing a god attenuates with khevra load.
+    The attenuation is character-discoverable, not player-secret: the dm_only
+    visibility means the world never volunteers the correlation in narration and the
+    character starts ignorant of it — whether the player is in on it is their
+    business (see spoiler_tolerance). A cleric's arc is the character finding the
+    pattern the way the Hearthward found the Emberglass, and that scene lands
+    whether the player saw it coming or not. The diagnostic that falls out is canon:
+    genuine bonds whisper, and any loud commanding divine voice is the Cantor's
+    mimicry — if your god shouts, be suspicious. What qualifies a
+    divine caster is practice, not blood; bloodline resistance was deliberately
+    rejected because heredity re-imports special-by-birth and crowds the Asha niche.
+    Socially, a true divine caster is a crank the modern world explains away —
+    vindication is an earned arc, not a starting condition. Paladins are self-lit:
+    oath-power kept through surviving custom needs no reception, making them walking
+    Emberglasses and plausibly the most common divine casters. Druid contamination
+    is an informed tradeoff, not a class restriction, and non-Asha maritime druidic
+    traditions keep PC druids free of Asha baggage. Warlock pacts are the Cantor's
+    sensory organ: pacts shine as beacons in the planar dark, the Cantor finds
+    worlds by their pact traffic, and a pact-shaped patronage cultivated Tavian's
+    discovery — which gives the Sorrell archive hero line its doorway
+    (secret:the_first_bargain). Guardrail: the pact ecosystem is diverse and mostly
+    unrelated; the Cantor hunts within it, it does not own it — never let every
+    patron trace back to the villain. Patron reticence is texture; author at least
+    one patron as a refugee from a consumed world. The khevra-touched sorcerous
+    origin ("set instead of bloomed") is strictly opt-in with player consent, since
+    it makes the character quietly complicit in the bridge; standard origins remain
+    equally valid. Bards are resonance-craft in a world already scored in figures
+    and chords. Systems note: the divine bond, the warlock pact, and the Asha
+    vaurn-bond are one rules concept — a typed bond changed only by accepted events.
+  spoiler_tolerance: >
+    This repository is readable, and players will arrive anywhere from totally cold
+    to fully spoiled; the seed must be fun at both extremes and everywhere between.
+    Visibility and audience metadata (per docs/GAME_WORLD_SCHEMA.md) govern the
+    engine — retrieval, narration, NPC activation, recaps — which is to say they
+    govern what characters and in-world voices know. They are never a promise that
+    the player has not read this file, and no design may depend on that promise.
+    The drama therefore cannot be twist-load-bearing: the layered-truth structure
+    is built as evidence-assembly and dramatic irony, so a spoiled player still has
+    to play the convergence — earn the trust, gather the pieces, choose what the
+    evidence demands — and a character's discovery scene lands even when the player
+    saw it coming. Hidden-from-the-character is a rule the engine enforces;
+    hidden-from-the-player is a table preference some tables will enjoy playing
+    cold. Design test for every secret in this seed: would it still be satisfying
+    to a player who read this file first? If not, the secret is carrying weight
+    the structure should carry.
   campaign_shape: >
     Political, maritime, mysterious, and high-stakes for low-level people. Campaigns
     need not target the planetary threat. Characters can live inside the cold war,
@@ -134,9 +187,13 @@ intent:
     - "The planetary premise supports local campaigns without forcing every party into an epic endpoint."
     - "The Cantor is a pressure on khevra use, not the sole cause of worldly conflict; campaigns can stay physical, local, political, or adventurous without touching him."
     - "A survivable but costly off-ramp (the Second Setting) keeps the moral question live: progress is a choice with a real price, not a one-way good."
+    - "Every caster class maps onto the world's physics through one shared rules concept (the typed bond) plus the conservation rule, instead of per-class exceptions."
 open_questions:
   - "Detail the Ilvane Accord's modular fleet standard and how far the honest-figure research network reaches beyond it."
   - "Define the deterministic contamination and anti-khevra druid mechanics in the rules contract."
   - "Seed pre-Setting khevra anomalies across historical cultures without making the solution obvious."
   - "Calibrate the bridge and transition clocks through simulation without collapsing them into one deadline."
   - "Name the major surviving post-religious holidays, ship rites, mourning forms, repurposed temple buildings, and devout holdouts that appear in ordinary play."
+  - "Define the deterministic typed-bond mechanics in the rules contract: divine-communication attenuation by khevra load, oath self-sufficiency, and pact-beacon detectability."
+  - "Author the patron roster, including at least one refugee from a world the Cantor consumed."
+  - "Extend the pregen set to a full starter table with caster coverage (at least one divine and one pact caster to exercise the typed-bond rules)."

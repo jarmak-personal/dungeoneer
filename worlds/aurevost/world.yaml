@@ -47,6 +47,61 @@ setting:
     misunderstood arcane talent or devotional performance. A player character may
     begin with a typed divine bond; the rules engine never judges sincerity ad hoc,
     and any change to that bond requires an accepted event.
+  pc_casters:
+    stance: >
+      Every class is playable. Rarity lives in the world, not at the table: an
+      adventuring party is a selection effect, not a random sample, so a table may
+      seat casters the streets of Caelport would gawk at. No caster class is
+      "special" by announced status; where a class is rare or disputed, its
+      distinctiveness is carried by the channel it uses, the costs it pays, and how
+      the world reacts to it.
+    arcane: >
+      Full arcane casters are what magic was before khevra: conservation-bound
+      practitioners who spend only what they themselves supply. Basic arcane
+      schooling is common; a true full caster is to that schooling what a concert
+      soloist is to a music lesson — rare, admired, and economically irrelevant at
+      civilization scale, which is exactly why khevra won. Accord research programs
+      and independent engineers take a quiet professional interest in strong
+      conventional casters.
+    divine: >
+      A divine player character begins with a typed divine bond. Their miracle-work
+      is reliable, because a kept faith is its own fuel; what is faint is the other
+      direction. Hearing a god is rare, fragmentary, and famously inconsistent, and
+      devout tradition argues endlessly about where and when communion comes
+      clearest. Socially, a genuine divine caster is not a chosen one but a crank:
+      verified miracles get explained away as misread arcane talent or devotional
+      performance, and vindication, if it ever comes, must be earned in play.
+      What qualifies a person is practice, not blood — belief actually kept across
+      the long silence — and the rules engine never judges sincerity ad hoc; any
+      change to a bond requires an accepted event.
+    oathbound: >
+      Paladins draw on the oath, not on reception. Aurevost's old rites survived as
+      custom — tide days, launch blessings, threshold vows — and an oathbound
+      character is what happens when someone keeps such customs with total
+      sincerity. Their power asks no answer from the sky; it is self-lit, a kept
+      flame. They may well be the most common form of "divine" caster in 312 AS.
+    druidic: >
+      Living-systems traditions exist well beyond the Asha — reef-tenders,
+      storm-callers, river-keepers, and other maritime lines. Every druidic
+      tradition teaches that worked khevra and living practice mix badly; the rules
+      engine owns a cumulative contamination condition for druids who deliberately
+      work khevra. Whether that teaching is superstition or observation is a
+      question the modern world considers settled and druids do not.
+    pact: >
+      Warlock pacts are typed bonds with real, diverse patrons. It is quiet lore
+      among the pact-bound that patrons treat Aurevost with an odd wariness:
+      bargains here come hedged, attention comes rationed, and some patrons will
+      not say why. A patron's reticence is playable texture, not a rules penalty.
+    blooded: >
+      An optional sorcerous origin: a person whose childhood near an active deposit
+      ended not in the usual sickness but in a quiet stabilization — a human who
+      set instead of bloomed. The origin is strictly opt-in and carries campaign
+      weight the player accepts at creation; no one is assigned it, and standard
+      sorcerous origins unconnected to khevra are equally at home.
+    resonant: >
+      Bardic magic reads naturally as resonance-craft in a world whose engineering
+      speaks of figures, chords, and settings. Bards perform alongside setwork,
+      tune it, unsettle it, and are welcome nearly everywhere sailors are.
   religious_life: >
     Temples did not disappear overnight when communion failed, but three centuries
     changed their meaning. Most are gone, repurposed, bricked over, converted into

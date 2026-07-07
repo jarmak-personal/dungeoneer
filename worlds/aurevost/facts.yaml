@@ -588,3 +588,79 @@ facts:
     truth_status: canon
     visibility: internal
     confidence: 1.0
+
+  # --- Player casters and typed bonds ---
+
+  - id: fact:divine_casting_draws_on_bearer
+    schema: dwd.fact.v1
+    subject: "miracle-work performed across a genuine divine bond"
+    predicate: draws_power_from
+    object: "the bearer's own kept belief rather than the weakened heavenly threads"
+    truth_status: canon
+    visibility: dm_only
+    confidence: 1.0
+
+  - id: fact:divine_communication_attenuates_near_khevra
+    schema: dwd.fact.v1
+    subject: "communication across a genuine divine bond"
+    predicate: attenuates_near
+    object: "heavily loaded khevra setwork, clearing in rejection zones and low-khevra places"
+    truth_status: canon
+    visibility: dm_only
+    confidence: 1.0
+
+  - id: fact:loud_divine_voices_are_mimicry
+    schema: dwd.fact.v1
+    subject: "any loud, clear, or commanding divine voice in 312 AS"
+    predicate: reliably_indicates
+    object: "the Cantor's mimicry; genuine communion survives only as faint fragmentary guidance"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:kept_oaths_function_without_reception
+    schema: dwd.fact.v1
+    subject: "oath-power kept through surviving rites and customs"
+    predicate: functions_without
+    object: "reception across the ruptured heavenly threads"
+    truth_status: canon
+    visibility: dm_only
+    confidence: 1.0
+
+  # --- Pacts, beacons, and the Cantor's arrival ---
+
+  - id: fact:pacts_are_planar_beacons
+    schema: dwd.fact.v1
+    subject: "warlock pacts and similar cross-planar bargains"
+    predicate: is_detectable_as
+    object: "traceable beacons in the planar dark"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:cantor_locates_worlds_through_pact_traffic
+    schema: dwd.fact.v1
+    subject: creature:the_cantor
+    predicate: locates_targets_through
+    object: "the pact traffic of candidate worlds"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:first_setting_cultivated_through_pact_patronage
+    schema: dwd.fact.v1
+    subject: "the cultivation of Tavian Sorrell's khevra discovery"
+    predicate: was_cultivated_through
+    object: "a pact-shaped patronage arrangement whose oblique traces survive in House Sorrell's restricted archives"
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0
+
+  - id: fact:patrons_fear_and_avoid_the_cantor
+    schema: dwd.fact.v1
+    subject: "extraplanar patrons who know of consumed worlds"
+    predicate: fear_and_avoid
+    object: creature:the_cantor
+    truth_status: canon
+    visibility: internal
+    confidence: 1.0

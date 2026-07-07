@@ -6,11 +6,12 @@ aliases: ["Edreth's whole", "the entity beyond the setting"]
 lifecycle: active
 visibility: internal
 summary: >
-  An ancient extraplanar consumer that seeds worlds with its own material, teaches
-  their populations to energize it, merges their plane with its exhausted home, and
-  moves on. It is brilliant and tactical, but Aurevost is food rather than enemy:
-  its plans optimize setting, use, dependency, and acceleration of khevra. Edreth
-  Vale is its present Aurevost body, not a separate worshipper.
+  An ancient extraplanar consumer that finds candidate worlds by listening for
+  their pact traffic, seeds them with its own material, teaches their populations
+  to energize it, merges their plane with its exhausted home, and moves on. It is
+  brilliant and tactical, but Aurevost is food rather than enemy: its plans
+  optimize setting, use, dependency, and acceleration of khevra. Edreth Vale is
+  its present Aurevost body, not a separate worshipper.
 facets:
   actor:
     scale: extraplanar
