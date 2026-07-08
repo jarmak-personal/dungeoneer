@@ -134,6 +134,9 @@ of an unvalidated latency assumption.
   assignment (including companions), and the cold-start warmup pass that builds the
   first capsules and prepares the opening scene off the live path.
 - Add basic retrieval over campaign history and structured entities.
+- Add transcript-to-canon promotion: delivered speech and narration can remain
+  lightweight evidence, with dreaming promoting only load-bearing spans into
+  claims, clues, knowledge edges, facts, or state patches.
 - Add basic spatial inspection over the starting region: `where_is`, `nearby`,
   `contains`, `neighbors`, and `distance`.
 - Add DWD-backed NPC, location, relationship, and basic thread facets for text
@@ -194,6 +197,10 @@ See [Rules engine](RULES_ENGINE.md) for the full contract.
   `message.delivered`, `knowledge.learned`, `fact.asserted`, and `secret.revealed`.
 - Add `dwd.relationship_delta_policy.v1` so live relationship updates have
   bounded deltas and larger stance/loyalty shifts route to dreaming.
+- Add `dwd.consequence_plan.v1`, `dwd.clock_advanced.v1`, and
+  `dwd.clock_outcome_action.v1` so live play can separate immediate effects from
+  deferred fallout and clock completions can apply preauthorized outcomes without
+  broad campaign scans.
 - Establish the world-state storage pattern: event-sourced JSONB projections under
   versioned contracts, with typed mechanical state owned by the rules engine.
 - Add minimal faction, thread, clock, item, fact, and knowledge-edge contracts
@@ -245,7 +252,8 @@ Exit criteria:
 Exit criteria:
 
 - A live voice session works end to end with acceptable latency.
-- The transcript remains the canonical conversational record.
+- The transcript remains the canonical conversational evidence, not canonical
+  world truth by itself.
 - Aborted speech is persisted for audit but excluded from player-facing recall.
 
 ## Phase 4: Map And Battle-Grid Vision

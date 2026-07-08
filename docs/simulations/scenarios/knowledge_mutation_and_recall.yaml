@@ -2,6 +2,7 @@ schema: dwd.system_simulation_scenario.v1
 id: sim:knowledge_mutation_and_recall
 title: Knowledge Learned In Play, Then Recalled
 focus:
+  - transcript_to_canon_promotion
   - knowledge_learned_event
   - per_pc_vs_party_knowledge
   - perspective_recall_update
@@ -19,13 +20,28 @@ input:
     - "in play, Wick confirms (table-visible) that the bricked shrine exists and the Hearthward tend it — the party learns it"
     - "the party overhears a dock rumor: 'they say the Choir is behind the gantry sabotage' (unconfirmed)"
     - "pc:dorn alone is told privately by Wick that Tovin founded the cell (player-private to Dorn)"
-    - "sessions later, evidence shows the sabotage was not the Choir, contradicting the held rumor"
+    - "sessions later, evidence shows the sabotage was not the Choir, contradicting the retained rumor/claim"
     - "pc:vanya asks mid-scene: 'what do we actually know about the shrine and the sabotage?'"
 expected_pressure_points:
   - a fact learned in play creates a knowledge edge for the present PCs (implicit by presence), not a seed edit
+  - the overheard dock rumor may remain transcript/claim/clue evidence until recall, contradiction, or future play makes it load-bearing
   - the privately-told fact is per-PC (Dorn only) and is not part of Vanya's knowledge
   - recall is scoped to the learned subset and labels canon versus rumor with citations
   - the unconfirmed sabotage claim stays a rumor; it is not promoted to fact without confirmation
-  - the contradicting evidence marks the rumor false/superseded; contradiction detection fires
+  - if the rumor has been promoted beyond transcript-only, contradicting evidence marks the claim false/superseded; contradiction detection fires
   - what the next-session recap includes or excludes, and for whom
   - party knowledge is the union over present PCs, visibility-filtered
+expected_contracts:
+  transcript_promotion:
+    ladder:
+      - transcript_only
+      - claim
+      - clue
+      - knowledge_edge
+      - fact_assertion
+      - state_mutation
+    ordinary_color_can_remain_transcript_only: true
+    rumor_not_fact_without_confirmation: true
+    promoted_claims_cite_source_span: true
+    contradiction_only_updates_promoted_claims: true
+    recall_labels_transcript_or_claim_sources_as_uncertain: true

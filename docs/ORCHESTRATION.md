@@ -133,6 +133,54 @@ or at the table. An optional remote "share" affordance is only another way to em
 the same kind of table-delivered disclosure event; it is not required for normal
 play.
 
+## Consequence Triage
+
+In live play, one player action can imply more consequences than the turn can
+responsibly resolve. The orchestrator always separates consequence handling into
+three buckets before committing state:
+
+```yaml
+schema: dwd.consequence_plan.v1
+source_message: msg:s12_0048
+source_event: event:s12_0049
+immediate_effects:
+  - kind: clock_advance
+    target: clock:hearthward_exposed
+    route: live_tool
+deferred_effects:
+  - kind: faction_reaction
+    target: faction:choir
+    route: dream.patch_proposed
+blocked_effects:
+  - kind: create_fact
+    target: fact:hearthward_shrine_exposed
+    route: no_canon_write
+```
+
+Rules:
+
+- If an utterance or narration beat has no load-bearing consequence, the
+  orchestrator records delivery/transcript provenance and stops. It does not
+  manufacture a fact, clue, thread, clock tick, or consequence plan just because
+  the content is interesting.
+- **Immediate** means the next few seconds of play depend on the result and a
+  bounded typed tool can validate it locally. Rules results, explicit knowledge
+  delivery, item transfers, location/position changes, targeted relationship
+  nudges, explicit clock advances, and preauthorized clock outcomes fit here.
+- **Deferred** means the consequence is real pressure but does not need to block
+  the live turn: broad fallout, off-screen reactions, rumor spread, memento
+  promotion, capsule refresh, recap/prep updates, and clock outcomes that are not
+  preauthorized for live completion.
+- **Blocked** means the system lacks a deterministic definition, payload,
+  authority, or validator. Blocked effects produce no canon mutation. The DM may
+  acknowledge uncertainty or narrow the narration, but cannot invent the missing
+  mechanics or world write.
+- The live lane serializes only immediate table-visible effects. Deferred effects
+  are queued for dreaming/review with provenance. Blocked effects are logged for
+  operator/rules follow-up.
+- A table event is valid provenance, not unlimited live write authority. The
+  orchestrator commits only explicitly addressed, validator-owned effects now.
+
 ## Loremaster Live Fallback
 
 A live loremaster fork is forbidden (latency), and warmup prepares likely experts —

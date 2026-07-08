@@ -168,6 +168,25 @@ Strategy:
   the tool, then resumes. Do not have the model block on the tool before it has
   said anything.
 
+## World Consequences On The Live Path
+
+Strict state does not mean global state scans during a turn. Live world writes use
+`dwd.consequence_plan.v1` to split the beat into immediate, deferred, and blocked
+effects before any write.
+
+Rules:
+
+- Immediate world effects validate only the addressed state and local references:
+  the event being appended, the relevant projection before-state, named targets,
+  and the action's validator.
+- Explicit clock advances and preauthorized clock outcomes may commit live when
+  those local checks pass. They do not trigger a campaign-wide reaction scan.
+- Broad consequence discovery — faction reactions, rumor spread, missed clock
+  triggers, mementos, capsule refresh, recap/prep updates, and contradiction
+  checks — runs in dreaming or side-channel review, not in the TTFA path.
+- If an immediate effect cannot validate inside the live budget, it becomes a
+  deferred or blocked effect. Responsiveness wins over speculative completeness.
+
 ## GPU Residency Is A Latency Constraint
 
 The budget assumes the live-path models never cold-load. That makes residency a

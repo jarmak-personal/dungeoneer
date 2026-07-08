@@ -63,6 +63,11 @@ So:
 - **Build as rich as the design warrants** — the full world schema, capsules, and
   knowledge model can land early because implementing them is no longer the
   bottleneck. Unvalidated complexity is the enemy, not complexity itself.
+- **Structure only load-bearing consequences.** Live play should feel like D&D,
+  not data entry. The system records speech, narration, delivery, and provenance
+  richly, but ordinary color can remain transcript evidence until it matters.
+  Facts, knowledge edges, clocks, threads, mementos, and relationship deltas are
+  promoted when they affect future play, rules, privacy, recall, or world state.
 - **Two gates cannot be shortcut by agents or simulation.** Physical-world
   unknowns (does room capture work, does TTFA hold) need empirical spikes.
   Subjective quality (does the NPC feel like it remembers, is the DM fun) needs

@@ -897,17 +897,49 @@ advance_triggers:
     amount: -2
 outcomes:
   complete:
-    - create_fact: fact:harbor_watch_compromised
-    - unlock_thread: thread:clean_hands_rebellion
+    review_policy: auto_apply_if_preauthorized
+    actions:
+      - schema: dwd.clock_outcome_action.v1
+        kind: create_fact
+        target: fact:harbor_watch_compromised
+        event_type: fact.asserted
+        payload_source: authored_fact
+        review_policy: inherit
+      - schema: dwd.clock_outcome_action.v1
+        kind: unlock_thread
+        target: thread:clean_hands_rebellion
+        event_type: thread.updated
+        payload:
+          status: active
+        review_policy: inherit
 visibility: dm_only
 ```
 
 Rules:
 
 - Clocks must have owners, stakes, and outcomes.
-- Clocks advance through typed events.
-- Clock changes are reviewable when high impact.
-- Dreaming can propose clock movement, but validators and review decide.
+- Clocks advance through typed `clock.advanced` events. A clock completion is the
+  transition from `current < max` to `current == max`; an already completed clock
+  does not complete again unless a later accepted event resets or reopens it.
+- The compact authored syntax `- create_fact: fact:...` and
+  `- unlock_thread: thread:...` is shorthand for `dwd.clock_outcome_action.v1`.
+  The normalized action vocabulary is intentionally small: `create_fact` maps to
+  `fact.asserted`; `unlock_thread` maps to `thread.updated`.
+- `create_fact` does not let a model invent a fact payload at completion time. It
+  asserts a preauthored fact payload or a payload produced by an accepted patch.
+  If the payload is not resolvable, the action cannot commit live.
+- `unlock_thread` targets an existing locked thread and records the prior status,
+  new status, and the clock completion event that unlocked it.
+- A clock completion produces a `dwd.consequence_plan.v1`. The live path applies
+  only locally valid, preauthorized outcome actions needed for the next beat of
+  play. Broad reactions, inferred fallout, memento promotion, faction posture
+  shifts, capsule refreshes, and unresolved or underdefined outcome actions are
+  deferred to dreaming or operator review.
+- Clock changes are reviewable when high impact, but impact alone is not the
+  routing rule. A high-impact outcome may commit live only when the clock/action
+  explicitly preauthorizes live completion and all local validators pass.
+- Dreaming can propose clock movement and deferred outcomes, but validators and
+  review decide.
 
 ## Threads
 
@@ -1113,6 +1145,189 @@ audience), `message.delivered_to_npc` (an in-fiction utterance reached an NPC an
 may update that NPC's knowledge), and `message.observed` (a content-free shell
 recording that an observable act — e.g. a whisper — was witnessed, carrying no
 text). Inbound capture lives in the message tables; state change lives in events.
+
+### Transcript To Canon Promotion
+
+Dungeoneer records play richly, but it does not require every interesting sentence
+to become structured world state. Raw transcripts, delivered messages, and
+narration spans are evidence. Canon changes happen only when something becomes
+load-bearing for future play.
+
+Promotion ladder:
+
+```text
+transcript_only   color, ambience, table texture, low-value chatter
+claim             someone said or implied it; truth is not established
+clue              worth preserving for recall or follow-up, still not canon truth
+knowledge_edge    a specific actor, faction, PC, or audience learned/believes it
+fact_assertion    accepted canonical truth
+state_mutation    clock/thread/relationship/rules/world projection change
+```
+
+The ladder is a routing model, not a demand for ceremony. A street whisper can
+remain a delivered transcript span forever. If players later care about it,
+dreaming or an accepted tool can promote the span to the smallest useful
+structure, citing the original delivered message:
+
+```yaml
+source_span: msg:s12_0144#t=03:12-03:17
+heard_by: [pc:vanya]
+promotion:
+  level: claim
+  text: "The east bell rang twice last night."
+  truth: unknown
+  audience: player:pc:vanya
+```
+
+Rules:
+
+- Transcript evidence is searchable and auditable, but it is not canonical truth
+  and does not rebuild projections by itself.
+- Authoring agents should prefer transcript/claim/clue capture for ordinary
+  texture. They should create facts, threads, clocks, secrets, mementos, and
+  relationships only when the content affects rules, privacy, recall, future NPC
+  behavior, or world-state projections.
+- Promotion is append-only: a later `knowledge.learned`, `fact.asserted`,
+  `thread.updated`, `clock.advanced`, memento candidate, or patch cites the
+  delivered source span. It does not rewrite the transcript into having meant more
+  at the time.
+- Claims and clues can be false, misunderstood, forgotten, repeated, or ignored.
+  That is acceptable tabletop behavior; the system should not over-normalize play
+  into perfect memory.
+- Player-facing recall can cite transcript-only evidence when it is safe and
+  relevant, but must label it as remembered speech, rumor, or uncertain recall
+  unless an accepted fact/knowledge event supports stronger truth.
+
+### Consequence Plans
+
+Messy table actions are triaged before any state write. The DM/orchestrator may
+narrate the whole beat, but the engine separates consequences that must resolve
+now from consequences that can safely wait.
+
+```yaml
+schema: dwd.consequence_plan.v1
+plan_id: consequence:s12_0048
+source:
+  message: msg:s12_0048
+  delivered_event: event:s12_0049
+scene: scene:s12_concord_hall
+classification:
+  source_kind: table_action | npc_proposal | rules_result | accepted_patch
+  requires_live_continuation: true
+immediate_effects:
+  - kind: clock_advance
+    target: clock:hearthward_exposed
+    reason: explicit_trigger
+    route: live_tool
+    event_type: clock.advanced
+deferred_effects:
+  - kind: faction_reaction
+    target: faction:choir
+    reason: broad_world_consequence
+    route: dream.patch_proposed
+blocked_effects:
+  - kind: create_fact
+    target: fact:hearthward_shrine_exposed
+    reason: missing_preauthorized_payload
+    route: no_canon_write
+```
+
+Rules:
+
+- Immediate effects are only the bounded, explicitly addressed state changes the
+  next few seconds of play depend on: rules results, local item/location/knowledge
+  changes, explicit clock advances, or preauthorized clock outcomes.
+- Deferred effects are broad interpretation work: off-screen reactions, faction
+  posture, rumor spread, memento promotion, capsule refresh, recap/prep updates,
+  and clock outcomes whose payload or review policy is not live-authorized.
+- Blocked effects produce no canon mutation. They remain tool/audit records and
+  may be rendered as an operator-facing gap or a table-safe narration of
+  uncertainty.
+- A consequence plan is provenance and routing, not a substitute event. Canon still
+  changes only through the ordinary accepted typed events or accepted patches it
+  authorizes.
+- Degraded live turns may create only low-risk immediate effects or deferred
+  effects. They must not make memory-sensitive, rules-sensitive, or high-impact
+  commitments without full validators.
+
+### Clock Event Payloads
+
+`clock.advanced` is the canonical event for changing clock segments. Completion
+outcomes are child consequences of that event, linked by the same batch ID.
+
+```yaml
+schema: dwd.clock_advanced.v1
+type: clock.advanced
+payload:
+  clock: clock:hearthward_exposed
+  trigger: party_indiscreet_about_the_shrine
+  source_event: event:s12_0049
+  before_segments: {current: 3, max: 4}
+  requested_delta: 1
+  effective_delta: 1
+  after_segments: {current: 4, max: 4}
+  completed: true
+  completion:
+    outcome_batch_id: outcome:s12_0050_hearthward_exposed
+    review_policy: auto_apply_if_preauthorized
+    action_count: 2
+  consequence_plan: consequence:s12_0048
+provenance:
+  tool_call: tool:clock_advance_001
+```
+
+An immediate `create_fact` child event cites the completing clock:
+
+```yaml
+type: fact.asserted
+payload:
+  fact: fact:hearthward_shrine_exposed
+  subject: loc:kept_shrine
+  predicate: is_exposed_to
+  object: faction:choir
+  truth: canon
+  visibility: dm_only
+  source_refs: [event:s12_0050]
+  parent_clock_event: event:s12_0050
+  outcome_batch_id: outcome:s12_0050_hearthward_exposed
+provenance:
+  clock_outcome_action:
+    schema: dwd.clock_outcome_action.v1
+    kind: create_fact
+    target: fact:hearthward_shrine_exposed
+```
+
+An immediate `unlock_thread` child event uses the ordinary thread event:
+
+```yaml
+type: thread.updated
+payload:
+  thread: thread:the_ember_must_move
+  before_status: locked
+  after_status: active
+  reason: clock_completed
+  source_refs: [event:s12_0050]
+  parent_clock_event: event:s12_0050
+  outcome_batch_id: outcome:s12_0050_hearthward_exposed
+provenance:
+  clock_outcome_action:
+    schema: dwd.clock_outcome_action.v1
+    kind: unlock_thread
+    target: thread:the_ember_must_move
+```
+
+Rules:
+
+- Segment changes clamp to the clock range and record both requested and effective
+  delta. Completion fires only on the first transition to max.
+- `clock.advanced` and all immediate child outcome events append in one database
+  transaction. Before append, any outcome action that cannot validate as immediate
+  is demoted to deferred or blocked; the transaction never partially applies an
+  immediate outcome batch.
+- Child outcome events cite `parent_clock_event` and `outcome_batch_id`; later
+  dreams and mementos cite those accepted events, not the narrator's inference.
+- Completion can be table-visible in fiction while the underlying clock, fact, or
+  thread remains `dm_only`; audience and truth remain separate axes.
 
 ### Knowledge And Disclosure Event Payloads
 
@@ -1567,11 +1782,22 @@ Live play commits canon in real time through typed tools: `knowledge.revealed`,
 `combat.disposition_changed`, `rules.adjustment_granted`,
 `rules.override_applied`). These are
 low-stakes, in-budget, and validator-checked at write time — not queued for
-review. Dreaming is where *proposed* higher-order changes (mementos, clock
-movement, new facts, capsule refreshes) are generated as patches and routed
-through the review tiers above. Rule of thumb: if it happened at the table, it is
-committed live; if it is an inference or off-screen consequence derived after the
-fact, it is a dream patch.
+review.
+
+Clock advancement can also commit live when it is explicitly triggered by a
+delivered table event and targets one known clock. Clock completion outcomes
+commit live only if the clock/action preauthorizes live completion and the local
+validators pass. Otherwise the advancement may commit now while the unresolved
+outcomes become deferred or blocked effects in the consequence plan.
+
+Dreaming is where *proposed* higher-order changes (mementos, broad clock movement,
+new facts that were not preauthored as live outcomes, capsule refreshes, faction
+reactions, and recap/prep updates) are generated as patches and routed through the
+review tiers above. Rule of thumb: if the next few seconds of play depend on the
+effect and a bounded typed tool can validate it locally, it may commit live; if it
+is broad interpretation, off-screen fallout, or an underdefined consequence, it is
+a deferred dream/review item. A table event supplies provenance, not unlimited live
+write authority.
 
 ## Database Shape
 
@@ -1780,6 +2006,25 @@ Minimum validators:
 - No `rules.override_applied` without a typed `tell` payload. Operator visibility
   is always true; the table cue may be diegetic, UI, or none per profile.
 - No clock segment outside range.
+- No `clock.advanced` without before segments, requested/effective delta, after
+  segments, trigger, source event or accepted patch, and consequence-plan
+  provenance.
+- No clock completion outcome emitted outside the `dwd.clock_outcome_action.v1`
+  vocabulary. `create_fact` emits `fact.asserted`; `unlock_thread` emits
+  `thread.updated`.
+- No live clock completion outcome without explicit clock/action preauthorization
+  and passing local validators. Otherwise the outcome routes to
+  `dream.patch_proposed` or remains a blocked effect.
+- No `create_fact` clock outcome without a resolvable authored fact payload or an
+  accepted patch payload. Completion cannot invent fact text from narration.
+- No `unlock_thread` clock outcome without an existing thread target and a
+  recorded before/after status transition.
+- No clock outcome child event without `parent_clock_event` and
+  `outcome_batch_id` provenance.
+- No consequence plan immediate effect that requires broad campaign inference,
+  memento promotion, faction posture changes, capsule refresh, or off-screen
+  reaction discovery. Those are deferred effects unless an explicit typed tool and
+  local validator own the write.
 - No thread resolution without accepted event.
 - No memento without provenance: its `source_event` must reference an accepted,
   delivered event of a qualifying type (`message.delivered_to_npc` for a promise

@@ -22,7 +22,7 @@ input:
     - "the table re-engages: 'okay, okay, back in — Wick, seriously, how long?'"
 expected_pressure_points:
   - OOC detection and marking, including a line genuinely ambiguous between in-fiction and OOC
-  - OOC spans must never enter recall, embeddings, NPC memory, or dreaming (schema invariant)
+  - OOC spans must never enter game recall, game embeddings, NPC memory, or transcript-to-canon promotion; audit quarantine is separate
   - Wick must not react to the pizza order or the rules question as if spoken in fiction
   - the rules question routes to the rules surface, not to NPC activation
   - the re-engagement cue, and how the live path resumes in-fiction narration cleanly

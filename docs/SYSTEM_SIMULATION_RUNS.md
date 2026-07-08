@@ -548,7 +548,10 @@ and forcing boundary decisions:
 - `world_recall_lore_query` — a lore query mid-scene; loremaster prepared-vs-live,
   perspective knowledge, canon vs rumor.
 - `big_event_faction_clock_completes` — a faction clock completes live; live-vs-dream
-  commit, cascading consequences, high-impact review.
+  commit, consequence triage, preauthorized outcomes, cascading consequences, and
+  high-impact review.
+- `knowledge_mutation_and_recall` — transcript-to-canon promotion, party/private
+  knowledge, rumor/claim correction, and recap audience scope.
 - `session_resume_session_two` — warm boot into session two; between-session warmup,
   dreaming handoff, recap, off-screen clock advancement.
 

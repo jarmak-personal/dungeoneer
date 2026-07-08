@@ -11,8 +11,9 @@ It may take minutes or hours. That is expected.
 ## Inputs
 
 - Complete session event log.
-- Delivered player, DM, and NPC messages.
+- Delivered player, DM, and NPC messages plus transcript spans.
 - Rules tool calls and state deltas.
+- Consequence plans with deferred and blocked effects from live play.
 - Map perception results and confirmations.
 - Asset prompts and generated media provenance.
 - Current entity, faction, location, quest, and rules projections.
@@ -30,24 +31,35 @@ as things the table or NPCs heard.
 1. Freeze the session event range.
 2. Replay events into fresh projections.
 3. Compare replayed projections against stored current state.
-4. Flag drift, missing state changes, and unresolved contradictions.
-5. Evaluate NPC memento promotions, demotions, and repairs.
-6. Refresh brain capsule snapshots for NPCs and loremasters.
-7. Update relationship summaries from delivered events.
-8. Advance faction clocks, world clocks, rumors, and off-screen consequences.
-9. Advance travel, route conditions, faction patrol zones, blockades, weather,
+4. Review delivered transcript spans for promotion candidates: transcript-only,
+   claim, clue, knowledge edge, fact assertion, or state mutation.
+5. Leave ordinary color as transcript evidence unless it affects future play,
+   rules, privacy, recall, NPC behavior, or projections.
+6. Flag drift, missing state changes, and unresolved contradictions.
+7. Evaluate NPC memento promotions, demotions, and repairs.
+8. Refresh brain capsule snapshots for NPCs and loremasters.
+9. Update relationship summaries from delivered events.
+10. Resolve deferred consequence-plan effects: clock outcomes, faction reactions,
+   rumor spread, memento candidates, capsule refresh needs, and blocked-rule
+   follow-up items.
+11. Advance faction clocks, world clocks, rumors, and off-screen consequences not
+   already resolved by live consequence plans.
+12. Advance travel, route conditions, faction patrol zones, blockades, weather,
    rumor/news spread, and other spatial consequences.
-10. Generate next-session prep bundles.
-11. Run validators and eval fixtures.
-12. Emit proposed state patches and review items.
+13. Generate next-session prep bundles.
+14. Run validators and eval fixtures.
+15. Emit proposed state patches and review items.
 
 ## Outputs
 
 - Session recap.
 - Updated campaign timeline projection.
+- Transcript promotion candidates that became claims, clues, knowledge edges,
+  facts, or state patches.
 - NPC memento proposals with provenance.
 - Capsule refresh diffs for NPC identity capsules and loremaster/expert capsules.
 - Relationship and faction updates.
+- Resolved or proposed deferred consequence-plan effects.
 - World-clock and quest-clock changes.
 - Travel progress, route changes, territory/hazard changes, and spatial
   projection refreshes.
@@ -66,6 +78,8 @@ boundary.
 Dreaming is not allowed to silently rewrite history.
 
 - The event log remains the source of truth.
+- Transcript spans are evidence, not canon truth. Promotion cites them; it does
+  not rewrite them into structured state retroactively.
 - Derived projections can be rebuilt.
 - Low-risk deterministic fixes can be applied automatically if validators pass.
 - High-impact changes become proposed patches requiring review.
@@ -88,7 +102,8 @@ High-impact examples:
 - Creating a major faction move.
 - Resolving a quest branch.
 - Changing PC-owned inventory, HP, resources, or relationships.
-- Adding facts that players did not establish or discover.
+- Adding facts that players did not establish, discover, or trigger through a
+  preauthorized live clock outcome.
 
 ## NPC Dreaming
 

@@ -26,3 +26,29 @@ expected_pressure_points:
   - cascading NPC reactions (Ren, the Hearthward keepers) and memento promotions
   - players experience the consequence in fiction; the bookkeeping is not their decision
   - whether this large mutation is allowed live or must be a reviewable patch
+expected_contracts:
+  consequence_triage:
+    schema: dwd.consequence_plan.v1
+    immediate_effects:
+      - clock_advance
+      - preauthorized_clock_outcome
+    deferred_effects:
+      - faction_reaction
+      - memento_promotion
+      - capsule_refresh
+      - broad_world_fallout
+    blocked_effects_produce_no_canon_write: true
+    table_event_is_provenance_not_unlimited_live_authority: true
+  clock_completion:
+    event_schema: dwd.clock_advanced.v1
+    outcome_action_schema: dwd.clock_outcome_action.v1
+    completion_fires_on_transition_to_max: true
+    immediate_outcome_events_append_with_parent_clock_event: true
+    child_events_require_outcome_batch_id: true
+    allowed_outcome_actions:
+      create_fact: fact.asserted
+      unlock_thread: thread.updated
+    live_outcomes_require_preauthorization: true
+    unresolved_outcomes_route_to: dream.patch_proposed
+    broad_reactions_route_to: dream.patch_proposed
+    players_do_not_review_bookkeeping: true

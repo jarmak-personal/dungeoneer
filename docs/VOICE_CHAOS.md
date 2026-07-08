@@ -143,10 +143,10 @@ Required behavior:
   edge of a break is cheap and natural. Entering OOC can be explicit ("DM, pause")
   or proposed by the system after sustained off-game speech.
 - **OOC spans are a visibility/retention class.** Tag them; exclude them from
-  canonical game recall, NPC memory, embeddings, and post-session dreaming. Prefer
-  not persisting OOC audio/transcripts at all, or quarantine them with short
-  retention. This reuses the existing audience/visibility model and is a privacy
-  feature as much as a memory one.
+  canonical game recall, NPC memory, game embeddings, and transcript-to-canon
+  promotion. Prefer not persisting OOC audio/transcripts at all, or quarantine them
+  with short retention. This reuses the existing audience/visibility model and is
+  a privacy feature as much as a memory one.
 
 Reading the room — knowing when not to be the DM — is a human-DM strength and a
 place a bad AI DM fails. Stepping back for the catch-up moments is a feature, not
