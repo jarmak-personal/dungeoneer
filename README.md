@@ -2,14 +2,44 @@
 
 Local-first AI Dungeon Master for D&D-style tabletop campaigns.
 
-The project goal is a complete AI DM that can run sessions by voice or text,
-manage NPCs without losing context, own deterministic rules state, perceive a
-map or battle grid through vision models, and generate supporting speech,
-images, and video locally.
+Dungeoneer is a local-first, in-person AI Dungeon Master for physical-table
+play. The goal is not a chatbot that knows fantasy tropes; it is a stateful game
+engine with AI agents attached: voice or text interaction, deterministic rules
+state, durable NPC memory, map and battle-grid perception, and locally generated
+supporting speech, images, and video.
 
 Agents working in this repo should read [AGENTS.md](AGENTS.md) first. The project
 is in its architecture-and-definition stage: design work plus small validation
 tooling, not product implementation.
+
+## Project State
+
+This repository is currently a public design workbench. The primary artifacts are
+architecture documents, world/rules definitions, simulation scenarios, and the
+small validation tools needed to pressure-test those definitions. Most of the
+application is intentionally not built yet.
+
+That is deliberate. Dungeoneer is being designed before the product build starts
+because the risky parts are system boundaries, replayability, privacy, latency,
+rules ownership, and whether agents can route through predictable typed
+surfaces. The roadmap is ordered by risk, not by feature count, and the docs edit
+the current design in place rather than preserving decision archaeology.
+
+The design can look over-specified for an early project. That is the point:
+implementation is cheap relative to discovering architectural holes after a live
+table depends on the system. Simulation runs, lint rules, and throwaway spikes are
+used to expose those holes while they are still cheap to fix.
+
+## What Is Here
+
+- `docs/`: the current system design. Start with [System scope](docs/SCOPE.md),
+  then use the index below.
+- `worlds/aurevost/`: a homebrew world seed used to make the schema concrete.
+- `rules/srd_5e/`: a small SRD-derived rules-pack sketch with Creative Commons
+  attribution metadata.
+- `docs/simulations/scenarios/`: design-pressure scenarios for fresh-agent
+  simulation runs.
+- `src/dwdlint/`: a lightweight structural linter for authored DWD YAML.
 
 ## DWD Validation
 
@@ -54,6 +84,8 @@ The hook runs `uv run dwdlint worlds rules docs/simulations` before each commit.
 - [Tech stack](docs/TECH_STACK.md)
 - [Game world schema](docs/GAME_WORLD_SCHEMA.md)
 - [Spatial and travel system](docs/SPATIAL_TRAVEL.md)
+- [Cultures](docs/CULTURES.md)
+- [Ship combat](docs/SHIP_COMBAT.md)
 - [Lifecycle and bootstrap](docs/LIFECYCLE.md)
 - [Rules engine](docs/RULES_ENGINE.md)
 - [Orchestration (live-decision layer)](docs/ORCHESTRATION.md)

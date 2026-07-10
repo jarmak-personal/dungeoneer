@@ -1,5 +1,7 @@
 # Local environments
 .venv/
+.claude/
+.codex/
 
 # Python caches and test output
 __pycache__/
