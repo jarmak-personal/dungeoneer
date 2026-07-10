@@ -205,6 +205,24 @@ and emit a typed event. If a result changes mechanical state, the rules engine
 applies a consequence plan (below) and emits domain events. None of the tools
 accept free-form state writes.
 
+If the rules engine cannot resolve a requested route because required pack content
+is missing, it returns a non-mutating blocked result instead of inventing a rule:
+
+```yaml
+schema: dwd.rules_resolution_blocked.v1
+resolution_id: rulesres:s4_missing_001
+attempted_route: template_trigger
+missing_definition: rules:template.example
+source_input: msg:s4_0188
+allowed_narration: "Acknowledge the uncertainty or defer the effect; do not invent mechanics."
+routes_to:
+  - operator_review
+  - rules_pack_authoring
+```
+
+This is a tool result/audit record, not a canon-mutating event. It gives the live
+DM something honest to say and gives dreaming/operator review a precise follow-up.
+
 ## Typed Events
 
 Generic `rules.state_changed` is replaced by typed events so routing is
@@ -520,6 +538,106 @@ Components are the general primitive that ship setwork, PC equipment, and a fact
 signature **style package** all instance: a tradition is a curated component bundle +
 a signature action + a failure personality + descriptive identity, not per-faction
 rules. See [Ship combat](SHIP_COMBAT.md) for the worked case.
+
+## Aurevost 5e Extensions
+
+Aurevost-specific rules content lives beside the SRD pack as small, table-runnable
+extensions. It uses the same engine grammar — checks, modifiers, conditions,
+consequence plans — and should feel like ordinary 5e adjudication with a few
+campaign tags.
+
+### Khevra-Infused Creatures
+
+`rules:template.khevra_infused` is a creature template over a normal 5e stat block.
+The base stat block supplies HP, AC, attacks, saves, ability modifiers, and
+proficiency. The template adds:
+
+- tags: `khevric`, `veined`, `living_lattice`;
+- one minor physical edge by default (`+1 AC` or `+10 ft walk speed`);
+- a khevric overload risk;
+- the `rules:procedure.harvest_khevra_core` harvest route.
+
+It is deliberately not a custom monster subsystem. If a named veined creature needs
+more than that, author that creature as its own stat block or trait.
+
+Khevric overload is a standard save-and-damage effect:
+
+```yaml
+trigger:
+  - first_reduced_to_0_hp
+  - failed_harvest_check
+  - reckless_core_damage
+save: dexterity
+dc: 8 + creature_proficiency_bonus + creature_constitution_modifier
+radius: 10 ft
+damage: creature_proficiency_bonus d6 force
+save_success: half_damage
+```
+
+Critical hits, force/lightning/thunder finishing damage, massive overkill, or a
+called shot into the core can escalate the risk. The overload still resolves
+through ordinary consequence kinds: `damage`, `item_state`, and optionally
+`condition`. A creature killed by overload yields a degraded or inert core.
+
+### Khevra Core Harvesting
+
+`rules:procedure.harvest_khevra_core` is the "right way" to recover value from a
+veined creature:
+
+1. Identify the creature/lattice (`Arcana`, `Nature`, `Survival`, or similar).
+2. Avoid destabilizing damage if the party wants the core intact.
+3. Defeat the creature.
+4. Stabilize and harvest the core with time, training, and tools.
+
+Careful harvesting takes 10 minutes. Rushed harvesting takes 1 minute at +5 DC.
+The check uses `Arcana`, `Nature`, `Survival`, or `Medicine`; relevant tools
+include alchemist's supplies, healer's kit, or harvester's tools.
+
+Outcome ladder:
+
+- `strong`: intact core plus usable trace material.
+- `success`: intact core.
+- `partial`: degraded core, no overload by default.
+- `fail`: degraded or inert core and an overload check.
+- `botch`: inert core and overload.
+
+This makes harvesting a player-facing choice without requiring new engine code.
+Better preparation means better yield and lower explosion risk.
+
+### Druid Contamination
+
+`rules:condition.khevra_contamination` is a capped exposure track:
+
+```text
+clear -> trace -> marked -> saturated
+```
+
+It is mainly plot texture with minor mechanical hooks. It applies from deliberate
+or careless interaction with unstable khevra:
+
+- deliberate druidic use of active khevra;
+- failed or rushed core harvest;
+- unprotected handling of an unstable core;
+- failed save against khevric overload;
+- accepting a khevra graft.
+
+It does not apply from merely being near khevra once, being a druid, or casting
+ordinary druid spells.
+
+Druids and Asha-trained characters may get a minor benefit: when the fiction and
+training support it, trace-or-worse contamination can grant advantage on one
+relevant `Nature`, `Survival`, or `Medicine` check to read contamination, veined
+creatures, or unstable cores.
+
+The minor cost is symmetric: marked-or-worse contamination can impose disadvantage
+on a relevant Wisdom or Constitution check in excessive-khevra scenes when the
+check depends on living-systems alignment, concentration, or endurance. Saturated
+contamination can do the same in rejection zones. This is scene-specific, not a
+blanket PC-druid debuff.
+
+The Asha may have stronger rites, training, or plot actions as faction/NPC content.
+Those are not default druid class features. A PC druid can learn such a capability
+only through play as a boon, training reward, or accepted patch.
 
 ## Combat Model
 

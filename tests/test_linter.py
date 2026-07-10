@@ -287,6 +287,44 @@ name: Test Pack
     assert "DWD111" in codes(result)
 
 
+def test_rules_template_and_procedure_documents_are_recognized(tmp_path: Path) -> None:
+    write_yaml(
+        tmp_path,
+        "pack.yaml",
+        """
+id: rules:pack.test
+schema: dwd.rules_pack.v1
+name: Test Pack
+""",
+    )
+    write_yaml(
+        tmp_path,
+        "template.yaml",
+        """
+id: rules:template.test
+schema: dwd.rules_template.v1
+pack: rules:pack.test
+name: Test Template
+visibility: table
+""",
+    )
+    write_yaml(
+        tmp_path,
+        "procedure.yaml",
+        """
+id: rules:procedure.test
+schema: dwd.rules_procedure.v1
+pack: rules:pack.test
+name: Test Procedure
+visibility: table
+""",
+    )
+
+    result = lint_paths([tmp_path])
+
+    assert result.diagnostics == [], "\n".join(item.format() for item in result.diagnostics)
+
+
 def test_dangling_rules_reference_is_an_error(tmp_path: Path) -> None:
     write_yaml(
         tmp_path,

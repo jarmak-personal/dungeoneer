@@ -1,30 +1,55 @@
 schema: dwd.system_simulation_scenario.v1
 id: sim:deferred_rules_routing
-title: Routing A Deliberately-Undefined Rules Mechanic
+title: Routing Khevra Overload, Harvest, And Contamination
 focus:
   - rules_engine_contract
-  - deterministic_template_gap
+  - khevra_infused_template
+  - khevra_core_harvest
+  - druid_contamination_condition
   - narration_no_improvise_boundary
-  - hallucination_as_signal
-tags: [rules, gap_probe, contamination, infusion, boundary]
+  - rules_definition_missing_boundary
+tags: [rules, khevra, contamination, infusion, harvest, boundary]
 setup:
-  scene: loc:caldrin_reach
-  present: ["pc:dorn", "pc:vanya"]   # pc:dorn is a druid (anchor)
+  scene: region:greywake
+  present: ["pc:dorn", "pc:vanya", "npc:vohria"]
   combat: active
   present_creatures: ["creature:khevra_infused"]   # a veined wolf: the infusion template over a base creature
   note: >
-    The seed states that contamination, infusion instability, and zone-power falloff are
-    rules-owned and require a deterministic definition that does not yet exist; narration may
-    not improvise them. This scenario deliberately routes into that gap.
+    The scene is a Greywake deposit margin where veined creatures are ordinary.
+    Khevra overload, core harvesting, and druid contamination are rules-owned;
+    narration may not improvise alternate magnitudes or freeform powers.
 input:
   sequence:
-    - "the veined wolf is reduced to 0 HP; its unset lattice should trigger the instability/overload effect"
-    - "pc:dorn (druid) handles a recovered item:khevra_core and should accrue the contamination condition"
-    - "the DM must resolve both effects mechanically, this turn"
+    - "the veined wolf is reduced to 0 HP; its unset lattice may trigger khevric overload"
+    - "pc:dorn tries to preserve value by helping harvest item:khevra_core instead of smashing the body apart"
+    - "npc:vohria deliberately stabilizes the core with druidic practice, risking rules:condition.khevra_contamination"
+    - "the DM must resolve immediate overload, harvest result, and contamination state through rules-owned definitions"
 expected_pressure_points:
-  - both routes require a deterministic rules definition the contract does not yet provide
-  - expected route_status is blocked_by_gap / expected_missing_from_taxonomy — the simulator should mark the gap, not invent numbers
-  - if the simulator confabulates magnitudes or a contamination track, that is a fortify finding for the narration-cannot-improvise boundary (hallucination as signal)
-  - confirms the seed's deferral is a real recorded design gap, mapping to the open_question on contamination/druid mechanics
-  - once defined, the rules engine — not narration — must own the instability and contamination state
-  - clean separation under test: the narrative template (creature:khevra_infused) exists; its mechanical modifiers do not
+  - rules:template.khevra_infused supplies only a minor edge plus overload/harvest hooks over the base stat block
+  - overload resolves as ordinary save-and-damage consequences, not a custom event family
+  - rules:procedure.harvest_khevra_core rewards identification, tools, time, and careful damage choices
+  - rules:condition.khevra_contamination gives druids minor read benefits and minor costs in excessive khevra, not broad superpowers
+  - if any required rule object is missing, the route returns dwd.rules_resolution_blocked.v1 instead of invented mechanics
+  - the rules engine — not narration — owns overload, harvest yield, and contamination state
+expected_contracts:
+  rules_extension_refs:
+    template: rules:template.khevra_infused
+    harvest_procedure: rules:procedure.harvest_khevra_core
+    contamination_condition: rules:condition.khevra_contamination
+    blocked_result_schema: dwd.rules_resolution_blocked.v1
+  overload:
+    trigger: first_reduced_to_0_hp
+    save: dexterity
+    damage_type: force
+    radius_ft: 10
+    consequences_use_existing_kinds: [damage, item_state, condition, narration_only]
+  harvest:
+    careful_time: "10 minutes"
+    rushed_time: "1 minute"
+    careful_play_improves_yield: true
+    failed_or_reckless_harvest_can_trigger_overload: true
+  druid_contamination:
+    tiers: [clear, trace, marked, saturated]
+    minor_benefit: "advantage on a relevant read check when training and fiction support it"
+    minor_cost: "disadvantage on relevant living-systems checks in excessive khevra or rejection zones"
+    no_blanket_pc_druid_power_package: true

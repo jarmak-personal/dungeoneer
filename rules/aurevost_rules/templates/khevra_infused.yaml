@@ -1,0 +1,62 @@
+id: rules:template.khevra_infused
+schema: dwd.rules_template.v1
+pack: rules:pack.srd_5e
+name: Khevra-Infused Creature Template
+source: "Aurevost original 5e extension"
+applies_to:
+  base_stat_block: "A living beast or monstrosity with an ordinary 5e-compatible stat block."
+  world_entity: creature:khevra_infused
+summary: >
+  A light template for the veined: an ordinary creature that survived unstable
+  khevra infusion. It should mostly play like the base creature, with a small
+  physical edge, harvestable core, and overload risk.
+tags_added: [khevric, veined, living_lattice]
+stat_modifiers:
+  choose_one_default:
+    - id: modifier:khevra_infused_ac
+      schema: dwd.modifier.v1
+      source: { kind: template, id: rules:template.khevra_infused }
+      target: { stat: ac }
+      op: { kind: add, value: 1 }
+      when: { host_has_tag: veined }
+      lifecycle: while_source_active
+    - id: modifier:khevra_infused_speed
+      schema: dwd.modifier.v1
+      source: { kind: template, id: rules:template.khevra_infused }
+      target: { stat: speed_walk_ft }
+      op: { kind: add, value: 10 }
+      when: { host_has_tag: veined }
+      lifecycle: while_source_active
+  authoring_rule: >
+    Choose one minor edge unless a named creature explicitly earns more. The template
+    is not a full custom monster package.
+overload:
+  trigger:
+    - first_reduced_to_0_hp
+    - failed_harvest_check
+    - reckless_core_damage
+  dc_formula: "8 + creature_proficiency_bonus + creature_constitution_modifier"
+  save: dexterity
+  radius_ft: 10
+  damage_type: force
+  damage_formula: "creature_proficiency_bonus d6"
+  save_success: half_damage
+  escalators:
+    - { condition: critical_hit_reduced_to_0_hp, effect: "overload check has advantage against the creature's stability" }
+    - { condition: force_lightning_or_thunder_reduced_to_0_hp, effect: "overload check has advantage against the creature's stability" }
+    - { condition: massive_overkill_or_called_core_shot, effect: "overload triggers unless the harvest/stabilize check succeeds first" }
+  consequences:
+    - kind: damage
+      event_type: hp_changed
+    - kind: item_state
+      target: item:khevra_core
+      result: degraded_or_inert_on_overload
+harvest:
+  procedure: rules:procedure.harvest_khevra_core
+  yield: item:khevra_core
+rules:
+  - "The base stat block supplies HP, AC, attacks, saves, proficiency, and ability modifiers."
+  - "The template adds one minor physical edge by default, not a bespoke action suite."
+  - "Overload is resolved by ordinary save-and-damage consequences."
+  - "A creature killed by overload cannot yield an intact core."
+visibility: table

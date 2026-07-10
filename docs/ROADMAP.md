@@ -192,6 +192,9 @@ See [Rules engine](RULES_ENGINE.md) for the full contract.
   — enforced not prompted. Adjustments can grant bounded roll-input bonuses or
   roll-shape changes under the active profile; overrides cannot target PC state or
   agency.
+- Add Aurevost 5e extension content for veined creatures: the khevra-infused
+  template, core-harvest procedure, contamination condition, and non-mutating
+  blocked result for missing rules definitions.
 - Add social resolution: `dwd.social_dc_source.v1`, the degree-of-success ladder,
   and `dwd.social_disclosure_decision.v1` as the outcome-to-disclosure bridge for
   `message.delivered`, `knowledge.learned`, `fact.asserted`, and `secret.revealed`.

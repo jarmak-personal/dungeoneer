@@ -175,8 +175,16 @@ RULES_DOCUMENT_SCHEMAS = {
     "dwd.condition.v1",
     "dwd.dc_guidance.v1",
     "dwd.character_sheet.v1",
+    "dwd.rules_template.v1",
+    "dwd.rules_procedure.v1",
 }
-RULES_NAMED_SCHEMAS = {"dwd.rules_pack.v1", "dwd.statblock.v1", "dwd.condition.v1"}
+RULES_NAMED_SCHEMAS = {
+    "dwd.rules_pack.v1",
+    "dwd.statblock.v1",
+    "dwd.condition.v1",
+    "dwd.rules_template.v1",
+    "dwd.rules_procedure.v1",
+}
 
 SIMULATION_FIXTURE_SCHEMA = "dwd.simulation_rules_fixture.v1"
 

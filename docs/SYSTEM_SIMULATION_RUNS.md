@@ -550,6 +550,8 @@ and forcing boundary decisions:
 - `big_event_faction_clock_completes` — a faction clock completes live; live-vs-dream
   commit, consequence triage, preauthorized outcomes, cascading consequences, and
   high-impact review.
+- `deferred_rules_routing` — khevra-infused overload, core harvesting, druid
+  contamination, missing-rule blocked results, and narration-vs-rules ownership.
 - `knowledge_mutation_and_recall` — transcript-to-canon promotion, party/private
   knowledge, rumor/claim correction, and recap audience scope.
 - `session_resume_session_two` — warm boot into session two; between-session warmup,

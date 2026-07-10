@@ -25,6 +25,10 @@ rules/
   aurevost_statblocks/     # world-specific stat blocks (not SRD system content)
     npc.archdruid.yaml     # explicit unauthored stub (zone-scaling design open)
     creature.cantor_body.yaml  # explicit unauthored stub (planar-scaling design open)
+  aurevost_rules/          # Aurevost original rules extensions over the SRD pack
+    conditions/khevra_contamination.yaml
+    templates/khevra_infused.yaml
+    procedures/harvest_khevra_core.yaml
 ```
 
 `worlds/aurevost/` references mechanics abstractly: `wick.yaml` carries
@@ -33,8 +37,9 @@ rules/
 resolves those refs. Swap in a PF2e pack and the same world still loads.
 
 *(Placement note: where campaign rules-state ultimately lives — here, world-seed
-pregens — is still an open question. For this sketch the instances sit under
-`rules/` beside the pack; they are not SRD system content.)*
+pregens — is still an open question. For this sketch the instances and
+world-specific extensions sit under `rules/` beside the pack; they are not SRD
+system content.)*
 
 ## The procedure (unchanged across systems)
 

@@ -1,0 +1,71 @@
+id: rules:procedure.harvest_khevra_core
+schema: dwd.rules_procedure.v1
+pack: rules:pack.srd_5e
+name: Harvest Khevra Core
+source: "Aurevost original 5e extension"
+summary: >
+  The correct mechanical path for recovering value from a defeated veined creature:
+  identify the lattice, avoid destabilizing damage, stabilize the core, then harvest.
+  The procedure is a normal 5e-style ability/tool check with graded outcomes.
+preconditions:
+  - defeated_creature_has_template: rules:template.khevra_infused
+  - core_not_destroyed
+  - actor_can_spend_required_time
+time:
+  careful: { duration: "10 minutes", dc_modifier: 0 }
+  rushed: { duration: "1 minute", dc_modifier: 5, note: "Used when danger or pursuit prevents a careful harvest." }
+check:
+  kind: ability_check
+  allowed_skills: [arcana, nature, survival, medicine]
+  allowed_tools: [alchemist_supplies, healer_kit, harvester_tools]
+  dc_formula: "8 + creature_proficiency_bonus + creature_constitution_modifier + time.dc_modifier"
+  advantage_sources:
+    - prior_successful_identification_check
+    - proper_harvester_tools
+    - asha_or_culler_training
+    - rules:condition.khevra_contamination
+  disadvantage_sources:
+    - rushed_without_tools
+    - core_damaged_by_finishing_blow
+    - excessive_khevra_load_without_protection
+outcomes:
+  strong:
+    rule: "Success by 10 or natural 20."
+    result:
+      - { kind: item_state, item: item:khevra_core, grade: intact }
+      - { kind: narration_only, note: "Recover usable crystalline trace material around the intact core." }
+  success:
+    rule: "Meets or beats DC."
+    result:
+      - { kind: item_state, item: item:khevra_core, grade: intact }
+  partial:
+    rule: "Within 5 below DC."
+    result:
+      - { kind: item_state, item: item:khevra_core, grade: degraded }
+      - { kind: narration_only, note: "The core is recovered but loses most market and graft value." }
+  fail:
+    rule: "More than 5 below DC."
+    result:
+      - { kind: item_state, item: item:khevra_core, grade: degraded_or_inert }
+      - { kind: trigger_template_effect, effect: khevric_overload_check }
+  botch:
+    rule: "Natural 1 or reckless core damage while rushed."
+    result:
+      - { kind: item_state, item: item:khevra_core, grade: inert }
+      - { kind: trigger_template_effect, effect: khevric_overload }
+contamination:
+  druidic_actor:
+    on_success: no_exposure
+    on_partial: trace_if_unprotected
+    on_fail: add_one_exposure
+    on_botch_or_failed_overload_save: add_one_exposure
+  non_druidic_actor:
+    on_success: no_exposure
+    on_partial: no_exposure_or_trace_if_unprotected
+    on_fail: trace_if_unprotected
+rules:
+  - "Harvesting is not automatic loot; it is a check when an intact core matters."
+  - "The best yield comes from preparation, proper tools, and avoiding destabilizing damage."
+  - "The procedure emits ordinary item_state, damage, condition, and narration_only consequences."
+  - "It never grants a reusable PC power by itself; grafting and augmentation remain separate world content."
+visibility: table

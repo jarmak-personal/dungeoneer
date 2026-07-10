@@ -1,0 +1,90 @@
+id: rules:condition.khevra_contamination
+schema: dwd.condition.v1
+pack: rules:pack.srd_5e
+name: Khevra Contamination
+source: "Aurevost original 5e extension"
+summary: >
+  A cumulative living-systems condition caused by deliberate contact with unstable
+  khevra, especially when a druid channels practice through worked or veined
+  khevra. It is an informed tradeoff, not a class restriction.
+track:
+  unit: exposure
+  tiers:
+    - id: clear
+      range: [0, 0]
+      effect: "No condition instance."
+    - id: trace
+      range: [1, 1]
+      effect: "Detectable by khevra-sensitive or living-systems senses; no default combat effect."
+    - id: marked
+      range: [2, 2]
+      effect: "Noticeable to Asha/rejection-zone senses; minor penalties in excessive khevra."
+    - id: saturated
+      range: [3, 3]
+      effect: "Serious plot condition; further exposure routes to operator/rules review."
+triggers:
+  add_exposure:
+    - deliberate_druidic_use_of_active_khevra
+    - failed_or_rushed_khevra_core_harvest
+    - unprotected_handling_of_unstable_core
+    - failed_save_against_khevric_overload
+    - accepting_khevra_graft
+  no_exposure:
+    - ordinary_nearby_khevra_presence
+    - ordinary_druid_spellcasting
+    - brief_handling_of_sealed_or_certified_core
+    - non-druid_character_near_khevra_without_direct_exposure
+modifiers:
+  - id: modifier:khevra_contamination_druid_read
+    schema: dwd.modifier.v1
+    source: { kind: condition, id: rules:condition.khevra_contamination }
+    target: { roll: ability_check, actor: self, skills: [nature, survival, medicine] }
+    op: { kind: roll_shape, value: advantage }
+    when:
+      actor_tags_include: [druidic_practice]
+      check_about: [khevra_contamination, veined_creature, unstable_core]
+      contamination_tier_at_least: trace
+    lifecycle: while_source_active
+  - id: modifier:khevra_contamination_excessive_khevra_disadvantage
+    schema: dwd.modifier.v1
+    source: { kind: condition, id: rules:condition.khevra_contamination }
+    target: { roll: ability_check, actor: self, abilities: [wisdom, constitution] }
+    op: { kind: roll_shape, value: disadvantage }
+    when:
+      actor_tags_include: [druidic_practice]
+      contamination_tier_at_least: marked
+      environment_tags_include: [excessive_khevra_load]
+      check_depends_on: [living_system_alignment, concentration, endurance]
+    lifecycle: while_source_active
+  - id: modifier:khevra_contamination_rejection_zone_cost
+    schema: dwd.modifier.v1
+    source: { kind: condition, id: rules:condition.khevra_contamination }
+    target: { roll: ability_check, actor: self, skills: [nature, survival, medicine] }
+    op: { kind: roll_shape, value: disadvantage }
+    when:
+      actor_tags_include: [druidic_practice]
+      contamination_tier_at_least: saturated
+      environment_tags_include: [rejection_zone]
+      check_depends_on: [guidance, healing, living_system_alignment]
+    lifecycle: while_source_active
+minor_benefit:
+  applies_to: "Druidic or Asha-trained characters interpreting unstable khevra."
+  rule: >
+    At trace or higher, the character may receive advantage on one relevant Nature,
+    Survival, or Medicine check to read contamination, veined creatures, or unstable
+    cores when the table has established the character's training or practice.
+minor_cost:
+  applies_to: "Druidic or Asha-trained characters carrying marked or worse contamination."
+  rule: >
+    In an excessive-khevra-load scene, marked contamination can impose disadvantage
+    on a relevant Wisdom or Constitution check tied to living-systems alignment,
+    concentration, or endurance. Saturated contamination can do the same in a
+    rejection zone. The penalty is scene-specific, not a blanket class debuff.
+removal:
+  trace: "Clears with a short rest away from active khevra or basic cleansing practice."
+  marked: "Requires downtime, clean ground or water, and a druidic/medical purification scene."
+  saturated: "Requires a quest, Asha rite, specialist care, or accepted patch."
+stacking: capped_track
+visibility: table
+applied_by_event: condition_applied
+removed_by_event: condition_removed

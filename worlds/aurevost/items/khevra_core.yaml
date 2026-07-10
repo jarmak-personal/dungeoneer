@@ -24,4 +24,9 @@ demand:
   - { actor: "faction:asha", interest: "opposition; cores are contamination made portable" }
   - { actor: "faction:ilvane_accord", interest: "none; augmentation runs opposite to the Accord's move off khevra" }
 notes: "Useful as cargo, contraband, reagent, quest object, or evidence. Augmentation itself is emergent and not generally available to player characters at campaign start."
+rules_binding:
+  harvested_from_template: rules:template.khevra_infused
+  harvest_procedure_ref: rules:procedure.harvest_khevra_core
+  contamination_condition_ref: rules:condition.khevra_contamination
+  note: "Core quality and overload risk are rules-owned. Handling an intact sealed core is not automatically contaminating; rushed, failed, or unprotected handling can apply the contamination condition."
 visibility: table
