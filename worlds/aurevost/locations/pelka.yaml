@@ -1,0 +1,32 @@
+id: loc:pelka
+kind: location
+schema: dwd.location.v1
+name: Pelka
+scale: territory
+summary: >
+  A waystation island between the mainland and the further reaches, covered
+  nearly end to end in docks, yards, and warehouses. In 213 AS it still kept one
+  native beach, glittering with khevra dust washed up from undersea deposits,
+  and on that beach a then-unknown craftsman fused shore dust into the first
+  khevra glass. Old dockhands dispute whether any stretch of the glimmer-shore
+  survives behind the yards today.
+access: { public: true, restrictions: [] }
+atmosphere:
+  sights: ["docks built out over older docks", "iridescent grit along the tide line", "teal water and algae-backed rocks off the open shore"]
+  sounds: ["harbor traffic in every register", "a faint song underfoot, for anyone who puts a little of themselves into hearing it"]
+  smells: ["tar", "wet rope", "hot metal off the yards"]
+conditions:
+  undersea_deposits: >
+    Khevra beds on the surrounding sea floor erode with the currents and wash
+    ashore as glittering dust. Coasts without such deposits do not glitter,
+    which makes Pelka's sand a minor wonder and, in the powder age, an asset.
+memory:
+  local: >
+    Pelka is proud of the glass story: the island where a nobody with a
+    home-made mold poured the first khevra glass beside the sea. What his name
+    was, and which family he founded, depends on which dockside tavern is
+    telling it.
+draws:
+  - "glassworkers and setwork apprentices visiting the origin shore"
+  - "dust-harvesters working the tide line"
+visibility: table

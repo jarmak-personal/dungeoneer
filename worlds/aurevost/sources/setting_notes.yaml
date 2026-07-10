@@ -54,6 +54,28 @@ intent:
     durable without erasing inherited culture: people can celebrate old holy days
     sincerely, casually, commercially, or merely because their grandparents did, while
     still finding actual religious commitment strange.
+  khevra_feel: >
+    Khevra is beautiful before it is anything else, and the world fell for it
+    out of wonder rather than greed. Sensory canon (seeded by the maintainer's
+    first Pelka tale): wild khevra sings underfoot; the song is never passive —
+    a listener with any arcane affinity must spend a little of their own energy
+    into the stone to hear it, so hearing is a dialogue; truly skilled setters
+    hear songs and latent structures in raw stone the way sculptors see the
+    figure in uncut marble; shore dust glitters iridescent; khevra glass sets
+    opalescent and unnaturally cool, and its internal lattices — webs of
+    crystal inside glass, energized by the arcane, passively reflecting the
+    world — are shockingly gorgeous. Every adoption pathway (glass, then
+    powdered and sintered khevra, into fashion, homes, and weapons) should read
+    as craft and delight, never as malice: the world weaves its own consumption
+    deeper because the material rewards love. Available irony, per
+    spoiler_tolerance: hearing khevra means putting energy in, and a worked
+    piece can almost be played "as a duet" — no table-visible voice ever says
+    who else is singing. Keep that character-discoverable, and never flatten it
+    into the Cantor personally answering individual listeners; the other voice
+    is the lattice-song it leads, not a conversation partner. Reserved: how
+    shore khevra differs from mined khevra is deliberately unspecified — the
+    maintainer is keeping it for a coming tale; codify nothing beyond "attuned
+    listeners can tell them apart."
   pc_casters: >
     Every class is playable; rarity lives in the world, not at the table (the party
     is a selection effect, not a sample). The design rule: specialness is never an
@@ -190,10 +212,13 @@ intent:
     - "Every caster class maps onto the world's physics through one shared rules concept (the typed bond) plus the conservation rule, instead of per-class exceptions."
 open_questions:
   - "Detail the Ilvane Accord's modular fleet standard and how far the honest-figure research network reaches beyond it."
-  - "Define the deterministic contamination and anti-khevra druid mechanics in the rules contract."
   - "Seed pre-Setting khevra anomalies across historical cultures without making the solution obvious."
   - "Calibrate the bridge and transition clocks through simulation without collapsing them into one deadline."
   - "Name the major surviving post-religious holidays, ship rites, mourning forms, repurposed temple buildings, and devout holdouts that appear in ordinary play."
   - "Define the deterministic typed-bond mechanics in the rules contract: divine-communication attenuation by khevra load, oath self-sufficiency, and pact-beacon detectability."
   - "Author the patron roster, including at least one refugee from a world the Cantor consumed."
   - "Extend the pregen set to a full starter table with caster coverage (at least one divine and one pact caster to exercise the typed-bond rules)."
+  - "Name the Pelka glassmaker and his family, and decide how far the glasswork house he founded has risen by 312 AS."
+  - "Specify how shore khevra differs from mined khevra (reserved for the maintainer's next tale)."
+  - "Build the khevra-tech timeline outward from the fixed point of glass in 213 AS: powdered/sintered khevra, message-glass, woven setwork thread, lamps and lifts."
+  - "Map which coasts sit above undersea khevra deposits; glimmer-beaches are the visible tell."

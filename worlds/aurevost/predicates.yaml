@@ -76,3 +76,8 @@ predicates:
   locates_targets_through: "Subject finds candidate targets by monitoring or listening to the object."
   was_cultivated_through: "Subject outcome was deliberately fostered by means of the object arrangement or channel."
   fear_and_avoid: "Subject actors fear the object and arrange their behavior to escape its attention."
+  accumulates_from: "Subject deposit or condition builds up over time from material shed by the object."
+  is_heard_through: "Subject sound or signal becomes perceptible only through the object active practice, never passively."
+  perceives_workable_form_in: "Subject perceives the latent finished form and structure within the object raw material."
+  differs_audibly_from: "Subject sounds recognizably unlike the object to an attuned listener."
+  stays_cool_during: "Subject material remains unusually cool throughout the object process or contact."

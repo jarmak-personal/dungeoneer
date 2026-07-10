@@ -1,0 +1,24 @@
+id: item:first_khevra_glass
+kind: item
+schema: dwd.item.v1
+name: The Dolphin-Crest Casting
+category: relic
+summary: >
+  The first khevra glass ever made: a family crest of two dolphins mid-leap,
+  fused from the glittering shore dust of Pelka's last native beach in Emberfall
+  213 AS by a craftsman working alone with a home-made mold. Opalescent, cool to
+  the touch, and faintly humming, it proved khevra could be worked as glass and
+  opened the line that leads to message-glass and lattice glasswork.
+current_holder: null
+current_location: null
+significance: []
+properties:
+  apparent: "A small opalescent glass crest, two dolphins jumping from the sea. Unusually cool in the hand."
+  observed: "It hums faintly when held, and moving it shifts the tone — handled well, it can almost be played."
+  true: "The first successful fusion of shore-dust khevra into worked glass; its crude self-made figure predates every later glasswork convention."
+custody_history:
+  - { holder: "the unnamed Pelka craftsman", note: "Cast and kept as a masterwork proof, Emberfall 213 AS. Its later custody is unrecorded." }
+stakes: >
+  To glasswork houses it is a founding relic worth more than its weight in set
+  cores; to whichever family can prove descent from its maker, it is a name.
+visibility: table

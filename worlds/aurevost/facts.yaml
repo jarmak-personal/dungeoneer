@@ -664,3 +664,77 @@ facts:
     truth_status: canon
     visibility: internal
     confidence: 1.0
+
+  # --- Khevra phenomenology and the glass line ---
+
+  - id: fact:glimmer_beaches_accumulate_from_undersea_deposits
+    schema: dwd.fact.v1
+    subject: "glittering khevra-dust beaches"
+    predicate: accumulates_from
+    object: "undersea khevra deposits eroding and washing ashore; only coasts above such deposits glitter"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:khevra_heard_through_active_attunement
+    schema: dwd.fact.v1
+    subject: "the song in khevra"
+    predicate: is_heard_through
+    object: "spending a little of the listener's own arcane energy into the stone; anyone with arcane affinity can manage it, and the hearing is a dialogue rather than a passive sound"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:master_setters_hear_songs_and_structures
+    schema: dwd.fact.v1
+    subject: "truly skilled setters"
+    predicate: perceives_workable_form_in
+    object: "raw khevra — hearing its songs and latent structures the way a sculptor sees the figure in uncut stone"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:shore_khevra_differs_from_mined
+    schema: dwd.fact.v1
+    subject: "khevra washed ashore from undersea deposits"
+    predicate: differs_audibly_from
+    object: "mined khevra, to any attuned listener"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:khevra_glass_originated_on_pelka
+    schema: dwd.fact.v1
+    subject: "a craftsman's dolphin-crest casting, fused from shore dust on Pelka's last native beach in Emberfall 213 AS"
+    predicate: is_common_origin_of
+    object: "khevra glasswork, and through it the message-glass trade"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:khevra_glass_works_cool
+    schema: dwd.fact.v1
+    subject: "khevra glass"
+    predicate: stays_cool_during
+    object: "melting, setting, and handling, which makes both physical shaping and internal figure-work unusually forgiving"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:khevra_glass_holds_internal_lattices
+    schema: dwd.fact.v1
+    subject: "khevra glass"
+    predicate: can_be_aligned_as
+    object: "internal crystalline lattices — webs of khevric structure inside the glass, energized by the arcane, passively reflecting the world"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:powdered_khevra_enabled_ubiquity
+    schema: dwd.fact.v1
+    subject: "powdered khevra, pressed and forge-sintered"
+    predicate: enables
+    object: "weaving khevra into fashion, homes, weapons, and nearly every part of daily life"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
