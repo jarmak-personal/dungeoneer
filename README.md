@@ -45,7 +45,8 @@ used to expose those holes while they are still cheap to fix.
 
 The repository includes a small structural linter for human-authored DWD YAML.
 It catches invalid YAML, duplicate and dangling IDs, containment cycles, clock
-bounds, visibility leaks, and the stable seed contracts that exist today. It
+bounds, certain visibility leaks, and the stable seed contracts that exist today.
+It does not prove that field-level player projections are safe. It
 allows unknown fields. Unknown kinds, schemas, enum options, and typed actions
 are reported as `EXTENSION`: lint fails so the validator cannot silently drift,
 but the diagnostic means the linter may need to learn a valid format addition.
@@ -80,12 +81,18 @@ The hook runs `uv run dwdlint worlds rules docs/simulations` before each commit.
 ## Architecture Docs
 
 - [System scope](docs/SCOPE.md)
+- [Adventure play](docs/ADVENTURE_PLAY.md)
+- [Character creation and advancement](docs/CHARACTER_PLAY.md)
+- [The Greywake Cull](docs/GREYWAKE_CULL.md)
+- [The Brass Lantern investigation](docs/BRASS_LANTERN_INVESTIGATION.md)
 - [Prior art](docs/PRIOR_ART.md)
 - [Tech stack](docs/TECH_STACK.md)
 - [Game world schema](docs/GAME_WORLD_SCHEMA.md)
 - [Spatial and travel system](docs/SPATIAL_TRAVEL.md)
 - [Cultures](docs/CULTURES.md)
+- [Khevra grafts and planar strain](docs/KHEVRA_GRAFTS.md)
 - [Ship combat](docs/SHIP_COMBAT.md)
+- [Ships between battles](docs/SHIP_OPERATIONS.md)
 - [Lifecycle and bootstrap](docs/LIFECYCLE.md)
 - [Rules engine](docs/RULES_ENGINE.md)
 - [Orchestration (live-decision layer)](docs/ORCHESTRATION.md)

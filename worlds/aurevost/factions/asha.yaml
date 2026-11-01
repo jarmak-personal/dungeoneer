@@ -15,10 +15,10 @@ methods: [oral archives, ecological observation, guided pilgrimage, disruption o
 resources: { coin: very-low, local_knowledge: exceptional, divine_fragments: scattered, public_trust: low }
 territory: ["loc:othara.interior", "river approaches the Otharan Crown considers unsettled"]
 rules_hook: >
-  Druids who deliberately use khevra acquire cumulative contamination through a
-  rules-owned condition. Druidic practice can help read contamination and unstable
-  cores, but excessive khevra load can impose minor costs. The Asha have deeper
-  training and plot rites, not a blanket PC-druid power package.
+  Deliberate druidic use can add temporary contamination to the same rules-owned
+  total as installed graft costs. The Asha have specialized knowledge and rites,
+  not a blanket PC-druid power package; exact read benefits and strain effects
+  require authored rules.
 knowledge_limits: >
   The Asha do not know the Cantor's identity, the full planar mechanism, or that they
   occupy the common cradle their own scattered people came from. Their evidence points

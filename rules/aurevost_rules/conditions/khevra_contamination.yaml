@@ -4,87 +4,56 @@ pack: rules:pack.srd_5e
 name: Khevra Contamination
 source: "Aurevost original 5e extension"
 summary: >
-  A cumulative living-systems condition caused by deliberate contact with unstable
-  khevra, especially when a druid channels practice through worked or veined
-  khevra. It is an informed tradeoff, not a class restriction.
+  A cumulative condition from temporary exposure and installed khevra grafts.
+  At high burden, a character's experience of reality becomes
+  unreliable; the player retains control of the character.
 track:
-  unit: exposure
-  tiers:
-    - id: clear
-      range: [0, 0]
-      effect: "No condition instance."
-    - id: trace
-      range: [1, 1]
-      effect: "Detectable by khevra-sensitive or living-systems senses; no default combat effect."
-    - id: marked
-      range: [2, 2]
-      effect: "Noticeable to Asha/rejection-zone senses; minor penalties in excessive khevra."
-    - id: saturated
-      range: [3, 3]
-      effect: "Serious plot condition; further exposure routes to operator/rules review."
+  unit: contamination_point
+  total: "temporary exposure plus the sum of installed graft costs"
+  cap: none
+  graft_cost: "Each authored graft specifies a nonnegative integer cost; sand-derived cosmetic grafts may cost zero and veined-derived functional grafts carry a much higher burden."
+  tolerance: "A guaranteed free baseline plus Constitution and Wisdom determine tolerance; the formula is not yet authored."
+  baseline: "No contamination penalties at or below tolerance."
+  thresholds: not_yet_authored
+  progression: "Nonlinear severity above tolerance; permit many modest grafts before severe effects."
+  unresolved_tier_policy: "When a calculation requires the missing tolerance formula, thresholds, or tier effects, block that resolution rather than applying the old capped tiers or guessing."
 triggers:
-  add_exposure:
+  add_temporary_exposure:
     - deliberate_druidic_use_of_active_khevra
-    - failed_or_rushed_khevra_core_harvest
+    - harvest_outcome_as_defined_by_harvest_procedure
     - unprotected_handling_of_unstable_core
     - failed_save_against_khevric_overload
-    - accepting_khevra_graft
+  add_installed_graft_cost:
+    - accepted_and_successfully_installed_graft
   no_exposure:
     - ordinary_nearby_khevra_presence
     - ordinary_druid_spellcasting
     - brief_handling_of_sealed_or_certified_core
     - non-druid_character_near_khevra_without_direct_exposure
-modifiers:
-  - id: modifier:khevra_contamination_druid_read
-    schema: dwd.modifier.v1
-    source: { kind: condition, id: rules:condition.khevra_contamination }
-    target: { roll: ability_check, actor: self, skills: [nature, survival, medicine] }
-    op: { kind: roll_shape, value: advantage }
-    when:
-      actor_tags_include: [druidic_practice]
-      check_about: [khevra_contamination, veined_creature, unstable_core]
-      contamination_tier_at_least: trace
-    lifecycle: while_source_active
-  - id: modifier:khevra_contamination_excessive_khevra_disadvantage
-    schema: dwd.modifier.v1
-    source: { kind: condition, id: rules:condition.khevra_contamination }
-    target: { roll: ability_check, actor: self, abilities: [wisdom, constitution] }
-    op: { kind: roll_shape, value: disadvantage }
-    when:
-      actor_tags_include: [druidic_practice]
-      contamination_tier_at_least: marked
-      environment_tags_include: [excessive_khevra_load]
-      check_depends_on: [living_system_alignment, concentration, endurance]
-    lifecycle: while_source_active
-  - id: modifier:khevra_contamination_rejection_zone_cost
-    schema: dwd.modifier.v1
-    source: { kind: condition, id: rules:condition.khevra_contamination }
-    target: { roll: ability_check, actor: self, skills: [nature, survival, medicine] }
-    op: { kind: roll_shape, value: disadvantage }
-    when:
-      actor_tags_include: [druidic_practice]
-      contamination_tier_at_least: saturated
-      environment_tags_include: [rejection_zone]
-      check_depends_on: [guidance, healing, living_system_alignment]
-    lifecycle: while_source_active
-minor_benefit:
-  applies_to: "Druidic or Asha-trained characters interpreting unstable khevra."
-  rule: >
-    At trace or higher, the character may receive advantage on one relevant Nature,
-    Survival, or Medicine check to read contamination, veined creatures, or unstable
-    cores when the table has established the character's training or practice.
-minor_cost:
-  applies_to: "Druidic or Asha-trained characters carrying marked or worse contamination."
-  rule: >
-    In an excessive-khevra-load scene, marked contamination can impose disadvantage
-    on a relevant Wisdom or Constitution check tied to living-systems alignment,
-    concentration, or endurance. Saturated contamination can do the same in a
-    rejection zone. The penalty is scene-specific, not a blanket class debuff.
+effects:
+  penalty_tiers: not_yet_authored
+  principle: "Escalating sensory and mechanical complications make perception less reliable."
+  player_agency: "The player retains control; contamination never turns the PC into an NPC or dictates a PC decision."
+  no_automatic_death: true
+  perception: "Private, sourced perceptions have their own audience and truth status and are not by themselves canonical facts about shared reality."
+  instance_visibility: "The definition is table-visible; each actor's condition instance, total, and perceptions have independently authorized audiences."
+  druid_or_asha_read_benefit: "A training-dependent read benefit is a candidate; its trigger and mechanics require a newly authored tier."
 removal:
-  trace: "Clears with a short rest away from active khevra or basic cleansing practice."
-  marked: "Requires downtime, clean ground or water, and a druidic/medical purification scene."
-  saturated: "Requires a quest, Asha rite, specialist care, or accepted patch."
-stacking: capped_track
+  temporary_exposure: "Recovery amount, time, and conditions need authored rules; no recovery silently removes graft cost."
+  graft_cost: "Remains while installed. Removal is difficult because the graft is magically bound; an authored removal procedure is required."
+  no_implicit_extra_exposure: "Fitting does not also add a generic temporary exposure unless the specific procedure authorizes it."
+resolution_policy:
+  maximum_added_per_actor_per_stabilization_or_harvest_resolution: 1
+  note: "Count overlapping handling, deliberate channeling, harvest outcome, and failed overload save once within the same resolution. Separate actions may add exposure separately."
+  timing: "Snapshot existing condition modifiers before the initiating check; collect exposure triggers while resolving it and any blast. Apply the deduplicated exposure after those checks and before a completed harvest transfer. Newly gained exposure cannot modify a check already resolved in that action."
+handling:
+  unstable_lattice_states: [active, secured]
+  stable_discharged_is_not_unstable_without_reactivation: true
+  grade_alone_does_not_determine_lattice_state: true
+  unprotected: "Direct contact with an unsealed unstable core or its fluids without an intact impervious barrier."
+  protected: "Use intact impervious gloves or a sealed container without direct contact; ordinary tools alone do not automatically provide protection."
+  advance_warning: "Describe the foreseeable contact risk before the character chooses how to handle the core."
+stacking: additive_uncapped_track
 visibility: table
 applied_by_event: condition_applied
 removed_by_event: condition_removed

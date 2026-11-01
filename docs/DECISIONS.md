@@ -349,6 +349,27 @@ Rationale:
 - Makes combat and resources testable.
 - Preserves a stable boundary between narrative and game state.
 
+Advancement follows the active game rules and campaign configuration. Aurevost
+supplies setting-specific options, not a mandatory XP or milestone policy.
+See [Character play](CHARACTER_PLAY.md).
+
+Cosmetic khevra grafts made from eroded sands are widespread; rarer functional
+grafts use veined creatures and carry much greater burden. Either may be chosen
+at character creation under the active equipment rules. Individual graft costs
+and temporary exposure add to
+one uncapped contamination total; some cosmetic grafts cost zero. A guaranteed
+free tolerance uses Constitution and Wisdom, with nonlinear consequences above
+it. Grafts are difficult to remove; contamination does not itself kill a PC or
+take their choices away. Thresholds and effects remain to be authored. See
+[Khevra grafts](KHEVRA_GRAFTS.md).
+
+Ship encounters use a shared horizontal hex grid, six headings, and discrete
+altitude bands. Pairwise ranges and arcs are computed from rules-owned
+positions rather than authored independently. This gives a multi-ship
+engagement consistent geometry while letting Dungeoneer handle the
+calculations and present a simpler tactical view. See
+[Ship combat](SHIP_COMBAT.md).
+
 ## Model Strategy
 
 Use a model gateway rather than hard-coding model SDKs in core systems.

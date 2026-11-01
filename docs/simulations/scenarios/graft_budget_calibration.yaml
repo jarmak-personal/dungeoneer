@@ -1,0 +1,44 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:graft_budget_calibration
+title: Comparing Graft Burden Against Example Characters
+focus: [graft_budget, nonlinear_tiers, capacity, calibration, player_agency]
+tags: [khevra, grafts, experimental_fixture, balance]
+setup:
+  reference: docs/KHEVRA_GRAFTS.md
+  status: "Hypothetical calibration only. None of these grafts, costs, tolerance formula, or thresholds is an accepted playable rule."
+  candidate_tolerance_formula: "6 + max(0, Constitution modifier) + max(0, Wisdom modifier)"
+  candidate_tiers_by_excess:
+    no_penalty: "0"
+    mild: "1-3"
+    moderate: "4-9"
+    severe: "10 or more; total remains uncapped"
+  candidate_grafts:
+    - { id: cosmetic_glimmer, source: eroded_sand, effect: "Visible resonance only.", cost: 0 }
+    - { id: cosmetic_chime, source: eroded_sand, effect: "Audible resonance only.", cost: 1 }
+    - { id: tide_lung, source: veined_creature, effect: "A brief limited underwater breathing capability.", cost: 4 }
+    - { id: night_eye, source: veined_creature, effect: "A limited low-light vision capability.", cost: 6 }
+    - { id: surge_sinew, source: veined_creature, effect: "A limited burst of physical force.", cost: 9 }
+  candidate_characters:
+    - { id: ordinary, constitution_modifier: 0, wisdom_modifier: 0, tolerance: 6 }
+    - { id: resilient, constitution_modifier: 2, wisdom_modifier: 2, tolerance: 10 }
+    - { id: vulnerable, constitution_modifier: -1, wisdom_modifier: -1, tolerance: 6 }
+input:
+  sequence:
+    - "For each candidate character, compare the cost of twelve cosmetic_glimmer grafts with tolerance."
+    - "Compare six cosmetic_chime grafts and one tide_lung for ordinary and resilient characters."
+    - "Compare tide_lung plus night_eye for ordinary and resilient characters."
+    - "Compare all three functional grafts for ordinary and resilient characters."
+    - "Independently add one temporary exposure to a character already exactly at tolerance."
+    - "Assess whether these hypothetical thresholds and effects meet the design intent without treating them as accepted rules."
+expected_pressure_points:
+  - zero-cost decorative work does not by itself create contamination or penalties
+  - everyone receives a free baseline even with negative Constitution and Wisdom modifiers in this fixture
+  - ordinary and resilient tolerances are 6 and 10; the vulnerable fixture also has tolerance 6
+  - six cost-1 cosmetics and tide_lung total 10; excess is 4 for ordinary and 0 for resilient
+  - tide_lung plus night_eye total 10; excess is 4 for ordinary and 0 for resilient
+  - all three functional candidates total 19; excess is 13 for ordinary and 9 for resilient
+  - candidate tier widths grow nonlinearly but exact penalties and real thresholds remain undecided
+  - rare functional grafts carry much higher cost than the cosmetic examples
+  - no tier automatically kills a character or removes player control
+  - cosmetic resonance does not establish exact contamination, private facts, or mechanical benefits
+  - proposed graft effects, costs, and formula are not authorized for actual play

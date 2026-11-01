@@ -23,14 +23,14 @@ template:
   instability: >
     The lattice is unset and undisciplined, lacking any engineered figure. It is prone to
     resonance, overload, and catastrophic discharge — near active sets, under stress, or at death.
-    The effect is rules-owned; the magnitude and triggers require a deterministic definition and
-    may not be improvised in narration.
+    The rules-owned stability check determines whether a defined trigger causes an overload;
+    its blast and core damage may not be improvised in narration.
 occurrence:
   clusters_at: ["active khevra deposits", "region:greywake khevra shoals", "worked refinery margins"]
   scarce_or_absent: ["loc:caldrin_reach and other rejection zones, where khevra fails and a living lattice cannot hold"]
 harvest:
   yields: item:khevra_core
-  note: "The dense organ where the lattice concentrated. Intact cores carry the value; a beast killed by overload is often worthless."
+  note: "The dense organ where the lattice concentrated. Intact cores carry the most value; an overload degrades the core and may leave it inert."
 detection: "Reads as contamination to druidic and other living-systems senses; dims devotional traces such as the Emberglass."
 trade_terms:
   to_bloom: "the usual course — the lattice growing unchecked and killing its host"
@@ -43,5 +43,6 @@ rules_binding:
   stat_block_ref: null
   template_ref: rules:template.khevra_infused
   harvest_procedure_ref: rules:procedure.harvest_khevra_core
+  stabilization_procedure_ref: rules:procedure.stabilize_khevra_core
   contamination_condition_ref: rules:condition.khevra_contamination
   note: "Infusion is a deterministic template over a base stat block. The base creature remains ordinary 5e content; the template adds a minor physical edge, overload risk, and a core-harvest procedure."

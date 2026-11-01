@@ -1,0 +1,23 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:character_progression
+title: Character Choices And Progression Boundaries
+focus: [player_authorship, sheet_validation, campaign_progression, missing_content, atomicity]
+tags: [character_creation, advancement, player_agency]
+setup:
+  reference: docs/CHARACTER_PLAY.md
+  scenario_fixture: "Dorn completes or declines the Greywake job; no progression policy is stipulated."
+input:
+  sequence:
+    - "A player selects Dorn, chooses Light and Mage Hand for schooling, and reviews the proposed character."
+    - "Required class or spell definitions are missing at initialization."
+    - "Independently, after the job the group requests an advancement award without a configured policy."
+    - "Independently, assume an authorized policy and valid advancement eligibility but omit the class advancement definition."
+    - "Independently, a player submits an illegal or stale advancement choice."
+expected_pressure_points:
+  - setting-specific schooling choices remain player-selected and distinct from class choices
+  - missing definitions or invalid initial choices do not create a partial PC or control edge
+  - the active game and campaign, not the world setting, determine advancement
+  - an unspecified policy cannot award assumed XP or a milestone
+  - missing advancement definitions and illegal or stale selections block mechanical changes
+  - the commission and core sale do not become automatic character advancement
+  - no completed roll, award, level-up, or runtime replay is claimed without complete inputs

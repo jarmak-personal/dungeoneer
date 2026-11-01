@@ -1,0 +1,43 @@
+id: rules:procedure.stabilize_khevra_core
+schema: dwd.rules_procedure.v1
+pack: rules:pack.srd_5e
+name: Stabilize Khevra Core
+source: "Aurevost original 5e extension"
+summary: >
+  A careful separate action secures an active core before harvest, protecting it
+  against ordinary harvest failure. It does not repair damage or guarantee safety.
+preconditions:
+  - defeated_creature_has_template: rules:template.khevra_infused
+  - creature_is_dead
+  - core_not_already_removed
+  - lattice_is_active
+  - actor_can_spend_required_time
+time: { duration: "1 minute" }
+check:
+  kind: ability_check
+  allowed_skills: [arcana, nature, survival, medicine]
+  allowed_tools: [alchemist_supplies, healer_kit, harvester_tools]
+  dc_formula: "8 + creature_proficiency_bonus + creature_constitution_modifier"
+  outcome: binary
+  advantage_sources:
+    - prior_successful_identification_check
+    - proper_harvester_tools
+    - asha_or_culler_training
+  disadvantage_sources:
+    - excessive_khevra_load_without_protection
+outcomes:
+  success:
+    result:
+      - { kind: item_state, lattice: secured }
+  failure:
+    result:
+      - { kind: trigger_template_effect, effect: stability_check }
+contamination:
+  deliberate_druidic_channel: add_one_exposure
+rules:
+  - "A secured lattice does not check stability for the fail band of an ordinary harvest, but still does for botch or reckless damage."
+  - "A failed stabilization leaves the lattice active if its stability check succeeds; if it fails, overload discharges the lattice."
+  - "Do not repeat a failed attempt without a materially changed approach or circumstances."
+  - "The action never improves core grade and does not create a harvest or transfer."
+  - "Druidic channeling is optional and requires player choice; count at most one exposure per actor for this action and its consequences."
+visibility: table

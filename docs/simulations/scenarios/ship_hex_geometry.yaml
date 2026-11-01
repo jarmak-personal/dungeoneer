@@ -1,0 +1,30 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:ship_hex_geometry
+title: Three-Ship Hex Geometry
+focus: [ship_position, pairwise_geometry, simultaneous_movement, collision_boundary]
+tags: [ship_combat, spatial, geometry, replay]
+setup:
+  reference: docs/SHIP_COMBAT.md
+  geometry_only: true
+  ships:
+    A: { q: 0, r: 0, heading: 0, altitude: 1 }
+    B: { q: 1, r: 0, heading: 3, altitude: 2 }
+    C: { q: 1, r: -1, heading: 4, altitude: 1 }
+input:
+  sequence:
+    - "Derive all three initial horizontal distances and each specified directed arc."
+    - "Conditionally apply the three non-colliding simultaneous steps in the documented geometry fixture."
+    - "Independently consider same-cell and opposite-endpoint moves at the same altitude."
+    - "Independently consider two ships sharing a horizontal hex at different altitudes."
+    - "Independently derive the clockwise boundary bearing for displacement (2, -1) with observer heading 0."
+expected_pressure_points:
+  - initial horizontal distances A-B, A-C, and B-C are each 1
+  - B is fore of A and A is fore of B; C is port of A and A is port of C
+  - B is one altitude band above A
+  - after the documented steps the distances A-B, A-C, and B-C are 2, 2, and 1
+  - B is in A's port arc after the move, using the clockwise tie rule
+  - displacement (2, -1) ties directions 5 and 0; clockwise chooses 0 and the target is fore
+  - same-altitude destination and endpoint-swap conflicts require the missing collision rules
+  - accidental collision may cause physical damage and is not automatically avoided
+  - vertically aligned ships have no horizontal bearing and require an action that supports that geometry
+  - the fixture does not establish movement legality, range thresholds, weapon effects, or runtime replay

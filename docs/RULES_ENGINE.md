@@ -124,14 +124,14 @@ skill: persuasion                 # ability/skill as applicable
 dc_source: { kind: social_attitude, ref: tool:social_dc_003 }  # see Social Resolution
 modifiers: [modifier:persuasion_proficiency]  # roll shape is just another modifier
 dice_source: physical | digital | declared   # defaulting rule below
-adjudication_visibility: table | dm_only | player:pc:iona   # who sees the raw roll/DC/provenance
-result_audience: table | dm_only | player:pc:iona           # who receives the conclusion
+adjudication_visibility: table | dm_only | player:iona   # who sees the raw roll/DC/provenance
+result_audience: table | dm_only | player:iona           # who receives the conclusion
 ```
 
 A single `visibility` is too coarse for hidden checks. The raw mechanics
 (roll, DC, modifiers, tool provenance) and the player-facing *conclusion* have
 different audiences: a secret Insight check keeps `adjudication_visibility:
-dm_only` while its `result_audience` is `player:pc:vanya`. For an ordinary
+dm_only` while its `result_audience` is `player:vanya`. For an ordinary
 table check both are `table`. `adjudication_visibility` is what drives the
 hidden-check dice rule below; `result_audience` is the audience of the
 delivered answer/disclosure. Defaults: an unspecified `result_audience`
@@ -560,13 +560,23 @@ proficiency. The template adds:
 It is deliberately not a custom monster subsystem. If a named veined creature needs
 more than that, author that creature as its own stat block or trait.
 
-Khevric overload is a standard save-and-damage effect:
+The lattice starts active and its core starts intact. When the creature first
+reaches 0 HP, an active-core harvest reaches the fail band, or someone
+recklessly damages an active or secured core, make a **stability check** before
+deciding whether an overload occurs. A harvest botch checks an active or
+secured core; a discharged core does not check.
+The creature rolls `d20 + Constitution modifier` against `10 + proficiency
+bonus`; a natural 20 succeeds and a natural 1 fails. The check is not a
+Dexterity save. A successful identification before the creature is defeated or
+an eligible nonlethal melee defeat grants advantage on the defeat check.
+A critical finishing hit, force/lightning/thunder finishing damage, or reckless
+core damage imposes disadvantage. The active pack resolves cancellation.
+
+On failure, the lattice discharges and the following save-and-damage effect
+occurs:
 
 ```yaml
-trigger:
-  - first_reduced_to_0_hp
-  - failed_harvest_check
-  - reckless_core_damage
+trigger: failed_stability_check
 save: dexterity
 dc: 8 + creature_proficiency_bonus + creature_constitution_modifier
 radius: 10 ft
@@ -574,10 +584,22 @@ damage: creature_proficiency_bonus d6 force
 save_success: half_damage
 ```
 
-Critical hits, force/lightning/thunder finishing damage, massive overkill, or a
-called shot into the core can escalate the risk. The overload still resolves
-through ordinary consequence kinds: `damage`, `item_state`, and optionally
-`condition`. A creature killed by overload yields a degraded or inert core.
+An overload reduces core quality one step: intact -> degraded -> inert (the
+floor). The
+lattice is then discharged and cannot overload again unless a separately
+defined effect reactivates it. The first-0-HP check happens once, not every time
+the creature is examined. Overload resolves through ordinary `damage`,
+`item_state`, and, where sourced, `condition` consequences.
+On a successful save, halve the blast damage and apply the active pack's
+rounding rule; the SRD pack rounds fractional damage down. One underlying
+event triggers at most one stability check even if it is both reckless core
+damage and a harvest botch; record both reasons and apply disadvantage once.
+
+Example: a veined wolf with proficiency +2 and Constitution +1 makes its
+stability check at +1 against DC 12. The party identified it before defeat, so
+the check has advantage. A failed check causes a DC 11 Dexterity save against
+2d6 force damage in a 10-foot radius and degrades the intact core. The blast DC
+and stability DC answer different questions and are not interchangeable.
 
 ### Khevra Core Harvesting
 
@@ -589,7 +611,10 @@ veined creature:
 3. Defeat the creature.
 4. Stabilize and harvest the core with time, training, and tools.
 
-Careful harvesting takes 10 minutes. Rushed harvesting takes 1 minute at +5 DC.
+The creature must be dead and its core not already removed. An unconscious
+creature is not automatically dead; extracting its core while alive is not
+defined by this procedure. Careful harvesting takes 10 minutes. Rushed
+harvesting takes 1 minute at +5 DC.
 The check uses `Arcana`, `Nature`, `Survival`, or `Medicine`; relevant tools
 include alchemist's supplies, healer's kit, or harvester's tools.
 
@@ -598,42 +623,90 @@ Outcome ladder:
 - `strong`: intact core plus usable trace material.
 - `success`: intact core.
 - `partial`: degraded core, no overload by default.
-- `fail`: degraded or inert core and an overload check.
-- `botch`: inert core and overload.
+- `fail`: at most a degraded core and a stability check if the lattice is active.
+- `botch`: inert core and a stability check with disadvantage if active or secured.
+
+Recklessly damaging the core during a rushed harvest is botch regardless of
+the die. Otherwise natural 1 is botch and natural 20 is strong, before margin
+bands. Otherwise a partial is DC-5 through DC-1; a fail is below DC-5. A harvest cannot improve
+the core's current grade: use the lower of its existing grade and the outcome.
+On fail or botch, apply that grade first, then resolve the stability check and
+any overload. Thus a core already degraded at defeat cannot become intact
+through a later strong harvest; a failed harvest can degrade it to inert.
+A partial result does not trigger a stability check merely because it is below
+DC; `fail` is the specific outcome band.
+Every completed harvest outcome removes the core after its consequences resolve
+and transfers it from the creature to the named consenting recipient, or the
+harvester by default. Custody does not itself settle legal ownership or sale
+authority.
+
+The separate `rules:procedure.stabilize_khevra_core` allows a character to
+spend one minute and make a relevant check against the harvest's careful DC
+before harvest. Success changes an active lattice to **secured**, preventing a
+stability check from an ordinary fail-band harvest; a botch or reckless damage
+still calls for one. Failure causes a stability check: on success the lattice
+stays active, on failure it overloads and becomes discharged. Stabilization
+does not repair the grade, and repeating a failure requires a changed approach.
+Druidic channeling is optional and risks exposure. Overlapping exposure
+triggers within one stabilization or harvest resolution add at most one
+exposure per actor; later separate actions are counted separately. Snapshot
+existing condition modifiers before the initiating check; collect exposure
+triggers through that check and any blast, then apply deduplicated exposure
+before the completed harvest transfer. A condition gained during the action
+does not modify that action's already resolved checks.
+
+Each creature instance has its own embedded core instance, with `grade` and
+`lattice` state. Initial state is created from the template when that creature
+is instantiated; the core is not in party inventory until removed and transferred.
+`item.state_changed` carries its before/after fields and rules provenance;
+`item.transferred` records later removal and custody. See the event payloads in
+[Game world schema](GAME_WORLD_SCHEMA.md).
 
 This makes harvesting a player-facing choice without requiring new engine code.
 Better preparation means better yield and lower explosion risk.
 
-### Druid Contamination
+### Khevra Contamination
 
-`rules:condition.khevra_contamination` is a capped exposure track:
+`rules:condition.khevra_contamination` tracks an uncapped total: temporary
+exposure plus the individual costs of installed grafts. Some decorative grafts
+cost zero. A guaranteed free tolerance, informed by Constitution and Wisdom,
+allows baseline use without penalties. Above tolerance, escalating effects
+reflect a person pulled between planes; exact capacity, nonlinear tier
+thresholds, and effects remain to be authored against worked graft examples.
+The player retains control, and contamination does not itself kill a character.
+See [Khevra grafts and planar strain](KHEVRA_GRAFTS.md).
 
-```text
-clear -> trace -> marked -> saturated
-```
-
-It is mainly plot texture with minor mechanical hooks. It applies from deliberate
-or careless interaction with unstable khevra:
+Temporary exposure can arise from deliberate or careless interaction with
+unstable khevra:
 
 - deliberate druidic use of active khevra;
-- failed or rushed core harvest;
+- a harvest outcome that causes exposure under the harvest procedure;
 - unprotected handling of an unstable core;
-- failed save against khevric overload;
-- accepting a khevra graft.
+- failed save against khevric overload.
+
+An accepted, successfully installed graft contributes its own persistent
+cost, not a second generic exposure point merely for being fitted. A specific
+fitting procedure may separately authorize temporary exposure. Healing
+temporary exposure never silently removes an installed graft's cost.
 
 It does not apply from merely being near khevra once, being a druid, or casting
 ordinary druid spells.
+Rushing a successful harvest is not itself an exposure trigger. Unprotected
+handling and a failed overload save can still independently trigger exposure;
+overlapping triggers in the same resolution count once per actor.
+An active or secured lattice is unstable for handling; a discharged lattice is
+not, unless reactivated. Core grade alone does not determine lattice state.
+Direct contact with an unsealed unstable core or its fluids without an intact
+impervious barrier is unprotected handling; intact impervious gloves or a
+sealed container prevent that contact. Ordinary tools do not automatically
+protect. Describe the foreseeable risk before the player chooses how to handle
+the core.
 
-Druids and Asha-trained characters may get a minor benefit: when the fiction and
-training support it, trace-or-worse contamination can grant advantage on one
-relevant `Nature`, `Survival`, or `Medicine` check to read contamination, veined
-creatures, or unstable cores.
-
-The minor cost is symmetric: marked-or-worse contamination can impose disadvantage
-on a relevant Wisdom or Constitution check in excessive-khevra scenes when the
-check depends on living-systems alignment, concentration, or endurance. Saturated
-contamination can do the same in rejection zones. This is scene-specific, not a
-blanket PC-druid debuff.
+The former read benefit and environmental costs need new triggers compatible
+with the unbounded total and the new tiers. Until those and the tolerance
+formula are defined, any operation requiring a tier or tier-specific effect
+returns a blocked rules result; do not silently reuse the old capped values or
+grant free powers.
 
 The Asha may have stronger rites, training, or plot actions as faction/NPC content.
 Those are not default druid class features. A PC druid can learn such a capability
@@ -683,7 +756,11 @@ visibility: table
 - **0 HP:** the rules engine sets the mechanical consequence (creature: defeated;
   PC: unconscious + death saves) and emits the typed event; the entity-lifecycle
   field (e.g. `dead`) is updated by the orchestrator from that event, not by
-  narration.
+  narration. In the SRD pack's creature default, an ordinary lethal defeat is
+  dead; if a melee attack reduces the creature to 0 HP, its attacker may choose
+  at that moment to knock it unconscious and stable instead. This does not
+  replace the PC death-save rules. A first-0-HP lattice check occurs in either
+  case, and its consequences follow the sourced defeat before the next action.
 
 ## Encounter Modes
 
@@ -707,8 +784,10 @@ resolves, along four parameters:
 **Encounters nest.** A coarse-scale encounter may host a finer one at a **fixed
 time-scale ratio** — one parent turn spans N child rounds. The child runs time-boxed
 and carries over if unresolved; parent and child exchange effects through events at
-the zoom boundary (a parent maneuver imposes checks in the child; child casualties
-change the parent's state). One primitive serves ship combat hosting a boarding
+the zoom boundary (a resolved parent maneuver imposes checks when the child next
+resumes; child casualties change the parent's next-declaration availability). A
+ship order made during boarding waits for the next parent turn's movement phase.
+One primitive serves ship combat hosting a boarding
 melee, a chase hosting a clamber, a siege hosting an assault. The worked extension is
 [Ship combat](SHIP_COMBAT.md).
 

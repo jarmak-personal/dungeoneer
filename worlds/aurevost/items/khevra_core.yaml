@@ -4,16 +4,17 @@ schema: dwd.item.v1
 name: Khevra Core
 category: harvested_component
 summary: >
-  The dense organ recovered from a veined creature, where its stabilized lattice concentrated.
+  The dense organ recovered from a veined creature, where its living lattice concentrated.
   Unlike mined khevra, a core spent the creature's life interfacing the lattice with living
   tissue, which is what makes it valuable: it is an arcane-to-organic transducer, the current
-  basis for the emerging trade in living-tissue augmentation that refined setwork cannot yet match.
+  basis for the rarer trade in functional living-tissue augmentation that refined setwork cannot yet match.
 properties:
   apparent: "A heavy organ shot through with crystalline veins, still faintly warm, the lattice visible under translucent tissue."
   use: >
-    Sought as the working component for grafts — early augmentations fitted to living bodies.
-    A core carries the same contamination as its source tissue and the same unset instability;
-    handling, preservation, and fitting are specialist work.
+    Sought as a working component for functional grafts fitted to living bodies.
+    A core carries contamination from its source tissue and can be unstable;
+    its current lattice state determines its risk. Handling, preservation, and
+    fitting are specialist work.
   grades: "Intact cores from a creature that set cleanly command the price. Cores from a beast that bloomed out or died by overload are degraded or inert."
 significance:
   - thread:the_veined_trade
@@ -23,10 +24,11 @@ demand:
   - { actor: "faction:caelport_concord", interest: "licensing the cull and the certified — and uncertified — core trade" }
   - { actor: "faction:asha", interest: "opposition; cores are contamination made portable" }
   - { actor: "faction:ilvane_accord", interest: "none; augmentation runs opposite to the Accord's move off khevra" }
-notes: "Useful as cargo, contraband, reagent, quest object, or evidence. Augmentation itself is emergent and not generally available to player characters at campaign start."
+notes: "Useful as cargo, contraband, reagent, quest object, or evidence. Functional grafts are rarer and more burdensome than the common cosmetic work made from processed sand."
 rules_binding:
   harvested_from_template: rules:template.khevra_infused
   harvest_procedure_ref: rules:procedure.harvest_khevra_core
+  stabilization_procedure_ref: rules:procedure.stabilize_khevra_core
   contamination_condition_ref: rules:condition.khevra_contamination
-  note: "Core quality and overload risk are rules-owned. Handling an intact sealed core is not automatically contaminating; rushed, failed, or unprotected handling can apply the contamination condition."
+  note: "Core grade, lattice state, and overload risk are rules-owned. An intact sealed core is not automatically contaminating; handling, harvest outcomes, or overload can apply exposure under the contamination procedure."
 visibility: table

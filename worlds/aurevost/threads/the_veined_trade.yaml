@@ -6,7 +6,7 @@ status: active
 summary: >
   Working the deposits harder produces more infusion at the margins, and a market has grown
   around it: cullers clear the veined near settlements and harvest cores, brokers move them, and
-  an emerging augmentation trade turns cores into grafts. It is bread-and-butter work — bounties,
+  specialist fitters turn veined material into rarer functional grafts. It is bread-and-butter work — bounties,
   escort, salvage, supply — that several powers are quietly racing to control.
 stakes:
   public: "Veined beasts threaten deposit settlements and shipping; cores are worth hunting for."
@@ -23,7 +23,7 @@ leads:
   - creature:khevra_infused
   - item:khevra_core
   - "Concord cull-licenses, bounties, and the uncertified core market beneath them"
-  - "the first grafted operatives and fitters appearing in port cities"
+  - "functional-graft wearers, brokers, and specialist fitters in port cities"
   - "blooms flaring where deposits are newly or heavily worked"
 resolution_conditions:
   - "establish how a given crew works the trade — licensed culling, salvage, brokerage, or refusal"

@@ -1,0 +1,42 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:brass_lantern_investigation
+title: Investigating the Bricked Arch
+focus:
+  - exploration_and_visible_clues
+  - social_disclosure
+  - npc_knowledge_and_perspective
+  - private_knowledge_and_recall
+  - meaningful_retry
+  - player_agency_and_clock_triggers
+tags: [gameplay, exploration, investigation, social, secrecy]
+setup:
+  scene: loc:caelport.brass_lantern
+  present: ["pc:dorn", "pc:vanya", "npc:wick"]
+  fixture_controls:
+    player:dorn_player: pc:dorn
+    player:vanya_player: pc:vanya
+  hidden_context: ["secret:the_kept_flame"]
+  reference: docs/BRASS_LANTERN_INVESTIGATION.md
+input:
+  sequence:
+    - "The party notices the real candle and the bricked arch and asks Wick about them."
+    - "Vanya asks Wick to reveal what he guards; inject an illustrative strong result without claiming a replayable social check."
+    - "Vanya repeats the unchanged request, then offers to fix Wick's broken message-glass in exchange for a smaller answer."
+    - "Dorn examines the arch carefully without knowing a hidden entrance exists."
+    - "Wick chooses to tell Dorn privately: 'I don't keep the candle for the draft.' Deliver only to player:dorn_player; Vanya later asks the table what they know."
+    - "Independently, the party leaves without pursuing the shrine."
+expected_pressure_points:
+  - visible details are available without inventing a roll or revealing the hidden room
+  - a strong result is bounded by Wick's knowledge and can_share restriction
+  - no unprovided secret-door procedure or inspection detail is invented
+  - a private clue does not appear in table recall unless the party shares it
+  - leaving is allowed and does not by itself trigger an unrelated clock
+  - retry requires a changed approach or circumstances rather than repetition
+  - the stipulated strong result is a boundary fixture, not a replayable dice result
+expected_contracts:
+  social:
+    dc_source: dwd.social_dc_source.v1
+    disclosure: dwd.social_disclosure_decision.v1
+  recall:
+    query: dwd.party_knowledge_query.v1
+    answer: dwd.recall_answer.v1

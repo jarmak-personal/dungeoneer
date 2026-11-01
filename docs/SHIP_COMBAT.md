@@ -38,25 +38,24 @@ Two things make it a *ship* and not a big creature:
 
 ## The tactical scope — position space
 
-Ship combat's position space is an abstract **tactical scope**, not a coordinate
-grid: a shared plot every ship sits on, like a radar screen. A ship's whole position
-is four discrete values and every tactical question is a lookup, not geometry. (No 3D
-math — true firing solids are unplayable and a determinism hazard; the third
-dimension is more useful as a *resource* than a coordinate, and discrete bands replay
-exactly where float geometry would not.)
+The **tactical scope** uses a shared horizontal hex grid and discrete altitude
+bands. Each ship's rules-owned position is an axial hex `(q, r)`, an altitude
+band, and one of six headings. The engine computes the pairwise relationships;
+the table can see a simple scope with range, bearing, and altitude instead of
+performing geometry. Because all relationships derive from the same positions,
+three ships cannot independently acquire contradictory pairwise distances.
+These are tactical coordinates, not world-map coordinates.
 
-A ship's position is **{range ring, bearing, altitude band}** carried on
-`position_changed`, plus the shared **wind** state for the scope.
-
-- **Range rings** — four bands from the engagement: `engaged / close / medium / long`,
-  plus `broken contact` (a ship that breaks off leaves the scope; the encounter ends
-  or becomes a chase). Closing/opening is a movement result; weapons and boarding each
-  declare a maximum range band.
-- **Bearing & arcs** — a ship faces one of eight headings; the relative arc between two
-  ships resolves to a named bucket: `fore / port / starboard / aft` (a broadside covers
-  port+starboard). Arcs are labels on a relationship, never angles. Arc-gating a shot
-  is three discrete checks: **target's arc ∈ the weapon's arcs AND target's range ≤ the
-  weapon's range AND the altitude gap within the weapon's elevation.**
+- **Horizontal distance** is the number of hexes on a shortest path:
+  `max(abs(dq), abs(dr), abs(dq + dr))`. A pack maps that distance to
+  `engaged / close / medium / long / broken contact`; the thresholds and
+  whether altitude changes a particular weapon's range are content that must
+  be authored, not guessed. Breaking contact with one opponent does not remove
+  a ship from an engagement with others.
+- **Bearing & arcs** are derived separately in each direction using the
+  algorithm below. A weapon checks its own permitted arcs, range, and altitude
+  limits against the resolved positions; a target's arc from the firer need not
+  be the firer's arc from the target.
 - **Altitude bands** — five: `grounded(0) / low / mid / high / ceiling`. Climb costs
   thrust (a Sails/Helm action), a dive trades altitude for closing or speed; height
   gates some arcs and feeds the weather gauge. **`grounded` is a defeat axis distinct
@@ -76,23 +75,91 @@ the water (a swim/rescue problem); from an airship you fall through altitude ban
 (fall damage scaling with the band, or a grab-the-rigging save first). Same event,
 altitude-dependent consequence.
 
-The discrete scope is canonical and **paper-runnable**: a GM sets the opening rings,
-headings, altitude, and wind by judgment of the fiction, and every tactical question
-is a by-hand lookup. A runner *may* automate the setup by seeding the opening
-positions from the real PostGIS/pgRouting spatial state (who is upwind, who has
-height, the starting range), and a client *may* render a 3D view from the discrete
-values — but both are conveniences over the table-runnable scope, never a requirement.
-The bands are canonical; the geometry is optional enrichment.
+An encounter records the initial positions, headings, altitude, wind, and
+scope definition, with provenance. Spatial/travel data can inform setup when
+its precision supports it; otherwise authorized encounter setup establishes the
+missing tactical positions. Do not silently turn an approximate world route
+into exact tactical coordinates. Accepted position events are canonical rules
+state; pairwise ranges, arcs, and displays are rebuildable projections.
+
+### Deriving bearing and arc
+
+Use integer axial coordinates. Directions clockwise on the display are:
+
+| Heading | Axial step |
+|---|---|
+| 0 | `(1, 0)` |
+| 1 | `(0, 1)` |
+| 2 | `(-1, 1)` |
+| 3 | `(-1, 0)` |
+| 4 | `(0, -1)` |
+| 5 | `(1, -1)` |
+
+For displacement `(dq, dr)` and each direction `(uq, ur)`, calculate
+`2*dq*uq + dq*ur + dr*uq + 2*dr*ur`. The greatest score gives the bearing.
+For a tie between neighboring directions choose the clockwise direction,
+including `5 -> 0`. Subtract the observer's heading modulo 6: `0` is fore,
+`1` or `2` starboard, `3` aft, and `4` or `5` port. Compute the reverse
+bearing independently from the other ship's heading.
+
+Ships in the same horizontal hex have no horizontal bearing, even at different
+altitudes. Describe them as vertically aligned and use only a weapon or action
+whose authored rule explicitly supports that geometry. At the same altitude,
+same-cell occupancy instead requires the collision or contact rules; do not
+silently pick an arc. Elevation is the signed target-band difference, with
+absolute gap available for a weapon's limit. An actual altitude band is not a
+claim of exact height in feet.
+
+### Simultaneous movement and replay
+
+All ships commit movement orders before movement resolves. Validate each
+proposed path against its starting state, station capabilities, applicable
+speed, turn, altitude, wind, and resource rules. The yet-to-be-authored action
+catalog must define those costs and any rolls; a missing rule blocks that
+resolution rather than allowing unrestricted movement. A resolved path is a
+sequence of simultaneous discrete steps; a ship with no remaining steps holds
+position while other ships finish. All updates for a step use the same
+pre-step positions, not the result of iterating ships in an arbitrary order.
+
+Before committing, identify at least a same-cell/same-altitude destination
+conflict and two ships swapping the same three-dimensional endpoints in one
+step. An actual collision is physical contact and can cause damage even when
+neither captain intended it; a ram is a deliberate action that exploits
+contact, not the only way contact can occur. How contact affects positions,
+remaining movement, hulls, crew, and a boarding child, and how simultaneous
+altitude changes and other swept-path intersections are handled, require
+authored collision rules. Until they exist, block the collision-dependent
+movement resolution without committing a partial phase; do not choose a winner
+by ship ID or allow vessels to pass through each other. Stationary or
+vertically separated ships remain subject to the same checks.
+Once a valid movement phase resolves, record ordered position changes and
+their source orders and dice; derive all pairs and weapon arcs from that
+resolved state. Collision ordering and event payloads remain open contracts.
+
+**Geometry fixture, not a complete ship turn.** Let A be `(0, 0)`, heading 0,
+altitude 1; B be `(1, 0)`, heading 3, altitude 2; and C be `(1, -1)`, heading
+4, altitude 1. All three pairwise horizontal distances are 1. B is in A's
+fore arc and A is in B's fore arc; C is in A's port arc and A is in C's port
+arc. B is one altitude band above A. Suppose an authorized movement rule
+resolves these non-colliding simultaneous steps: A to `(0, 1)`, B to `(1, -1)`,
+and C to `(2, -1)`, with headings and altitudes unchanged. The resulting
+distances A-B, A-C, and B-C are 2, 2, and 1. B is now in A's port arc,
+including the clockwise bearing tie. This demonstrates geometry only: it does
+not grant those moves, name a range band, or authorize a weapon shot.
 
 ## The ship turn — simultaneous, but deterministic
 
 "Everyone acts at once" cannot mean nondeterministic, or replay breaks. So
 simultaneity lives at the decision layer and resolution is a fixed pipeline:
 
-1. **Declaration.** Every manned station commits an order. The crew (PCs) coordinate
-   openly; **enemy orders are `dm_only` until reveal** — fog of war. Declarations are
-   recorded inputs. Players do not know enemy orders unless they spend to learn them
-   (see "Information").
+1. **Declaration.** Enemy ships commit their orders privately before receiving
+   information about the party's orders. The party then assigns its stations.
+   A Lookout can commit its station to read one enemy order or posture before
+   the other party stations commit; that choice consumes the Lookout action.
+   The party may use the revealed information when choosing its posture and
+   remaining orders. Once committed, an order cannot be revised because of a
+   later reveal. **Enemy orders are `dm_only` until authorized disclosure**;
+   they are recorded inputs, not facts the party automatically knows.
 2. **Resolution pipeline** — a fixed sub-phase order, deterministic tie-breaks:
    1. Navigation / positioning (weather gauge, wind, claim advantage)
    2. Movement (helm + sails; facing / range / altitude update)
@@ -101,9 +168,10 @@ simultaneity lives at the decision layer and resolution is a fixed pipeline:
    5. Tending / damage control (repair, douse, pump, reload)
 3. **Emit deltas as events** in stable phase order.
 
-**Replay invariant:** declarations are inputs, the pipeline is a pure function of
-(declarations + recorded dice), events have a stable append order. Simultaneity is
-feel; the resolution is deterministic.
+**Replay invariant:** the pipeline is a pure function of the starting rules
+state, versioned rules and scope, committed declarations, and recorded dice;
+events have a stable append order. Simultaneity is feel; resolution is
+deterministic.
 
 ### Why the pipeline order is fixed (and command stays bounded)
 
@@ -159,6 +227,33 @@ and still shared by the table.
   ("we couldn't take the deck before their consort closed"). The fixed ratio keeps
   both clocks in lockstep.
 
+### Orders And Effects Across The Boundary
+
+The parent pipeline does not restart or interrupt a personnel round. A ship
+order given while a boarding child is running is a declaration for the **next**
+ship turn. If the order is a hard maneuver, resolve it in that turn's normal
+movement phase, before heavy weapons and the boarding phase. An unavailable
+station, lost capability, or other failed precondition prevents the order
+from resolving; do not inject the maneuver's consequences merely because it
+was requested.
+
+If a hard maneuver resolves while a boarding child remains active, queue its
+deck effect against the affected ship and the source movement event. When the
+child next resumes in the boarding phase, resolve the sourced balance saves for
+the actors then on that deck **before** its next personnel turn. The five-round
+limit counts personnel rounds, not this boundary effect. A failed save may
+apply prone or overboard only as defined by the active ship rules. If the
+child has ended or an actor is no longer on the affected deck, do not apply a
+stale effect to that child or actor.
+
+Child results that affect station availability are recorded as they happen in
+the personnel encounter and are included in the projection used for the next
+parent declaration. A downed or captured hand cannot be assigned then; a crew
+replacement is possible only if the station and crew-assignment rules permit
+it. A child result does not retroactively invalidate a parent order already
+resolved earlier in the current pipeline. Other casualties, captured stations,
+and sabotage likewise reach parent decisions at the next parent boundary.
+
 ## Reciprocal coupling — battle impacts ship, ship impacts battle
 
 This is the heart of it. The two scales are not independent; they inject events into
@@ -168,7 +263,9 @@ each other at the zoom boundary, both directions.
 
 - Casualties drain the crew pool → fewer stations manned.
 - A captured station (helm, a battery) works for the enemy or is disabled.
-- A defender killed/downed at a station → that station goes unmanned mid-turn.
+- A defender killed/downed at a station is unavailable at the next parent
+  declaration; the station is unmanned unless an eligible replacement is
+  assigned under the applicable crew rules.
 - Sabotage (boarders set a fire, foul the rigging) → conditions on the ship.
 
 **Ship → battle (parent → child), injected into the nested melee:**
@@ -208,7 +305,13 @@ Enemy declarations are `dm_only` until the reveal. Players have **no** insight i
 enemy orders unless they earn it:
 
 - A Lookout/Nav **read-enemy-intent** action reveals one enemy ship's posture or one
-  declared station order before you commit.
+  declared station order before the other party stations commit. The reader
+  chooses the enemy ship and whether to read posture or one named station's
+  order. The result is delivered to the reader; speaking it aloud can make it
+  table-visible through the ordinary delivery route. If that station has no
+  order, the reader learns that it has no order, not a different secret order.
+  The action does not reveal the whole plan or allow the enemy to revise its
+  already committed orders.
 - Setwork can extend this (a scrying figure reveals more; an Ilvane signals set shares
   intel across your ships); Savarran warding can **mask** your own declarations.
 - Some intent leaks through the **descriptive layer** for free: a Marovari hull
@@ -248,14 +351,23 @@ Settled in design:
 - **5:1** fixed ratio; boarding **time-boxed with carry-over**.
 - Reciprocal ship↔battle coupling via events at the zoom boundary.
 - Enemy declarations hidden; information bought with actions/sets/silhouette.
-- Tactical scope: range rings, bearing/arcs, five altitude bands, wind + weather
+- Tactical scope: shared hex coordinates, six headings, derived ranges/arcs,
+  five altitude bands, wind + weather
   gauge; arc-gating as a discrete lookup; **forced-down (altitude-0)** as a defeat
   axis distinct from hull-0; sea ships altitude-locked.
+- Pairwise ranges and directed arcs are derived from accepted positions and
+  headings for every ship pair, not independently mutable facts.
+- An unintentional collision is physical contact with possible damage; a ram
+  intentionally exploits contact.
+- An order during boarding takes effect no earlier than the next parent turn;
+  a successful hard maneuver affects the child when it next resumes.
 
 Open / to author (content and tuning, not design forks):
 
 - The exact posture list and the per-posture math.
 - The station/action catalog specifics and per-weapon arcs/ranges.
+- Concrete movement action costs, speed, turning, climbing, paths, collision
+  handling, simultaneous resolution/event ordering, and range-band thresholds.
 - The ram/collision and called-shot formulas (rule grammar).
 - The set/figure catalog per tradition and their failure mechanics.
 - Whether the 5:1 ratio survives playtest, wants a nudge, or needs an

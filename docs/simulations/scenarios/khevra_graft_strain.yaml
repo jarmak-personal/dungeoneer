@@ -1,0 +1,34 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:khevra_graft_strain
+title: Grafts, Tolerance, And Temporary Exposure
+focus: [graft_choices, contamination_accounting, tolerance, removal, player_agency, secrecy]
+tags: [khevra, grafts, character_creation, gameplay]
+setup:
+  reference: docs/KHEVRA_GRAFTS.md
+  condition: rules:condition.khevra_contamination
+  hypothetical_fixture:
+    tolerance: 3
+    installed_graft_costs: [0, 1, 2]
+    temporary_exposure: 0
+    note: "Illustrative accounting only; these are not authored grafts or an actual tolerance formula."
+input:
+  sequence:
+    - "The player considers a cosmetic graft and two functional grafts using the fixture's hypothetical costs."
+    - "Compute initial total and compare it with the stipulated tolerance."
+    - "Independently, add one authorized temporary exposure and determine what can be resolved."
+    - "Independently, assume an authorized successful removal of the cost-1 graft after that exposure and recompute."
+    - "A different player seeks a starting graft without a defined graft, price, or applicable equipment policy."
+    - "A severely strained character experiences an apparent sign and decides how to respond."
+expected_pressure_points:
+  - installed costs plus temporary exposure form one uncapped total and zero-cost cosmetic grafts are allowed
+  - common cosmetic grafts use khevra processed from eroded sands; rarer functional grafts use veined creatures and carry a much higher burden
+  - the hypothetical totals are 3 initially, 4 after exposure, and 3 after the stipulated removal
+  - at or below tolerance no contamination penalty applies
+  - an above-tolerance tier and effect cannot be determined until nonlinear thresholds are authored
+  - fitting never adds an extra generic exposure on top of graft cost without an authored source
+  - removal requires a difficult authored procedure; the fixture does not establish one
+  - clearing temporary exposure cannot remove an installed graft cost
+  - missing starting graft definitions, price, or equipment policy block the dependent choice
+  - perceptions do not automatically become shared world facts or reveal hidden cosmology
+  - table visibility of the condition definition does not automatically expose a character's total or private perceptions
+  - strain does not automatically kill the character or take away player control

@@ -546,7 +546,16 @@ facts:
     schema: dwd.fact.v1
     subject: item:khevra_core
     predicate: enables
-    object: "early living-tissue augmentation that refined setwork cannot yet match"
+    object: "functional living-tissue augmentation that refined setwork cannot yet match"
+    truth_status: canon
+    visibility: table
+    confidence: 1.0
+
+  - id: fact:khevra_sands_enable_cosmetic_grafts
+    schema: dwd.fact.v1
+    subject: "fine khevra mixed into eroded sands"
+    predicate: enables
+    object: "processing material for common cosmetic grafts"
     truth_status: canon
     visibility: table
     confidence: 1.0

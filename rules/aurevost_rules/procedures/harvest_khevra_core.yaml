@@ -9,7 +9,8 @@ summary: >
   The procedure is a normal 5e-style ability/tool check with graded outcomes.
 preconditions:
   - defeated_creature_has_template: rules:template.khevra_infused
-  - core_not_destroyed
+  - creature_is_dead
+  - core_not_already_removed
   - actor_can_spend_required_time
 time:
   careful: { duration: "10 minutes", dc_modifier: 0 }
@@ -23,7 +24,7 @@ check:
     - prior_successful_identification_check
     - proper_harvester_tools
     - asha_or_culler_training
-    - rules:condition.khevra_contamination
+    - "eligible contamination read benefit from rules:condition.khevra_contamination, once its trigger is authored"
   disadvantage_sources:
     - rushed_without_tools
     - core_damaged_by_finishing_blow
@@ -32,40 +33,49 @@ outcomes:
   strong:
     rule: "Success by 10 or natural 20."
     result:
-      - { kind: item_state, item: item:khevra_core, grade: intact }
+      - { kind: item_state, item: item:khevra_core, maximum_grade: intact }
       - { kind: narration_only, note: "Recover usable crystalline trace material around the intact core." }
   success:
     rule: "Meets or beats DC."
     result:
-      - { kind: item_state, item: item:khevra_core, grade: intact }
+      - { kind: item_state, item: item:khevra_core, maximum_grade: intact }
   partial:
-    rule: "Within 5 below DC."
+    rule: "DC minus 5 through DC minus 1."
     result:
-      - { kind: item_state, item: item:khevra_core, grade: degraded }
+      - { kind: item_state, item: item:khevra_core, maximum_grade: degraded }
       - { kind: narration_only, note: "The core is recovered but loses most market and graft value." }
   fail:
-    rule: "More than 5 below DC."
+    rule: "Below DC minus 5."
     result:
-      - { kind: item_state, item: item:khevra_core, grade: degraded_or_inert }
-      - { kind: trigger_template_effect, effect: khevric_overload_check }
+      - { kind: item_state, item: item:khevra_core, maximum_grade: degraded }
+      - { kind: trigger_template_effect, effect: stability_check_if_active }
   botch:
     rule: "Natural 1 or reckless core damage while rushed."
     result:
       - { kind: item_state, item: item:khevra_core, grade: inert }
-      - { kind: trigger_template_effect, effect: khevric_overload }
+      - { kind: trigger_template_effect, effect: stability_check_if_active_or_secured_with_disadvantage }
 contamination:
   druidic_actor:
     on_success: no_exposure
-    on_partial: trace_if_unprotected
+    on_partial: add_one_exposure_if_unprotected
     on_fail: add_one_exposure
-    on_botch_or_failed_overload_save: add_one_exposure
+    on_botch: add_one_exposure
   non_druidic_actor:
     on_success: no_exposure
-    on_partial: no_exposure_or_trace_if_unprotected
-    on_fail: trace_if_unprotected
+    on_partial: add_one_exposure_if_unprotected
+    on_fail: add_one_exposure_if_unprotected
+    on_botch: add_one_exposure_if_unprotected
 rules:
   - "Harvesting is not automatic loot; it is a check when an intact core matters."
   - "The best yield comes from preparation, proper tools, and avoiding destabilizing damage."
+  - "A declared reckless core-damaging rushed harvest is botch regardless of the die. Otherwise natural 1 is botch and natural 20 is strong before margin bands; success is DC or above, partial is DC minus 5 through DC minus 1, and fail is lower."
+  - "Harvest cannot improve the core's existing grade: use the lower of the current grade and the grade from the outcome."
+  - "On fail or botch, apply the harvest grade cap first, then make the template's stability check when its lattice-state guard permits; an overload degrades the resulting grade one step, to a minimum of inert."
+  - "Each completed outcome removes the core after any stability check and blast resolve. Transfer it from the creature to the consenting recipient named in the declared harvest; default to the harvester if no other recipient is named."
+  - "Core custody does not by itself establish lawful ownership or authority to sell. Those follow the accepted circumstances or agreement."
+  - "A discharged lattice does not make another stability check unless a separately defined effect reactivates it."
+  - "Exposure triggers belonging to the same stabilization or harvest resolution apply at most one exposure to the same actor; separate later actions have separate exposure."
+  - "A successful harvest has no outcome-based exposure, including when rushed; independently applicable handling or overload-save triggers still apply."
   - "The procedure emits ordinary item_state, damage, condition, and narration_only consequences."
   - "It never grants a reusable PC power by itself; grafting and augmentation remain separate world content."
 visibility: table

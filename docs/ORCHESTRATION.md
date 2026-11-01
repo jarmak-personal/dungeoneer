@@ -63,7 +63,7 @@ schema: dwd.side_channel_task.v1
 task_id: task:s4_private_insight
 source_message: msg:s4_0132
 kind: private_hidden_check | lore_query | rules_clarification | private_dm_question
-audience: player:pc:vanya
+audience: player:vanya
 priority: background_interactive
 deadline_ms: 1200
 resource_policy:
@@ -108,7 +108,7 @@ check:
   actor: pc:vanya
   target: npc:ren_castavel
   adjudication_visibility: dm_only
-  result_audience: player:pc:vanya
+  result_audience: player:vanya
   dice_source: digital
 result_chain:
   - check_resolved
