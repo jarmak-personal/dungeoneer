@@ -1,0 +1,31 @@
+id: rules:creature.wolf
+schema: dwd.statblock.v1
+pack: rules:pack.srd_5e
+name: Wolf
+source: "SRD 5.1 — Monsters"
+size: medium
+type: beast
+ac: 13
+hp: { average: 11, formula: "2d8+2" }
+speed: { walk: 40 }
+abilities: { str: 12, dex: 15, con: 12, int: 3, wis: 12, cha: 6 }
+proficiency_bonus: 2
+skills: { perception: 3, stealth: 4 }
+senses: { passive_perception: 13 }
+cr: 0.25
+traits:
+  keen_hearing_and_smell:
+    effect: "Advantage on Wisdom (Perception) checks relying on hearing or smell."
+  pack_tactics:
+    effect: "Advantage on an attack when an ally of the wolf is within 5 feet of the target and that ally is not incapacitated."
+actions:
+  - name: Bite
+    kind: melee_weapon_attack
+    to_hit: 4
+    reach: 5
+    target: one_creature
+    damage: { roll: "2d4+2", type: piercing }
+    on_hit:
+      save: strength
+      dc: 11
+      on_failed_save: "target is knocked prone"

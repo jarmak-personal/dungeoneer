@@ -546,6 +546,33 @@ Visibility is not just UI. It controls:
 
 Default rule: if visibility is ambiguous, keep it private and ask for review.
 
+`player:{id}` addresses a human player principal, not a PC ID. A PC-directed
+private message resolves to explicitly authorized player principals using the
+current control and delivery decision; record those principals at delivery.
+Control alone does not grant every co-controller every private disclosure.
+When the intended recipients or their authority are unclear, withhold delivery
+and request clarification. Later control changes do not retroactively alter
+the audience of an already delivered message.
+
+An object's visibility is not permission to serialize the whole object. Filter
+each nested field or collection member for the requesting audience before
+projection, retrieval, export, or context assembly. A nested `visibility`
+scopes a mapping or collection member. For a scalar field, the containing
+mapping may use `field_visibility: {field_name: audience}`. Otherwise a field
+inherits its parent audience. An explicit child audience cannot broaden its
+parent's audience; a recipient must be authorized at every containing level.
+Never expose a hidden
+exit, relationship, knowledge edge, private note, or reference merely because
+its container is table-visible. A `dm_only` location or `npc_private` facet is
+available to the appropriately authorized DM or NPC context, not the table.
+Secrets should be authored in explicitly scoped structures rather than hidden in
+an otherwise public prose field.
+
+The scalar `field_visibility` convention and recursive projection are design
+contracts, not implemented enforcement. The current structural linter does not
+validate scalar field audience overrides or prove that a player-facing
+projection is safe; those validators and projection tests remain to be built.
+
 ## Time
 
 Track both real session time and world time.
@@ -1105,6 +1132,7 @@ territory.changed
 hazard.changed
 weather.changed
 item.transferred
+item.state_changed
 clock.advanced
 thread.updated
 lore.prepare_requested
@@ -1176,7 +1204,7 @@ promotion:
   level: claim
   text: "The east bell rang twice last night."
   truth: unknown
-  audience: player:pc:vanya
+  audience: player:vanya
 ```
 
 Rules:
@@ -1347,7 +1375,7 @@ payload:
   mode: knows | believes | suspects | heard_rumor | misunderstands
   confidence: 0.7
   acquired_from: event:s4_0330         # delivered message, check, clue, or seed
-  audience: player:pc:vanya
+  audience: player:vanya
   can_share: true
   secrecy: private | table | faction | dm_only
   truth: canon | rumor | disputed | false | unknown
@@ -1376,7 +1404,7 @@ type: secret.revealed
 payload:
   secret: secret:the_kept_flame
   reveal_scope: clue | partial | full
-  audience: table | player:pc:vanya | dm_only
+  audience: table | player:vanya | dm_only
   revealed_facts: [fact:vesh_shrine_hidden_crypt]
   source_knowledge:
     holder: npc:wick
@@ -1414,7 +1442,7 @@ check_event: event:s4_0133
 disclosure_decision: tool:social_disclosure_009
 delivery_event: event:s4_0134
 knowledge_event: event:s4_0135
-result_audience: player:pc:vanya
+result_audience: player:vanya
 table_disclosure:
   status: not_disclosed
   source_event: null
@@ -1593,6 +1621,24 @@ payload:
   to: { scene: scene:s4_dock_ambush, position: grid:g7 }
   reason: disarm
 ```
+
+```yaml
+type: item.state_changed
+payload:
+  item: item:veined_wolf_core_001
+  host: creature:veined_wolf_001
+  before: { grade: intact, lattice: active }
+  after: { grade: degraded, lattice: discharged }
+  reason: khevric_overload
+  resolution_id: rulesres:cull_002
+  source_event: event:cull_stability_failed
+  source_tool_call: tool:overload_001
+```
+
+Core instances are distinct per creature, even though their definition is
+`item:khevra_core`. Before/after state changes validate against the current
+item projection and the rules definition. Removal is a separate
+`item.transferred`; a quality change does not give the party custody.
 
 ```yaml
 type: position_changed
@@ -1992,7 +2038,7 @@ Minimum validators:
   cannot produce direct damage or any HP/resource/condition/item/position/combat
   disposition consequence.
 - No `hp_changed`, `resource_changed`, `condition_applied`,
-  `condition_removed`, `item.transferred`, `position_changed`, or
+  `condition_removed`, `item.transferred`, `item.state_changed`, `position_changed`, or
   `combat.disposition_changed` event without an accepted source event, rules tool
   call, and consequence-plan provenance.
 - No typed rules event whose `before` value disagrees with the prior projection,

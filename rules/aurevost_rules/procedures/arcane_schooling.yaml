@@ -1,0 +1,35 @@
+id: rules:procedure.arcane_schooling
+schema: dwd.rules_procedure.v1
+pack: rules:pack.srd_5e
+name: Aurevost Arcane Schooling
+source: "Aurevost original 5e extension"
+summary: >
+  Every starting PC chooses two non-damaging utility cantrips from the approved
+  list. Schooling has no ability-score or ability-modifier connection.
+character_creation:
+  choices_required: 2
+  distinct_choices: true
+  approved_cantrips: [Light, Mage Hand, Mending, Message, Prestidigitation]
+casting:
+  ability_score: none
+  ability_modifier: none
+  save_dc: 10
+  proficiency_bonus_to_save_dc: false
+  spell_effects: active_rules_pack
+  components_and_casting_time: active_rules_pack
+  unknown_spell_definition: blocked
+class_interaction:
+  choices_are_separate_from_class_cantrips: true
+  duplicate_choice_does_not_add_a_distinct_known_spell: true
+  use_schooling_dc_when_cast_via_schooling: true
+  use_class_rules_when_cast_via_class: true
+augmentation:
+  source: khevra
+  effect: not_yet_authored
+rules:
+  - "The player selects the two schooling cantrips and approves the character before initialization."
+  - "Schooling's fixed DC does not use any ability modifier or proficiency bonus."
+  - "If the same spell is also known through a class, the player identifies which source is used; the normal rules of that source apply."
+  - "Each source accounts for its own choice quota according to that source's rules; the combined distinct-spell count does not count the same name twice."
+  - "A khevra augmentation may change schooling only when an authored, accepted effect explicitly says so. This procedure grants no augmentation by itself."
+visibility: table

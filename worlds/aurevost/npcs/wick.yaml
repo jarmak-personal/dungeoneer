@@ -8,9 +8,10 @@ visibility: table
 summary: >
   Artificer-turned-barkeep of the Brass Lantern. Keeps a real candle on the bar and
   a setwork lamp in every corner and never explains why the candle matters more.
-  The party's likely first friendly face, and the door to the Hearthward.
+  The party's likely first friendly face.
 facets:
   npc_profile:
+    visibility: "npc_private:npc:wick"
     public_role: "Runs the Brass Lantern. Fixes broken message-glass for regulars."
     voice: "Dry, fast, fond. Deflects with a joke. Watches the door."
     values: [his regulars, the kept flame, minding his own business, Tovin]
@@ -21,7 +22,19 @@ facets:
     routine:
       - { when: always, location: "loc:caelport.brass_lantern" }
   knowledge:
-    - { holder: "npc:wick", target: "secret:the_kept_flame", mode: knows, can_share: false, secrecy: private, note: "Knows, but guards it harder than Tovin does." }
+    - holder: "npc:wick"
+      target: "secret:the_kept_flame"
+      mode: knows
+      can_share: false
+      secrecy: private
+      visibility: "npc_private:npc:wick"
+      note: "Knows, but guards it harder than Tovin does."
+      permitted_clues:
+        - text: "I don't keep the candle for the draft."
+          visibility: "npc_private:npc:wick"
+          note: "A bounded admission, not authority to disclose the kept flame."
   relationships_ref: rel:wick->tovin_marsh
+  field_visibility:
+    relationships_ref: "npc_private:npc:wick"
   rules_binding:
     stat_block_ref: rules:npc.commoner

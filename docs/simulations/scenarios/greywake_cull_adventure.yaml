@@ -1,0 +1,58 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:greywake_cull_adventure
+title: A Greywake Culling Job
+focus:
+  - adventure_opportunity_and_consent
+  - travel_and_site_exploration
+  - khevra_stability_and_harvest
+  - core_state_and_contamination
+  - negotiated_payment_and_sale
+  - aftermath_and_player_agency
+tags: [gameplay, exploration, travel, khevra, commerce, choice]
+setup:
+  scene: loc:caelport
+  present: ["pc:dorn", "pc:vanya"]
+  reference: docs/GREYWAKE_CULL.md
+  balances_gp:
+    "pc:dorn": 2
+    mara: 30
+    skiff_operator: 0
+    core_buyer: 20
+  payer_and_recipient: "pc:dorn"
+  rules_fixture:
+    schema: dwd.simulation_rules_fixture.v1
+    actors:
+      creature:landing_wolf:
+        stat_block_ref: rules:creature.wolf
+        template_ref: rules:template.khevra_infused
+        ac: 14
+        hp: { current: 8, max: 11 }
+input:
+  sequence:
+    - "The party hears Mara's offer, asks about payment and ownership, and accepts."
+    - "The party pays for a skiff, travels to the landing, and identifies the wolf's lattice."
+    - "The party defeats the wolf with an ordinary hit; its first stability check succeeds."
+    - "After the animal is dead, a character stabilizes the active core successfully, then harvests carefully and succeeds."
+    - "The party returns, collects the agreed commission, and sells the intact core."
+    - "Independently route a failed stability check, an ordinary failed harvest of secured and discharged cores, and a botch on an active core."
+    - "Independently route a rushed reckless harvest with a natural 20, and compare protected and unprotected handling of secured and discharged cores."
+    - "Independently route refusing the job and securing the landing without killing the wolf."
+expected_pressure_points:
+  - the game preserves the party's ability to refuse, negotiate, retreat, and spare the wolf
+  - a stability check is distinct from the overload Dexterity save
+  - secured, active, and discharged lattice states behave differently at harvest
+  - core quality does not improve through harvest or degrade below inert
+  - overlapping exposure sources count once per actor per stabilization or harvest resolution
+  - reckless core damage during a rushed harvest is a botch even on a natural 20
+  - secured cores remain unstable for handling; discharged cores are not unstable unless reactivated
+  - the promise, travel fare, commission payment, and core sale are separate agreements
+  - sale and payment require supported balances and atomic typed consequences
+  - missing pack content produces a blocked result rather than invented mechanics
+expected_contracts:
+  rules:
+    creature: rules:creature.wolf
+    template: rules:template.khevra_infused
+    stabilization: rules:procedure.stabilize_khevra_core
+    harvest: rules:procedure.harvest_khevra_core
+    contamination: rules:condition.khevra_contamination
+    core: item:khevra_core

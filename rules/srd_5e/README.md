@@ -18,6 +18,7 @@ rules/
     statblocks/druid.yaml
     statblocks/noble.yaml
     statblocks/cleric.yaml # SRD "Priest" stats, bound as rules:npc.cleric
+    statblocks/wolf.yaml
     README.md              # this file
   aurevost_pregens/        # instances built FROM the pack (campaign rules state)
     pc.dorn.yaml           # resolves rules:pc.dorn  (binds pc:dorn)
@@ -29,6 +30,8 @@ rules/
     conditions/khevra_contamination.yaml
     templates/khevra_infused.yaml
     procedures/harvest_khevra_core.yaml
+    procedures/stabilize_khevra_core.yaml
+    procedures/arcane_schooling.yaml
 ```
 
 `worlds/aurevost/` references mechanics abstractly: `wick.yaml` carries
@@ -104,7 +107,7 @@ Every step below is engine procedure; every *number* it reads comes from a pack 
    actor: { id: pc:vanya, using: insight }      # WIS (Insight)
    dc_source: { band: medium }                  # -> dc 15 from dc_guidance.yaml
    adjudication_visibility: dm_only             # hidden check (see RULES_ENGINE social)
-   result_audience: player:pc:vanya
+   result_audience: player:vanya
    ```
 2. **Engine reads pack data.** `dc_guidance.yaml` band `medium` → **DC 15**. Vanya's
    sheet → Insight **+4**.
@@ -122,7 +125,7 @@ Every step below is engine procedure; every *number* it reads comes from a pack 
    actor: pc:vanya
    payload: { skill: insight, total: 12, dc: 15, band: partial }
    visibility: dm_only
-   result_audience: player:pc:vanya
+   result_audience: player:vanya
    provenance: { tool_call: tool:ability_check_0042 }
    ```
 

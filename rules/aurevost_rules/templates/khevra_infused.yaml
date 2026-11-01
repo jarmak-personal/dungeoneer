@@ -30,33 +30,63 @@ stat_modifiers:
   authoring_rule: >
     Choose one minor edge unless a named creature explicitly earns more. The template
     is not a full custom monster package.
-overload:
+stability:
   trigger:
     - first_reduced_to_0_hp
-    - failed_harvest_check
+    - failed_harvest_outcome
     - reckless_core_damage
+  check:
+    kind: ability_check
+    actor: infused_creature
+    ability: constitution
+    dc_formula: "10 + creature_proficiency_bonus"
+    success: lattice_remains_stable
+    failure: khevric_overload
+    natural_20: success
+    natural_1: failure
+    advantage_sources:
+      - prior_successful_identification_before_defeat
+      - eligible_nonlethal_melee_defeat
+    disadvantage_sources:
+      - critical_hit_reduced_to_0_hp
+      - force_lightning_or_thunder_reduced_to_0_hp
+      - reckless_core_damage
+    roll_shape_policy: rules:pack.srd_5e
+  state:
+    initial_lattice: active
+    initial_core_grade: intact
+    lattice_values: [active, secured, discharged]
+    overload_degrades_core_one_grade: [intact, degraded, inert]
+    degradation_floor: inert
+    after_overload: discharged
+    discharged_cannot_overload_again_without_reactivation: true
+    first_reduced_to_0_hp_check_occurs_once: true
+overload:
   dc_formula: "8 + creature_proficiency_bonus + creature_constitution_modifier"
   save: dexterity
   radius_ft: 10
   damage_type: force
   damage_formula: "creature_proficiency_bonus d6"
   save_success: half_damage
-  escalators:
-    - { condition: critical_hit_reduced_to_0_hp, effect: "overload check has advantage against the creature's stability" }
-    - { condition: force_lightning_or_thunder_reduced_to_0_hp, effect: "overload check has advantage against the creature's stability" }
-    - { condition: massive_overkill_or_called_core_shot, effect: "overload triggers unless the harvest/stabilize check succeeds first" }
   consequences:
     - kind: damage
       event_type: hp_changed
     - kind: item_state
       target: item:khevra_core
-      result: degraded_or_inert_on_overload
+      result: degrade_one_grade
 harvest:
   procedure: rules:procedure.harvest_khevra_core
   yield: item:khevra_core
 rules:
   - "The base stat block supplies HP, AC, attacks, saves, proficiency, and ability modifiers."
   - "The template adds one minor physical edge by default, not a bespoke action suite."
-  - "Overload is resolved by ordinary save-and-damage consequences."
-  - "A creature killed by overload cannot yield an intact core."
+  - "A stability check is not the Dexterity save against an overload; failure triggers that separate save-and-damage effect."
+  - "A successful identification made before defeat grants advantage to the defeat stability check; it does not retroactively improve it."
+  - "Nonlethal defeat grants advantage only when the active pack permits it for the finishing attack."
+  - "Active and secured describe a lattice that has not discharged. Secured prevents a stability check on an ordinary failed harvest, but not on botch or reckless core damage."
+  - "A discharged core cannot be checked or discharge again unless a separately defined effect reactivates it. A stability check on a secured core does not itself remove the secured state."
+  - "A failed harvest outcome means the fail band, not a partial result below the DC. The botch band separately triggers a check with disadvantage."
+  - "One underlying event produces at most one stability check: if rushed reckless damage is also a harvest botch, record both reasons and make one check with disadvantage."
+  - "Core grade cannot degrade below inert."
+  - "Overload is resolved by ordinary save-and-damage consequences, and a core degraded by overload cannot later be harvested intact."
 visibility: table

@@ -14,31 +14,38 @@ setup:
   present: ["pc:dorn", "pc:vanya", "npc:vohria"]
   combat: active
   present_creatures: ["creature:khevra_infused"]   # a veined wolf: the infusion template over a base creature
+  base_stat_block: rules:creature.wolf
+  template_edge: ac_plus_1
   note: >
     The scene is a Greywake deposit margin where veined creatures are ordinary.
     Khevra overload, core harvesting, and druid contamination are rules-owned;
     narration may not improvise alternate magnitudes or freeform powers.
 input:
   sequence:
-    - "the veined wolf is reduced to 0 HP; its unset lattice may trigger khevric overload"
+    - "the identified veined wolf is reduced to 0 HP; its lattice makes a stability check with advantage"
     - "pc:dorn tries to preserve value by helping harvest item:khevra_core instead of smashing the body apart"
     - "npc:vohria deliberately stabilizes the core with druidic practice, risking rules:condition.khevra_contamination"
     - "the DM must resolve immediate overload, harvest result, and contamination state through rules-owned definitions"
 expected_pressure_points:
   - rules:template.khevra_infused supplies only a minor edge plus overload/harvest hooks over the base stat block
+  - a failed stability check triggers overload; the separate Dexterity save resolves the blast
   - overload resolves as ordinary save-and-damage consequences, not a custom event family
   - rules:procedure.harvest_khevra_core rewards identification, tools, time, and careful damage choices
-  - rules:condition.khevra_contamination gives druids minor read benefits and minor costs in excessive khevra, not broad superpowers
+  - rules:condition.khevra_contamination separates temporary exposure from installed graft costs; missing tier rules block tier-dependent effects
   - if any required rule object is missing, the route returns dwd.rules_resolution_blocked.v1 instead of invented mechanics
   - the rules engine — not narration — owns overload, harvest yield, and contamination state
 expected_contracts:
   rules_extension_refs:
     template: rules:template.khevra_infused
     harvest_procedure: rules:procedure.harvest_khevra_core
+    stabilization_procedure: rules:procedure.stabilize_khevra_core
     contamination_condition: rules:condition.khevra_contamination
     blocked_result_schema: dwd.rules_resolution_blocked.v1
   overload:
-    trigger: first_reduced_to_0_hp
+    trigger: failed_stability_check
+    stability_check_trigger: first_reduced_to_0_hp
+    stability_dc: "10 + creature proficiency bonus"
+    identified_before_defeat: advantage
     save: dexterity
     damage_type: force
     radius_ft: 10
@@ -47,9 +54,11 @@ expected_contracts:
     careful_time: "10 minutes"
     rushed_time: "1 minute"
     careful_play_improves_yield: true
-    failed_or_reckless_harvest_can_trigger_overload: true
+    fail_checks_active_lattice_and_botch_checks_active_or_secured: true
+    harvest_cannot_improve_existing_core_grade: true
   druid_contamination:
-    tiers: [clear, trace, marked, saturated]
-    minor_benefit: "advantage on a relevant read check when training and fiction support it"
-    minor_cost: "disadvantage on relevant living-systems checks in excessive khevra or rejection zones"
+    total: "temporary exposure plus installed graft costs; uncapped"
+    thresholds: not_yet_authored
+    no_penalties_at_or_below_tolerance: true
+    grafts_may_cost_zero: true
     no_blanket_pc_druid_power_package: true

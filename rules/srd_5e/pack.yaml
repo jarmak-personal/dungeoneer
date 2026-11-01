@@ -18,6 +18,20 @@ summary: >
 # Proficiency bonus by character level (SRD).
 proficiency_by_level: { 1: 2, 2: 2, 3: 2, 4: 2, 5: 3, 6: 3, 7: 3, 8: 3, 9: 4, 10: 4 }
 
+arithmetic:
+  fractional_damage: round_down
+
+# Creature 0-HP outcome for the worked SRD-pack encounter. PC death saves and
+# other actor categories retain their own pack rules.
+creature_zero_hp:
+  default_disposition: dead
+  nonlethal:
+    eligibility: "A melee attack reduces the creature to 0 HP."
+    choice: "The attacker chooses at the moment damage is dealt."
+    disposition: unconscious
+    stable: true
+  player_character_rules: separate
+
 # How THIS system's d20 results map onto the engine's native degree ladder
 # (fail / partial / success / strong). This block is the seam the engine reads — the
 # engine never hardcodes a system's success model; each pack declares its own.

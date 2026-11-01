@@ -176,12 +176,23 @@ natural terms and the system compiles, then asks the player to confirm.
   level-up selection, a reaction) and the rules engine applies them through typed
   events. The player never edits a sheet or YAML to keep state in sync — bookkeeping
   is the system's job, the decisions are the player's.
+- **Validate before commit.** Validate the approved narrative, the complete
+  proposed sheet, selected schooling, and required pack definitions before
+  creating the PC. If validation or initialization fails, emit no PC-creation
+  or control-assignment events; explain the specific error and let the player
+  revise or retry. Commit creation, initialized sheet, and control assignment
+  atomically once validation succeeds.
+- **Pregen schooling.** Aurevost pregens whose sheets do not specify schooling
+  choices require their controlling player to choose and approve the two
+  cantrips during onboarding; do not silently select them or assume they have
+  already been initialized.
 
 This is the authoring counterpart to the rules-engine guarantee that nothing
 *constrains* a PC except rules-legal effects: nothing *defines* a PC except what the
 player authored and approved. Pregens remain valid as authored seed content; the
 build/import path is how a player brings their own character without touching the
-internal format.
+internal format. For player-facing creation and advancement procedures and their
+open content dependencies, see [Character play](CHARACTER_PLAY.md).
 
 ## Cold Start Warmup
 

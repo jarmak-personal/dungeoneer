@@ -5,7 +5,7 @@
 Aurevost is **all-human**. What 5e loads into *ancestry* — a level-1 power spike,
 innate utility powers, and a stat package — is redistributed into things the setting
 already asserts: universal arcane schooling, culture-as-upbringing, common tech, and
-the rare augmentation trade. There are no PHB species. The world already says
+widespread grafting. There are no PHB species. The world already says
 "heritage came loose from nation and place" and that its peoples are "thoroughly
 mixed" ([world.yaml](../worlds/aurevost/world.yaml)); this makes that literal.
 
@@ -22,7 +22,7 @@ not new engine concepts.
 | Ability score increase | **nowhere** — scores are the player's (nature, chosen) |
 | Skill / tool proficiencies, languages | **culture** |
 | Identity / flavor | **culture + vocation** |
-| The genuinely superhuman | **rare augmentation** (veined-creature cores) — a campaign reward, never chargen |
+| The genuinely superhuman | **functional augmentation** from veined creatures, with individual costs and strain |
 
 ## The stack
 
@@ -30,7 +30,7 @@ not new engine concepts.
 1. **Ability scores** — the player's own.
 2. **Culture / origin** — where and how you were raised.
 3. **Vocation / background** — what you did.
-4. **Augmentation** — rare, contaminating, *not* chargen.
+4. **Augmentation** — common and optional, with individual costs and possible strain.
 
 Plus a **gear layer** (the purchased other half of "enhanced everything").
 
@@ -39,8 +39,28 @@ Plus a **gear layer** (the purchased other half of "enhanced everything").
 The crust is khevra-rich and basic arcane practice is normal schooling. So **every PC,
 every class, begins arcane-literate.** Mechanically:
 
-- A small fixed kit of **utility** cantrips (e.g. Light, Mage Hand, Mending, Message,
-  Prestidigitation — exact list is open). **No attack or damage cantrips.**
+- Each PC chooses **two non-damaging utility cantrips** from an approved short
+  list: **Light, Mage Hand, Mending, Message, and Prestidigitation**. No attack
+  or damage cantrips. Their spell effects come from the active rules pack, not
+  improvised descriptions.
+- Schooling has **no ability score or ability modifier**. If a schooling
+  cantrip permits a saving throw, its fixed DC is **10**, with no proficiency
+  bonus. The spell's components, casting time, and effect come from the active
+  pack. Missing spell content blocks that casting rather than authorizing an
+  invented effect.
+- Schooling choices are separate from class cantrips. If a character knows the
+  same spell through both, it is not an extra distinct spell: the player
+  selects which source they are using, and that source's rules apply. Each
+  source's own rules decide its choice quota; a duplicate does not add another
+  distinct spell to the combined list.
+- The initialized sheet records each chosen spell and its granting source
+  separately. A cast records the chosen source, applicable pack and spell
+  definition, inputs, dice, and resulting events so replay does not have to
+  infer which casting rules applied. The concrete sheet and cast schemas remain
+  to be authored; a missing required spell or class definition blocks the cast.
+- A graft may augment schooling only when an authored, accepted effect says so;
+  schooling itself grants no graft. Starting grafts remain subject to the same
+  authored options and costs as other equipment.
 - **Setwork operation** — a PC can run everyday khevric devices and man a ship station
   at the baseline. This feeds [Ship combat](SHIP_COMBAT.md): anyone is a competent hand;
   culture affinity and class are the *edge*, not the price of entry.
@@ -111,13 +131,18 @@ to culture, so the leash holds). **Culture (your seafaring heritage) + Vocation 
 job) replaces 5e's race + background** — two axes, neither physical, split cleanly by
 domain: sea-and-heritage vs workaday-craft, so they never hand out the same thing twice.
 
-## Tier 4 — Augmentation (rare; not chargen)
+## Tier 4 — Augmentation
 
-Living-tissue grafts from veined-creature cores ([khevra_core](../worlds/aurevost/items/khevra_core.yaml)).
-Rare, contaminating (more khevra in the body = more bridge), and socially fraught — a
-faux pas in some ports, embraced in others. **Gated behind the monster-hunting loop, a
-campaign reward, never a chargen pick.** This is where the genuinely superhuman lives;
-keeping it rare protects both the hunting loop and the central dilemma.
+Cosmetic grafts made from khevra processed out of eroded sands are widely
+used for fashion and status. Functional grafts use veined creatures, including
+their [cores](../worlds/aurevost/items/khevra_core.yaml); they are rarer and
+more burdensome. Grafting can be socially fraught in some places. Individual
+grafts have individual costs; some decorative ones have no contamination
+cost. Players can choose authored
+starting grafts under the active game's equipment rules. Accumulated graft
+cost and temporary exposure share an uncapped total, with a free tolerance
+and nonlinear penalties; removal is difficult. See
+[Khevra grafts](KHEVRA_GRAFTS.md).
 
 ## The gear layer
 
@@ -139,8 +164,7 @@ bulk-freight routes, admiralty navigation, conservative seamanship)
 **Culture — an old archipelago star-line** (a forgotten island-nation's open-ocean
 star-navigation and storm-craft, now carried only by its scattered diaspora)
 - Skills: Survival, Nature. Tool: navigator's tools.
-- Situational advantage: navigating by stars on the **open ocean** and surviving storms
-  at sea.
+- Situational advantage: navigating by stars on the **open ocean**.
 - Lattice affinity: **none inherited** — this line never became an engineering empire;
   they crew others' hulls (affinity set by training or vocation instead).
 
@@ -159,27 +183,35 @@ Roughly: the 5e ancestry/background budget becomes *utility cantrips (universal)
 plus a few proficiencies, one situational advantage, a ship affinity, and a
 vocation*. Slightly under PHB on raw level-1 combat power **on purpose** —
 chargen here is flatter and more grounded, suiting the political-maritime tone.
-The compensation is back-loaded (the ship affinity pays off in ship combat,
-augmentation pays off late), so make the ship affinity **concrete and usable at
-level 1** or culture will feel like "just two skills" until session ten.
+Ship affinity needs to be **concrete and usable at level 1** or culture will
+feel like "just two skills" until ship play begins. Starting grafts require
+their own affordability and power-budget review rather than being assumed to
+arrive only later.
 
 ## Settled vs open
 
 Settled in design:
 
 - All-human; no PHB species; no physical stat from origin.
-- Universal arcane schooling as the level-1 baseline; **utility cantrips only**.
+- Universal arcane schooling as the level-1 baseline; each PC chooses **two
+  non-damaging utility cantrips** from Light, Mage Hand, Mending, Message, and
+  Prestidigitation.
+- Schooling has no ability connection and uses fixed save DC 10. Any graft
+  effect that changes it is separately authored.
 - Culture = a **seafaring tradition**: maritime/heritage skills + one situational
   advantage + a lattice affinity (a default; overridable; may be none inherited).
 - Culture (seafaring heritage) and Vocation (job) split by **domain** — sea/heritage vs
   workaday craft — so their proficiencies never overlap. Vocation grants no advantage.
 - Culture + Vocation replaces race + background.
-- Augmentation is rare and not a chargen option; firepower is gear, not birthright.
+- Cosmetic grafts are widespread; veined-derived functional grafts are rarer
+  and carry a much higher burden. Both are optional at character creation
+  under applicable equipment rules.
 - Divine remains the rare, costly exception.
 
 Open / to author (content and tuning, not design forks):
 
-- The exact universal cantrip list and how (or whether) it scales.
+- How (or whether) schooling scales, and the precise khevra augmentation
+  effects and costs.
 - The seafaring-tradition catalog — each one's heritage skills and its single advantage,
   finer-grained than the four superpowers.
 - Exact proficiency counts on each axis (the domain split is settled; the numbers tune).

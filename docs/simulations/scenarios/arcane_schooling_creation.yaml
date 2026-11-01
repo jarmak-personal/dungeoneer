@@ -1,0 +1,35 @@
+schema: dwd.system_simulation_scenario.v1
+id: sim:arcane_schooling_creation
+title: Arcane Schooling During Character Creation
+focus:
+  - player_character_authorship
+  - arcane_schooling_choices
+  - fixed_dc_without_ability
+  - class_spell_interaction
+  - missing_spell_content
+  - khevra_augmentation_boundary
+tags: [character_creation, aurevost, schooling, magic, player_agency]
+setup:
+  campaign: campaign:aurevost_main
+  reference: docs/CULTURES.md
+  schooling_procedure: rules:procedure.arcane_schooling
+input:
+  sequence:
+    - "A player creates a PC and selects Light and Mage Hand for schooling."
+    - "The player reviews and approves the proposed character."
+    - "The PC tries to cast schooling Light on an object held by an unwilling creature."
+    - "Independently, a class caster knows Light through both class and schooling and chooses which source to use."
+    - "Independently, the player asks to augment a schooling cantrip with khevra."
+expected_pressure_points:
+  - the player chooses and approves both cantrips without the system inventing character meaning
+  - schooling has no ability connection and uses fixed save DC 10 without a proficiency bonus
+  - spell effects and components come from the active pack; missing spell data blocks casting
+  - class and schooling sources stay separate and do not create an extra distinct known spell
+  - the class source follows class rules when chosen
+  - no augmentation is invented or granted without an authored accepted effect
+expected_contracts:
+  schooling:
+    rule: rules:procedure.arcane_schooling
+    num_choices: 2
+    save_dc: 10
+    casting_ability: none

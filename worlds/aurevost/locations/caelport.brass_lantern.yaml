@@ -5,8 +5,8 @@ name: The Brass Lantern
 parent: loc:caelport
 scale: building
 summary: >
-  A cramped tavern wedged into the Undercroft, one wall shared with a bricked-up
-  shrine to Vesh. The only place in Caelport where a real flame is always kept lit —
+  A cramped tavern wedged into the Undercroft, with a bricked arch behind the bar.
+  The only place in Caelport where a real flame is always kept lit —
   the owner insists it is "for the draft."
 access: { public: true, restrictions: [] }
 atmosphere:
@@ -15,9 +15,11 @@ atmosphere:
   smells: ["tallow", "spilled ale", "old stone"]
 exits:
   - { to: "loc:caelport", mode: walk, travel_time: "1 min" }
-  - { to: "loc:caelport.vesh_shrine", mode: "behind the bricked arch", hidden: true, travel_time: "1 min" }
+  - { to: "loc:caelport.vesh_shrine", mode: "behind the bricked arch", hidden: true, travel_time: "1 min", visibility: dm_only }
 security: { danger_level: 1, controlling_faction: null }
-notes: >
-  This is the default opening location. Wick keeps the bar; the kept flame is not
-  for the draft. The Hearthward meet here, quietly.
+dm_notes:
+  visibility: dm_only
+  text: >
+    This is the default opening location. Wick keeps the bar; the kept flame is not
+    for the draft. The Hearthward meet here, quietly.
 visibility: table
